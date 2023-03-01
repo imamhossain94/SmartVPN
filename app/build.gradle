@@ -1,20 +1,33 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.parcelize'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 android {
+    apply from: '../dependencies.gradle'
     namespace 'com.newagedevs.vpnthundershield'
-    compileSdk 32
+    compileSdk versions.compileSdk
 
     defaultConfig {
         applicationId "com.newagedevs.vpnthundershield"
-        minSdk 23
-        targetSdk 32
-        versionCode 1
-        versionName "1.0"
-
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+        versionCode versions.versionCode
+        versionName versions.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    buildFeatures {
+        dataBinding true
     }
 
     buildTypes {
@@ -23,22 +36,71 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
+        kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.time.ExperimentalTime"]
+        kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"]
     }
 }
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // android supports
+    implementation "com.google.android.material:material:$versions.materialVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintVersion"
+
+    // architecture components
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycleVersion"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation "androidx.room:room-runtime:$versions.roomVersion"
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    kapt "androidx.room:room-compiler:$versions.roomVersion"
+    testImplementation "androidx.arch.core:core-testing:$versions.archCompomentVersion"
+
+    // binding
+    implementation "com.github.skydoves:bindables:$versions.bindablesVersion"
+
+    // koin
+    implementation "org.koin:koin-android:$versions.koinVersion"
+    implementation "org.koin:koin-android-scope:$versions.koinVersion"
+    implementation "org.koin:koin-android-viewmodel:$versions.koinVersion"
+
+    // network
+    implementation "com.github.skydoves:sandwich:$versions.sandwichVersion"
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttpVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.mockWebServerVersion"
+
+    // coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesVersion"
+
+    // glide
+    implementation "com.github.bumptech.glide:glide:$versions.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$versions.glideVersion"
+
+    // transformation
+    // implementation "com.github.skydoves:transformationlayout:$versions.transformationLayout"
+
+    // whatIf
+    implementation "com.github.skydoves:whatif:$versions.whatIfVersion"
+
+    // bundler
+    implementation "com.github.skydoves:bundler:$versions.bundlerVersion"
+
+    // debugging
+    implementation "com.jakewharton.timber:timber:$versions.timberVersion"
+
 }

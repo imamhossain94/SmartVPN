@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">VPNThunderShield</string>
+    <string name="app_name">VPN Thunder Shield</string>
+    <string name="database">LasixMobile.db</string>
 </resources>
