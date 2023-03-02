@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">VPN Thunder Shield</string>
     <string name="database">LasixMobile.db</string>
+    <string name="todo">TODO</string>
+    <string name="connected">Connected</string>
 </resources>

@@ -1,10 +1,11 @@
 package com.newagedevs.vpnthundershield.model
 
 data class Server(
-    var country: String?,
+    var countryName: String?,
     var ipAddress: String?,
-    var flagUrl: Int?,
-    var oVpn: String?,
-    var oVpnUserName: String?,
-    var oVpnUserPassword: String?,
+    var flagDrawable: Int?,
+    var openVpn: String?,
+    var openVpnUserName: String?,
+    var openVpnUserPassword: String?,
+    var isConnected: Boolean
 )

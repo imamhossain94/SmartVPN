@@ -22,6 +22,10 @@ class ServerAdapter : RecyclerView.Adapter<ServerAdapter.ServerViewHolder>() {
                     adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
                         ?: return@setOnClickListener
 
+
+
+
+
             }
         }
 
@@ -38,6 +42,8 @@ class ServerAdapter : RecyclerView.Adapter<ServerAdapter.ServerViewHolder>() {
     override fun onBindViewHolder(holder: ServerViewHolder, position: Int) {
         holder.binding.apply {
             server = items[position]
+            activeColor = "F2F2F2"
+            inactiveColor = "#FFFFFF"
             executePendingBindings()
         }
     }
