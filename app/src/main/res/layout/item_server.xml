@@ -4,28 +4,45 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="android.graphics.Color" />
+
         <variable
             name="server"
             type="com.newagedevs.vpnthundershield.model.Server" />
+
+        <variable
+            name="activeColor"
+            type="String" />
+
+        <variable
+            name="inactiveColor"
+            type="String" />
 
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@{server.isConnected ? @color/light_white : @color/white}"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
 
         <ImageView
-            android:id="@+id/iconImg"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="20dp" />
+            android:layout_width="60dp"
+            android:layout_height="48dp"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitCenter"
+            android:src="@{server.flagDrawable}" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:padding="10dp">
 
@@ -33,22 +50,28 @@
                 android:id="@+id/countryTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{server.country}"
-                android:textStyle="normal"
+                android:text="@{server.countryName}"
                 android:textAllCaps="true"
-                android:textColor="#FFF" />
+                android:textStyle="normal" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{server.ipAddress}"
-                android:textStyle="normal"
                 android:textAllCaps="true"
-                android:textColor="#FFF" />
+                android:textStyle="normal" />
 
         </LinearLayout>
 
-
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_margin="10dp"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_circle"
+            android:visibility="@{server.isConnected ? View.VISIBLE : View.GONE}"
+            app:tint="#ff8c01" />
     </LinearLayout>
 
 

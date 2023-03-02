@@ -5,29 +5,106 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
             name="vm"
             type="com.newagedevs.vpnthundershield.view.ui.MainViewModel" />
 
+        <variable
+            name="adapter"
+            type="com.newagedevs.vpnthundershield.view.adapter.ServerAdapter" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#2ec574"
         tools:context=".view.ui.MainActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/raceCard_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:titleTextColor="@color/white"
+            app:title="VPN Thunder Shield">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:padding="16dp"
+                android:src="@drawable/ic_menu"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/todo"
+                android:layout_gravity="end"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/bg_rounded_deactivate"
+                android:elevation="5dp"
+                android:layout_gravity="center"
+                android:layout_margin="25dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center|start">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connected"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="24dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="United states"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textStyle="normal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="127.0.0.1:8000"
+                android:textAllCaps="true"
+                android:textStyle="normal"
+                android:textColor="#F2F2F2"
+                android:layout_marginBottom="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/racecard_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:background="#fafafa"
+            android:orientation="vertical"
+            app:adapter="@{adapter}"
+            app:adapterServerList="@{vm.servers}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_server" />
 
 
     </LinearLayout>
