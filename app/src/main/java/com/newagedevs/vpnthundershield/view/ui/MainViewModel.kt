@@ -59,7 +59,6 @@ class MainViewModel constructor(
             false
         ))
 
-
         servers = serverList
         serverAdapter.updateServerList(servers!!)
 
