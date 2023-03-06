@@ -22,10 +22,10 @@ class ServerAdapter : RecyclerView.Adapter<ServerAdapter.ServerViewHolder>() {
                     adapterPosition.takeIf { it != RecyclerView.NO_POSITION }
                         ?: return@setOnClickListener
 
+                items.find { it.isConnected }?.isConnected = false
+                items.find { items.indexOf(it) == position }?.isConnected = true
 
-
-
-
+                notifyDataSetChanged()
             }
         }
 
