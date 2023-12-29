@@ -20,91 +20,91 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#2ec574"
         tools:context=".view.ui.MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/raceCard_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:titleTextColor="@color/white"
-            app:title="VPN Thunder Shield">
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="#00000000"
-                android:padding="16dp"
-                android:src="@drawable/ic_menu"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/todo"
-                android:layout_gravity="end"/>
-
-        </androidx.appcompat.widget.Toolbar>
-
-
+        <com.hjq.bar.TitleBar
+            android:id="@+id/tb_main_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:statusBarColor"
+            app:leftIcon="@null"
+            app:title="Smart VPN"
+            app:titleStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:background="@drawable/bg_rounded_deactivate"
-                android:elevation="5dp"
-                android:layout_gravity="center"
-                android:layout_margin="25dp"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_download"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center"
-                android:gravity="center|start">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/connected"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textSize="24dp"/>
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="United states"
-                android:textAllCaps="true"
-                android:textColor="@color/white"
-                android:textStyle="normal"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="127.0.0.1:8000"
-                android:textAllCaps="true"
-                android:textStyle="normal"
-                android:textColor="#F2F2F2"
-                android:layout_marginBottom="10dp"/>
+
             </LinearLayout>
+
         </LinearLayout>
 
-
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/racecard_list"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:background="#fafafa"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#dcdcdc" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:adapter="@{adapter}"
-            app:adapterServerList="@{vm.servers}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_server" />
+            android:background="?android:statusBarColor">
+
+            <com.hjq.bar.TitleBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:statusBarColor"
+                app:leftIcon="@drawable/ic_globe"
+                app:rightIcon="@drawable/ic_right"
+                app:title="Change Location"
+                app:titleStyle="bold"
+                app:titleGravity="start"/>
+
+
+
+            <include layout="@layout/item_server"/>
+
+
+        </LinearLayout>
+
 
 
     </LinearLayout>

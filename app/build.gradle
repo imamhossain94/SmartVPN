@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -46,7 +48,7 @@ android {
         jvmTarget = '1.8'
     }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    tasks.withType(KotlinCompile).configureEach {
         kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
         kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.time.ExperimentalTime"]
         kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"]
@@ -56,15 +58,18 @@ android {
 dependencies {
 
     // android supports
+    //noinspection GradleDependency
     implementation "com.google.android.material:material:$versions.materialVersion"
+    //noinspection GradleDependency
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintVersion"
 
     // architecture components
     implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycleVersion"
+    //noinspection GradleDependency
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
-    implementation "androidx.room:room-runtime:$versions.roomVersion"
+    //noinspection GradleDependency
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    kapt "androidx.room:room-compiler:$versions.roomVersion"
+    //noinspection GradleDependency
     testImplementation "androidx.arch.core:core-testing:$versions.archCompomentVersion"
 
     // binding
@@ -75,24 +80,18 @@ dependencies {
     implementation "org.koin:koin-android-scope:$versions.koinVersion"
     implementation "org.koin:koin-android-viewmodel:$versions.koinVersion"
 
-    // network
-    implementation "com.github.skydoves:sandwich:$versions.sandwichVersion"
-    implementation "com.squareup.retrofit2:retrofit:$versions.retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$versions.okhttpVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofitVersion"
-    testImplementation "com.squareup.okhttp3:mockwebserver:$versions.mockWebServerVersion"
-
     // coroutines
+    //noinspection GradleDependency
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
+    //noinspection GradleDependency
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutinesVersion"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesVersion"
 
     // glide
     implementation "com.github.bumptech.glide:glide:$versions.glideVersion"
+    //noinspection KaptUsageInsteadOfKsp
     kapt "com.github.bumptech.glide:compiler:$versions.glideVersion"
 
-    // transformation
-    // implementation "com.github.skydoves:transformationlayout:$versions.transformationLayout"
 
     // whatIf
     implementation "com.github.skydoves:whatif:$versions.whatIfVersion"
@@ -102,5 +101,8 @@ dependencies {
 
     // debugging
     implementation "com.jakewharton.timber:timber:$versions.timberVersion"
+
+    implementation 'com.github.getActivity:TitleBar:10.5'
+    implementation 'com.github.getActivity:Toaster:12.6'
 
 }
