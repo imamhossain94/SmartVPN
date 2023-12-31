@@ -10,7 +10,7 @@
 
         <variable
             name="server"
-            type="com.newagedevs.vpnthundershield.model.Server" />
+            type="com.newagedevs.smartvpn.model.Server" />
 
         <variable
             name="activeColor"

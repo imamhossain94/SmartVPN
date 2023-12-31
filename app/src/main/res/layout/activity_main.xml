@@ -9,11 +9,11 @@
 
         <variable
             name="vm"
-            type="com.newagedevs.vpnthundershield.view.ui.MainViewModel" />
+            type="com.newagedevs.smartvpn.view.ui.MainViewModel" />
 
         <variable
             name="adapter"
-            type="com.newagedevs.vpnthundershield.view.adapter.ServerAdapter" />
+            type="com.newagedevs.smartvpn.view.adapter.ServerAdapter" />
     </data>
 
     <LinearLayout

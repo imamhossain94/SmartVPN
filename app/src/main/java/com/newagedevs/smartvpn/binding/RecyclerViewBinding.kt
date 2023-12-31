@@ -1,4 +1,4 @@
-package com.newagedevs.vpnthundershield.binding
+package com.newagedevs.smartvpn.binding
 
 
 import android.widget.Toast
@@ -7,8 +7,8 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.newagedevs.vpnthundershield.model.Server
-import com.newagedevs.vpnthundershield.view.adapter.ServerAdapter
+import com.newagedevs.smartvpn.model.Server
+import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.whatif.whatIfNotNullAs
 import com.skydoves.whatif.whatIfNotNullOrEmpty
 

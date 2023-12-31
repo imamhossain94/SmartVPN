@@ -1,10 +1,10 @@
-package com.newagedevs.vpnthundershield.view.ui
+package com.newagedevs.smartvpn.view.ui
 
 import androidx.databinding.Bindable
-import com.newagedevs.vpnthundershield.R
-import com.newagedevs.vpnthundershield.base.DisposableViewModel
-import com.newagedevs.vpnthundershield.model.Server
-import com.newagedevs.vpnthundershield.view.adapter.ServerAdapter
+import com.newagedevs.smartvpn.R
+import com.newagedevs.smartvpn.base.DisposableViewModel
+import com.newagedevs.smartvpn.model.Server
+import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.bindables.bindingProperty
 import timber.log.Timber
 
