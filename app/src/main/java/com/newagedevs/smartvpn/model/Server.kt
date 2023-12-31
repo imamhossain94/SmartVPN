@@ -1,4 +1,4 @@
-package com.newagedevs.vpnthundershield.model
+package com.newagedevs.smartvpn.model
 
 data class Server(
     var countryName: String?,

@@ -10,11 +10,11 @@ plugins {
 
 android {
     apply from: '../dependencies.gradle'
-    namespace 'com.newagedevs.vpnthundershield'
+    namespace 'com.newagedevs.smartvpn'
     compileSdk versions.compileSdk
 
     defaultConfig {
-        applicationId "com.newagedevs.vpnthundershield"
+        applicationId "com.newagedevs.smartvpn"
         minSdk versions.minSdk
         targetSdk versions.targetSdk
         versionCode versions.versionCode

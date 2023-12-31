@@ -1,4 +1,4 @@
-package com.newagedevs.vpnthundershield
+package com.newagedevs.smartvpn
 
 import org.junit.Test
 

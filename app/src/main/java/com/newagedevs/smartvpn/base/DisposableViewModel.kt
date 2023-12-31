@@ -1,4 +1,4 @@
-package com.newagedevs.vpnthundershield.base
+package com.newagedevs.smartvpn.base
 
 import com.skydoves.bindables.BindingViewModel
 

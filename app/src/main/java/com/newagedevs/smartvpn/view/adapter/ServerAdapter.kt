@@ -1,10 +1,10 @@
-package com.newagedevs.vpnthundershield.view.adapter
+package com.newagedevs.smartvpn.view.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.newagedevs.vpnthundershield.R
-import com.newagedevs.vpnthundershield.databinding.ItemServerBinding
-import com.newagedevs.vpnthundershield.model.Server
+import com.newagedevs.smartvpn.R
+import com.newagedevs.smartvpn.databinding.ItemServerBinding
+import com.newagedevs.smartvpn.model.Server
 import com.skydoves.bindables.binding
 
 
