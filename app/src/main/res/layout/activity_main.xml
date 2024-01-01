@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:statusBarColor"
-            app:leftIcon="@null"
+            app:leftIcon="@drawable/ic_hamburger_menu"
+            app:rightIcon="@drawable/ic_share"
             app:title="Smart VPN"
             app:titleStyle="bold" />
 
@@ -42,28 +43,27 @@
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_margin="10dp">
-
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:background="@drawable/layout_bg">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_download"/>
-
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="123 MB/s"
                         android:textStyle="normal" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Download"
                         android:textAllCaps="true"
@@ -71,8 +71,6 @@
 
 
                 </LinearLayout>
-
-
             </LinearLayout>
 
             <LinearLayout
@@ -81,28 +79,27 @@
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_margin="10dp">
-
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:background="@drawable/layout_bg">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_upload"/>
-
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:layout_marginStart="10dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="70 MB/s"
                         android:textStyle="normal" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Upload"
                         android:textAllCaps="true"
@@ -110,8 +107,6 @@
 
 
                 </LinearLayout>
-
-
             </LinearLayout>
 
         </LinearLayout>
@@ -119,7 +114,23 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+
+
+            <ImageView
+                android:id="@+id/image_power"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_margin="50dp"
+                android:background="@drawable/layout_circle_bg"
+                android:src="@drawable/ic_power"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
@@ -136,11 +147,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:statusBarColor"
-                app:leftIcon="@drawable/ic_globe"
+                app:leftIcon="@null"
                 app:rightIcon="@drawable/ic_right"
-                app:title="Change Location"
-                app:titleStyle="bold"
-                app:titleGravity="start"/>
+                app:leftTitle=" Change Location"
+                app:leftTitleStyle="bold"/>
 
 
 

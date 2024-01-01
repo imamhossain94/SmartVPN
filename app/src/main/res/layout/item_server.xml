@@ -27,13 +27,12 @@
         android:layout_height="wrap_content"
         android:background="@{server.isConnected ? @color/light_white : @color/white}"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="48dp"
-            android:layout_margin="10dp"
+            android:layout_margin="8dp"
             android:contentDescription="@string/todo"
             android:scaleType="fitCenter"
             android:src="@drawable/flag_japan" />
@@ -66,7 +65,7 @@
         <ImageView
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:layout_margin="10dp"
+            android:layout_marginEnd="15dp"
             android:contentDescription="@string/todo"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_circle"
