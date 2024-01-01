@@ -105,4 +105,5 @@ dependencies {
     implementation 'com.github.getActivity:TitleBar:10.5'
     implementation 'com.github.getActivity:Toaster:12.6'
 
+    implementation 'com.github.skydoves:balloon:1.2.9'
 }
