@@ -70,7 +70,6 @@
             android:contentDescription="@string/todo"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_circle"
-            android:visibility="@{server.isConnected ? View.VISIBLE : View.GONE}"
             app:tint="#ff8c01" />
     </LinearLayout>
 
