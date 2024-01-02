@@ -49,24 +49,35 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_download"/>
+                    android:src="@drawable/ic_download"
+                    app:tint="#ffa873"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginStart="10dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="123 MB/s"
-                        android:textStyle="normal" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="123"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" mbps"
+                            android:textStyle="normal" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Download"
-                        android:textAllCaps="true"
                         android:textStyle="normal" />
 
 
@@ -85,24 +96,35 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_upload"/>
+                    android:src="@drawable/ic_upload"
+                    app:tint="#64c882"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginStart="10dp">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="70 MB/s"
-                        android:textStyle="normal" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="70"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" mbps"
+                            android:textStyle="normal" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Upload"
-                        android:textAllCaps="true"
                         android:textStyle="normal" />
 
 
@@ -117,6 +139,29 @@
             android:layout_weight="1">
 
 
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/image_power"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="IP: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="127.0.0.1"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
             <ImageView
                 android:id="@+id/image_power"
                 android:layout_width="200dp"
@@ -125,40 +170,78 @@
                 android:layout_margin="50dp"
                 android:background="@drawable/layout_circle_bg"
                 android:src="@drawable/ic_power"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dp"
+                android:orientation="vertical"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@+id/textView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_power">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Status: " />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Connected"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1:40:09"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout" />
+            </LinearLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="#dcdcdc" />
-
-        <LinearLayout
+        <com.hjq.bar.TitleBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="?android:statusBarColor">
-
-            <com.hjq.bar.TitleBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:statusBarColor"
-                app:leftIcon="@null"
-                app:rightIcon="@drawable/ic_right"
-                app:leftTitle=" Change Location"
-                app:leftTitleStyle="bold"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="100dp"
+            app:leftIcon="@drawable/ic_globe"
+            app:rightIcon="@drawable/ic_right"
+            app:leftTitle="     Japan"
+            app:leftTitleStyle="bold"
+            android:background="@drawable/layout_bg"/>
 
 
-
-            <include layout="@layout/item_server"/>
-
-
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/disclaimerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/developer_message"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_margin="10dp"/>
 
 
     </LinearLayout>
