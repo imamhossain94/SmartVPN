@@ -58,8 +58,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             .setTextSize(15f)
             .setCornerRadius(4f)
             .setAlpha(0.9f)
-            .setBackgroundColorResource(R.color.white)
-            .setTextColorResource(R.color.black)
+            .setBackgroundColorResource(R.color.black)
+            .setTextColorResource(R.color.white)
             .setText("Click to connect!!")
             .setBalloonAnimation(BalloonAnimation.FADE)
             .setDismissWhenTouchOutside(false)
@@ -91,9 +91,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
         })
 
-        handler.postDelayed({
-            balloon?.showAlignBottom(binding.imagePower)
-        }, 1000)
+//        handler.postDelayed({
+//            balloon?.showAlignBottom(binding.imagePower)
+//        }, 1000)
 
     }
 
