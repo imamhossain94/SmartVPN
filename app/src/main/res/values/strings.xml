@@ -3,4 +3,13 @@
     <string name="todo">TODO</string>
     <string name="connected">Connected</string>
     <string name="developer_message">This app is for educational use. The developer is not responsible for any misuse.</string>
+    <string name="download">Download</string>
+    <string name="mbps">mbps</string>
+    <string name="_0">0</string>
+    <string name="upload">Upload</string>
+    <string name="ip">IP:</string>
+    <string name="_0_0_0_0">0.0.0.0</string>
+    <string name="status">Status:</string>
+    <string name="_0_0_0">0:0:0</string>
+    <string name="country">Country</string>
 </resources>

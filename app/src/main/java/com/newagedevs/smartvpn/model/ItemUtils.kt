@@ -25,6 +25,7 @@ import com.newagedevs.smartvpn.R
 object ItemUtils {
     fun getCustomSamples(context: Context): List<CustomItem> {
         val samples = ArrayList<CustomItem>()
+        samples.add(CustomItem(drawable(context, R.drawable.ic_share), "Share"))
         samples.add(CustomItem(drawable(context, R.drawable.ic_star), "Rate us"))
         samples.add(CustomItem(drawable(context, R.drawable.ic_shopping_cart), "Other app"))
         samples.add(CustomItem(drawable(context, R.drawable.ic_lock), "Privacy policy"))
