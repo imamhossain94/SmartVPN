@@ -2,6 +2,7 @@ package com.newagedevs.smartvpn.view.ui
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -100,6 +101,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCustomItemClick(customItem: CustomItem) {
         this.customListBalloon.dismiss()
         Toast.makeText(applicationContext, customItem.title, Toast.LENGTH_SHORT).show()
+    }
+
+    fun onChangeCountryClicked(view: View) {
+        startActivity(Intent(this, CountryPickerActivity::class.java))
     }
 
 }
