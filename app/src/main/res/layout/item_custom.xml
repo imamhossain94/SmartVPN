@@ -25,10 +25,10 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/item_custom_icon"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"
         android:layout_gravity="center_vertical"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/dp_8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,8 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="10dp"
-        android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textColor="@color/black75"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/item_custom_icon"
         app:layout_constraintEnd_toEndOf="parent"
