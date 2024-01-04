@@ -56,7 +56,6 @@ android {
 }
 
 dependencies {
-
     // android supports
     //noinspection GradleDependency
     implementation "com.google.android.material:material:$versions.materialVersion"

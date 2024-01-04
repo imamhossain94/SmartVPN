@@ -23,53 +23,31 @@
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@{server.isConnected ? @color/light_white : @color/white}"
-        android:gravity="center"
-        android:orientation="horizontal">
+        style="@style/ItemServerLayout"
+        android:clickable="true"
+        android:onClick="onChangeCountryClicked"
+        android:focusable="true">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="48dp"
-            android:layout_margin="8dp"
-            android:contentDescription="@string/todo"
-            android:scaleType="fitCenter"
-            android:src="@drawable/flag_japan" />
+            style="@style/Icon"
+            android:importantForAccessibility="no"
+            android:src="@{server.flagDrawable}" />
 
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="10dp">
+        <LinearLayout style="@style/CountryTitleContainer">
 
             <TextView
-                android:id="@+id/countryTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Japan"
-                android:textAllCaps="true"
-                android:textStyle="normal" />
+                style="@style/CountryTitleText"
+                android:text="@{server.countryName}"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="127.0.0.1"
-                android:textAllCaps="true"
-                android:textStyle="normal" />
-
+                style="@style/CountryTitleIPText"
+                android:text="@{` (` + server.ipAddress + `)`}" />
         </LinearLayout>
 
         <ImageView
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_marginEnd="15dp"
-            android:contentDescription="@string/todo"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_circle"
-            app:tint="#ff8c01" />
+            style="@style/Icon"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_network" />
     </LinearLayout>
 
 

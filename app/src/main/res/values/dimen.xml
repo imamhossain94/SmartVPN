@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="line_size">1px</dimen>
+    <dimen name="button_circle_size">999dp</dimen>
+    <dimen name="dialog_ui_round_size">15dp</dimen>
+
+
+
+
+
+</resources>

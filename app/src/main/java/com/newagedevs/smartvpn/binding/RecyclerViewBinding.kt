@@ -17,8 +17,8 @@ object RecyclerViewBinding {
     @BindingAdapter("adapter")
     fun bindAdapter(view: RecyclerView, baseAdapter: RecyclerView.Adapter<*>) {
         view.adapter = baseAdapter
-        val dividerItemDecoration = DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL)
-        view.addItemDecoration(dividerItemDecoration)
+//        val dividerItemDecoration = DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL)
+//        view.addItemDecoration(dividerItemDecoration)
     }
 
     @JvmStatic

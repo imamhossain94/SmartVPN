@@ -43,7 +43,7 @@
             <LinearLayout
                 style="@style/SpeedInfoLayout"
                 android:layout_weight="1"
-                android:background="@drawable/layout_bg"
+                android:background="@drawable/layout_background"
                 android:gravity="center">
 
                 <ImageView
@@ -75,7 +75,7 @@
             <LinearLayout
                 style="@style/SpeedInfoLayout"
                 android:layout_weight="1"
-                android:background="@drawable/layout_bg"
+                android:background="@drawable/layout_background"
                 android:gravity="center">
 
                 <ImageView
@@ -131,7 +131,6 @@
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:layout_margin="50dp"
-            android:background="@drawable/layout_circle_bg"
             android:foreground="@drawable/ripple_foreground"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_power"
@@ -185,16 +184,25 @@
             <ImageView
                 style="@style/Icon"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_shield_keyhole" />
+                android:src="@drawable/ic_shield_keyhole"
+                app:tint="#BE5B9AFF"/>
 
-            <TextView
-                style="@style/CountryTitleText"
-                android:text="@string/country" />
+            <LinearLayout style="@style/CountryTitleContainer">
+
+                <TextView
+                    style="@style/CountryTitleText"
+                    android:text="@string/country" />
+
+                <TextView
+                    style="@style/CountryTitleIPText"
+                    android:text="@string/ip_0_0_0_0" />
+            </LinearLayout>
 
             <ImageView
                 style="@style/Icon"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_right" />
+                android:src="@drawable/ic_right"
+                app:tint="#BE5B9AFF"/>
         </LinearLayout>
 
         <TextView

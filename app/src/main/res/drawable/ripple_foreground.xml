@@ -4,8 +4,8 @@
         <ripple android:color="?android:attr/colorControlHighlight">
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="#05000000"/>
-                    <stroke android:width="2dp" android:color="#B1BCBE" />
+                    <solid android:color="#15000000"/>
+                    <stroke android:width="0.5dp" android:color="#725B9AFF" />
                     <corners android:radius="10dp"/>
                     <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp" />
                 </shape>
@@ -17,7 +17,7 @@
     <item>
         <shape android:shape="oval">
             <solid android:color="#00000000"/>
-            <stroke android:width="2dp" android:color="#B1BCBE" />
+            <stroke android:width="0.5dp" android:color="#B1BCBE" />
             <corners android:radius="10dp"/>
             <padding android:left="0dp" android:top="0dp" android:right="0dp" android:bottom="0dp" />
         </shape>
