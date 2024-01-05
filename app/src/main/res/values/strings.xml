@@ -14,7 +14,20 @@
     <string name="country">Country</string>
     <string name="ip_0_0_0_0">" (0.0.0.0)"</string>
 
-    <string name="common_confirm">Confirm</string>
-    <string name="common_cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="rate">Rate</string>
+
+    <string name="share">Share</string>
+    <string name="rate_us">Rate us</string>
+    <string name="other_app">Other app</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="source_code">Source code</string>
+    <string name="about">About</string>
+
+    <string name="update_title">About Smart VPN</string>
+    <string name="update_content">Smart VPN</string>
+    <string name="app_info">App Info</string>
+    <string name="update_no">Info</string>
 
 </resources>
