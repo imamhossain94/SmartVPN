@@ -184,8 +184,7 @@
             <ImageView
                 style="@style/Icon"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_shield_keyhole"
-                app:tint="#BE5B9AFF"/>
+                android:src="@drawable/flag_japan" />
 
             <LinearLayout style="@style/CountryTitleContainer">
 

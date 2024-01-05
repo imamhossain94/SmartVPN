@@ -25,14 +25,15 @@ import com.newagedevs.smartvpn.R
 object ItemUtils {
     fun getCustomSamples(context: Context): List<CustomItem> {
         val samples = ArrayList<CustomItem>()
-        samples.add(CustomItem(drawable(context, R.drawable.ic_share), "Share"))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_star), "Rate us"))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_shopping_cart), "Other app"))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_lock), "Privacy policy"))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_source_control), "Source code"))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_alert), "About"))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_share), context.getString(R.string.share)))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_star), context.getString(R.string.rate_us)))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_shopping_cart), context.getString(R.string.other_app)))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_lock), context.getString(R.string.privacy_policy)))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_source_control), context.getString(R.string.source_code)))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_alert), context.getString(R.string.about)))
         return samples
     }
+
 
     private fun drawable(context: Context, @DrawableRes id: Int): Drawable? {
         return ContextCompat.getDrawable(context, id)
