@@ -4,23 +4,18 @@ import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.newagedevs.smartvpn.R
+import com.newagedevs.smartvpn.utils.Utils
 
 
 object ViewBinding {
+
   @JvmStatic
-  @BindingAdapter("loadImage")
-  fun bindLoadImage(view: AppCompatImageView, url: String?) {
+  @BindingAdapter("loadResource")
+  fun bindLoadImage(view: ImageView, src: Int?) {
     Glide.with(view.context)
-      .load(url)
+      .load(src)
       .into(view)
   }
-
-
-  @JvmStatic
-  @BindingAdapter("android:src")
-  fun setImageViewResource(imageView: ImageView, resource: Int) {
-    imageView.setImageResource(resource)
-  }
-
 
 }

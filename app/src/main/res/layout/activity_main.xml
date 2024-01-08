@@ -12,9 +12,6 @@
             name="vm"
             type="com.newagedevs.smartvpn.view.ui.MainViewModel" />
 
-        <variable
-            name="adapter"
-            type="com.newagedevs.smartvpn.view.adapter.ServerAdapter" />
     </data>
 
     <LinearLayout
@@ -57,6 +54,7 @@
                     <LinearLayout style="@style/SpeedValueContainer">
 
                         <TextView
+                            android:id="@+id/tv_server_bytes_in"
                             style="@style/SpeedValue"
                             android:text="@string/_0" />
 
@@ -89,6 +87,7 @@
                     <LinearLayout style="@style/SpeedValueContainer">
 
                         <TextView
+                            android:id="@+id/tv_server_bytes_out"
                             style="@style/SpeedValue"
                             android:text="@string/_0" />
 
@@ -118,6 +117,7 @@
                 android:text="@string/ip" />
 
             <TextView
+                android:id="@+id/tv_server_ip_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_0_0_0_0"
@@ -126,7 +126,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/image_power"
+            android:id="@+id/iv_connect_server_button"
             android:layout_width="@dimen/dp_200"
             android:layout_height="@dimen/dp_200"
             android:layout_gravity="center"
@@ -145,6 +145,14 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/tv_server_status_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/connected"
+                android:textColor="@color/black75"
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
@@ -157,6 +165,7 @@
                     android:text="@string/status" />
 
                 <TextView
+                    android:id="@+id/tv_server_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/connected"
@@ -165,7 +174,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_server_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_0_0_0"
@@ -182,6 +191,7 @@
             android:focusable="true">
 
             <ImageView
+                android:id="@+id/iv_selected_server_flag"
                 style="@style/Icon"
                 android:importantForAccessibility="no"
                 android:src="@drawable/flag_japan" />
@@ -189,10 +199,12 @@
             <LinearLayout style="@style/CountryTitleContainer">
 
                 <TextView
+                    android:id="@+id/tv_selected_server_title_country_name"
                     style="@style/CountryTitleText"
                     android:text="@string/country" />
 
                 <TextView
+                    android:id="@+id/tv_selected_server_titile_ip_address"
                     style="@style/CountryTitleIPText"
                     android:text="@string/ip_0_0_0_0" />
             </LinearLayout>

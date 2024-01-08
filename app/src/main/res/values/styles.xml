@@ -71,8 +71,8 @@
 
 
     <style name="Icon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">@dimen/dp_36</item>
+        <item name="android:layout_height">@dimen/dp_36</item>
         <item name="android:src">@drawable/ic_shield_keyhole</item>
     </style>
 

@@ -105,4 +105,8 @@ dependencies {
     implementation 'com.github.getActivity:Toaster:12.6'
 
     implementation 'com.github.skydoves:balloon:1.2.9'
+
+    implementation "androidx.core:core-splashscreen:1.0.1"
+
+    implementation project(path: ':vpnLib')
 }

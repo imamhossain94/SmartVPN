@@ -15,6 +15,11 @@
         <!-- Customize your theme here. -->
     </style>
 
-
+    <style name="Theme.App.starting" parent="Theme.SplashScreen">
+<!--        <item name="windowSplashScreenBackground">#AC5656</item>-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.VPNThunderShield</item>
+    </style>
 
 </resources>
