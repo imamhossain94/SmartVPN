@@ -6,19 +6,9 @@
 
         <import type="android.view.View" />
 
-        <import type="android.graphics.Color" />
-
         <variable
             name="server"
             type="com.newagedevs.smartvpn.model.Server" />
-
-        <variable
-            name="activeColor"
-            type="String" />
-
-        <variable
-            name="inactiveColor"
-            type="String" />
 
     </data>
 
@@ -31,7 +21,7 @@
         <ImageView
             style="@style/Icon"
             android:importantForAccessibility="no"
-            android:src="@{server.flagDrawable}" />
+            app:loadResource="@{server.flagDrawable}"/>
 
         <LinearLayout style="@style/CountryTitleContainer">
 

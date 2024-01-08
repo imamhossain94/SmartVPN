@@ -1,22 +1,38 @@
 package com.newagedevs.smartvpn.view.ui
 
 
+import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
+import android.net.VpnService
 import android.os.Bundle
+import android.os.RemoteException
 import android.provider.Settings
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ShareCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.BuildConfig
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ActivityMainBinding
+import com.newagedevs.smartvpn.interfaces.ChangeServer
 import com.newagedevs.smartvpn.model.CustomItem
 import com.newagedevs.smartvpn.model.ItemUtils
+import com.newagedevs.smartvpn.model.Server
+import com.newagedevs.smartvpn.utils.CheckInternetConnection
 import com.newagedevs.smartvpn.utils.Constants
+import com.newagedevs.smartvpn.utils.SharedPreference
+import com.newagedevs.smartvpn.utils.Utils
 import com.newagedevs.smartvpn.view.CustomListBalloonFactory
 import com.newagedevs.smartvpn.view.adapter.CustomAdapter
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
@@ -25,26 +41,38 @@ import com.newagedevs.smartvpn.view.dialog.BaseDialog
 import com.newagedevs.smartvpn.view.dialog.MessageDialog
 import com.skydoves.balloon.Balloon
 import com.skydoves.bindables.BindingActivity
+import de.blinkt.openvpn.OpenVpnApi
+import de.blinkt.openvpn.core.OpenVPNService
+import de.blinkt.openvpn.core.OpenVPNThread
+import de.blinkt.openvpn.core.VpnStatus
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
 
-class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main), CustomAdapter.CustomViewHolder.Delegate {
+class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main), CustomAdapter.CustomViewHolder.Delegate, ChangeServer {
 
-    private lateinit var serverAdapter: ServerAdapter
+    private val serverAdapter: ServerAdapter by inject { parametersOf(this)  }
     private val viewModel: MainViewModel by viewModel { parametersOf(serverAdapter) }
 
     private val customAdapter by lazy { CustomAdapter(this) }
     lateinit var customListBalloon: Balloon
 
+    private var server: Server? = null
+    private var connection: CheckInternetConnection? = null
+
+    var vpnStart = false
+    private var preference: SharedPreference? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        serverAdapter = ServerAdapter()
-
         binding {
             vm = viewModel
-            adapter = serverAdapter
         }
 
         customListBalloon = CustomListBalloonFactory().create(this, this)
@@ -62,7 +90,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
 
             override fun onTitleClick(titleBar: TitleBar) {
+                updateCurrentServerIcon(server?.flagDrawable)
 
+                // Stop previous connection
+
+                // Stop previous connection
+                if (vpnStart) {
+                    stopVpn()
+                }
+
+                prepareVpn()
             }
 
             override fun onRightClick(titleBar: TitleBar) {
@@ -87,6 +124,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     }).show()
             }
         })
+
+
+        isServiceRunning()
+        VpnStatus.initLogCache(this.cacheDir)
+
+
+        initializeAll()
+
+        binding.ivConnectServerButton.setOnClickListener {
+            // Vpn is running, user would like to disconnect current connection.
+            if (vpnStart) {
+                confirmDisconnect()
+            } else {
+                prepareVpn()
+            }
+        }
 
     }
 
@@ -145,6 +198,304 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     fun onChangeCountryClicked(view: View) {
         startActivity(Intent(this, CountryPickerActivity::class.java))
+    }
+
+
+
+
+    private fun initializeAll() {
+        preference = SharedPreference(this@MainActivity)
+        server = preference?.server
+
+        // Update current selected server icon
+        updateCurrentServerIcon(server?.flagDrawable)
+        connection = CheckInternetConnection()
+    }
+
+
+    /**
+     * Show show disconnect confirm dialog
+     */
+    fun confirmDisconnect() {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(getString(R.string.connection_close_confirm))
+        builder.setPositiveButton(getString(R.string.yes),
+            DialogInterface.OnClickListener { dialog, id -> stopVpn() })
+        builder.setNegativeButton(getString(R.string.no),
+            DialogInterface.OnClickListener { dialog, id ->
+                // User cancelled the dialog
+            })
+
+        // Create the AlertDialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    /**
+     * Prepare for vpn connect with required permission
+     */
+    private fun prepareVpn() {
+        if (!vpnStart) {
+            if (getInternetStatus()) {
+
+                // Checking permission for network monitor
+                val intent = VpnService.prepare(this)
+                if (intent != null) {
+                    startActivityForResult(intent, 1)
+                } else startVpn() //have already permission
+
+                // Update confection status
+                status("connecting")
+            } else {
+
+                // No internet connection available
+                showToast("you have no internet connection !!")
+            }
+        } else if (stopVpn()) {
+
+            // VPN is stopped, show a Toast message.
+            showToast("Disconnect Successfully")
+        }
+    }
+
+    /**
+     * Stop vpn
+     * @return boolean: VPN status
+     */
+    fun stopVpn(): Boolean {
+        try {
+            OpenVPNThread.stop()
+            status("connect")
+            vpnStart = false
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return false
+    }
+
+    /**
+     * Taking permission for network access
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+
+            //Permission granted, start the VPN
+            startVpn()
+        } else {
+            showToast("Permission Deny !! ")
+        }
+    }
+
+    /**
+     * Internet connection status.
+     */
+    fun getInternetStatus(): Boolean {
+        return connection!!.netCheck(this)
+    }
+
+    /**
+     * Get service status
+     */
+    fun isServiceRunning() {
+        setStatus(OpenVPNService.getStatus())
+    }
+
+    /**
+     * Start the VPN
+     */
+    private fun startVpn() {
+        try {
+            // .ovpn file
+            val conf: InputStream = this.getAssets().open(server?.openVpn!!)
+            val isr = InputStreamReader(conf)
+            val br = BufferedReader(isr)
+            var config = ""
+            var line: String?
+            while (true) {
+                line = br.readLine()
+                if (line == null) break
+                config += line + "\n"
+            }
+            br.readLine()
+            OpenVpnApi.startVpn(
+                this,
+                config,
+                server?.countryName,
+                server?.openVpnUserName,
+                server?.openVpnUserPassword
+            )
+
+            // Update log
+            binding.tvServerStatusLog.setText("Connecting...")
+            vpnStart = true
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: RemoteException) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Status change with corresponding vpn connection status
+     * @param connectionState
+     */
+    fun setStatus(connectionState: String?) {
+        if (connectionState != null) when (connectionState) {
+            "DISCONNECTED" -> {
+                status("connect")
+                vpnStart = false
+                OpenVPNService.setDefaultStatus()
+                binding.tvServerStatusLog.setText("")
+            }
+
+            "CONNECTED" -> {
+                vpnStart = true // it will use after restart this activity
+                status("connected")
+                binding.tvServerStatusLog.setText("")
+            }
+
+            "WAIT" -> binding.tvServerStatusLog.setText("waiting for server connection!!")
+            "AUTH" -> binding.tvServerStatusLog.setText("server authenticating!!")
+            "RECONNECTING" -> {
+                status("connecting")
+                binding.tvServerStatusLog.setText("Reconnecting...")
+            }
+
+            "NONETWORK" -> binding.tvServerStatusLog.setText("No network connection")
+        }
+    }
+
+    /**
+     * Change button background color and text
+     * @param status: VPN current status
+     */
+    fun status(status: String) {
+        if (status == "connect") {
+            binding.tvServerStatus.setText(getString(R.string.connect))
+        } else if (status == "connecting") {
+            binding.tvServerStatus.setText(getString(R.string.connecting))
+        } else if (status == "connected") {
+            binding.tvServerStatus.setText(getString(R.string.disconnect))
+        } else if (status == "tryDifferentServer") {
+//            binding.vpnBtn.setBackgroundResource(R.drawable.button_connected)
+            binding.tvServerStatus.setText("Try Different\nServer")
+        } else if (status == "loading") {
+//            binding.tvServerStatus.setBackgroundResource(R.drawable.button)
+            binding.tvServerStatus.setText("Loading Server..")
+        } else if (status == "invalidDevice") {
+//            binding.tvServerStatus.setBackgroundResource(R.drawable.button_connected)
+            binding.tvServerStatus.setText("Invalid Device")
+        } else if (status == "authenticationCheck") {
+//            binding.tvServerStatus.setBackgroundResource(R.drawable.button_connecting)
+            binding.tvServerStatus.setText("Authentication \n Checking...")
+        }
+    }
+
+    /**
+     * Receive broadcast message
+     */
+    var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            try {
+                setStatus(intent.getStringExtra("state"))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            try {
+                var duration = intent.getStringExtra("duration")
+                var lastPacketReceive = intent.getStringExtra("lastPacketReceive")
+                var byteIn = intent.getStringExtra("byteIn")
+                var byteOut = intent.getStringExtra("byteOut")
+                if (duration == null) duration = "00:00:00"
+                if (lastPacketReceive == null) lastPacketReceive = "0"
+                if (byteIn == null) byteIn = " "
+                if (byteOut == null) byteOut = " "
+                updateConnectionStatus(duration, lastPacketReceive, byteIn, byteOut)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    /**
+     * Update status UI
+     * @param duration: running time
+     * @param lastPacketReceive: last packet receive time
+     * @param byteIn: incoming data
+     * @param byteOut: outgoing data
+     */
+    fun updateConnectionStatus(
+        duration: String,
+        lastPacketReceive: String,
+        byteIn: String,
+        byteOut: String
+    ) {
+        binding.tvServerDuration.setText("Duration: $duration")
+        //binding.lastPacketReceiveTv.setText("Packet Received: $lastPacketReceive second ago")
+        binding.tvServerBytesIn.setText("Bytes In: $byteIn")
+        binding.tvServerBytesOut.setText("Bytes Out: $byteOut")
+    }
+
+    /**
+     * Show toast message
+     * @param message: toast message
+     */
+    fun showToast(message: String?) {
+        Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * VPN server country icon change
+     * @param serverIcon: icon URL
+     */
+    fun updateCurrentServerIcon(serverIcon: Int?) {
+//        Glide.with(this@MainActivity)
+//            .load(serverIcon)
+//            .into<Target<Drawable>>(binding.selectedServerIcon)
+        Glide.with(this@MainActivity)
+            .load(serverIcon)
+            .into(binding.ivSelectedServerFlag)
+    }
+
+    /**
+     * Change server when user select new server
+     * @param server ovpn server details
+     */
+    override fun newServer(server: Server?) {
+        this.server = server
+        updateCurrentServerIcon(server?.flagDrawable)
+
+        // Stop previous connection
+        if (vpnStart) {
+            stopVpn()
+        }
+        prepareVpn()
+    }
+
+    override fun onResume() {
+        LocalBroadcastManager.getInstance(this@MainActivity)
+            .registerReceiver(broadcastReceiver, IntentFilter("connectionState"))
+        if (server == null) {
+            server = preference?.server
+        }
+        super.onResume()
+    }
+
+    override fun onPause() {
+        LocalBroadcastManager.getInstance(this@MainActivity).unregisterReceiver(broadcastReceiver)
+        super.onPause()
+    }
+
+    /**
+     * Save current selected server on local shared preference
+     */
+    override fun onStop() {
+        if (server != null) {
+            preference!!.saveServer(server!!)
+        }
+        super.onStop()
     }
 
 }

@@ -14,4 +14,11 @@
         <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.App.starting" parent="Theme.SplashScreen">
+<!--        <item name="windowSplashScreenBackground">#1e1f22</item>-->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
+        <item name="postSplashScreenTheme">@style/Theme.VPNThunderShield</item>
+    </style>
 </resources>
