@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.newagedevs.smartvpn.model.Server
+import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.whatif.whatIfNotNullAs
 import com.skydoves.whatif.whatIfNotNullOrEmpty
@@ -29,7 +30,7 @@ object RecyclerViewBinding {
 
     @JvmStatic
     @BindingAdapter("adapterServerList")
-    fun bindAdapterServerList(view: RecyclerView, medications: List<Server>?) {
+    fun bindAdapterServerList(view: RecyclerView, medications: List<VpnServer>?) {
         medications.whatIfNotNullOrEmpty { items ->
             view.adapter.whatIfNotNullAs<ServerAdapter> { adapter ->
                 adapter.updateServerList(items)

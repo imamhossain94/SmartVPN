@@ -104,9 +104,14 @@ dependencies {
     implementation 'com.github.getActivity:TitleBar:10.5'
     implementation 'com.github.getActivity:Toaster:12.6'
 
-    implementation 'com.github.skydoves:balloon:1.2.9'
+    implementation 'com.github.skydoves:balloon:1.6.4'
 
     implementation "androidx.core:core-splashscreen:1.0.1"
 
-    implementation project(path: ':vpnLib')
+    implementation 'com.github.nizwar:openvpn_library:5f06771b85'
+
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.2")
+    implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+
+
 }

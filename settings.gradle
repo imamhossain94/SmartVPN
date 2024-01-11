@@ -28,4 +28,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SmartVPN"
 include ':app'
-include ':vpnLib'

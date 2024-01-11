@@ -8,7 +8,7 @@
 
         <variable
             name="server"
-            type="com.newagedevs.smartvpn.model.Server" />
+            type="com.newagedevs.smartvpn.model.VpnServer" />
 
     </data>
 
@@ -21,17 +21,17 @@
         <ImageView
             style="@style/Icon"
             android:importantForAccessibility="no"
-            app:loadResource="@{server.flagDrawable}"/>
+            app:loadResource="@{server}"/>
 
         <LinearLayout style="@style/CountryTitleContainer">
 
             <TextView
                 style="@style/CountryTitleText"
-                android:text="@{server.countryName}"/>
+                android:text="@{server.countryLong}"/>
 
             <TextView
                 style="@style/CountryTitleIPText"
-                android:text="@{` (` + server.ipAddress + `)`}" />
+                android:text="@{` (` + server.ip + `)`}" />
         </LinearLayout>
 
         <ImageView
