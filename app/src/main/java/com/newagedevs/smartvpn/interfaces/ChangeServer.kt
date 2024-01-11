@@ -1,7 +1,7 @@
 package com.newagedevs.smartvpn.interfaces
 
-import com.newagedevs.smartvpn.model.Server
+import com.newagedevs.smartvpn.model.VpnServer
 
 interface ChangeServer {
-    fun newServer(server: Server?)
+    fun newServer(server: VpnServer?)
 }

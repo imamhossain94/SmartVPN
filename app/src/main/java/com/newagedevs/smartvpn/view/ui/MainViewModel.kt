@@ -1,14 +1,21 @@
 package com.newagedevs.smartvpn.view.ui
 
 import androidx.databinding.Bindable
+import androidx.lifecycle.viewModelScope
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.base.DisposableViewModel
 import com.newagedevs.smartvpn.model.Server
-import com.newagedevs.smartvpn.utils.Utils
+import com.newagedevs.smartvpn.network.APIs.Companion.getVPNServers
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.bindables.bindingProperty
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-
+import android.util.Base64
+import com.newagedevs.smartvpn.model.VpnServer
+import com.newagedevs.smartvpn.model.VpnConfig
+import java.nio.charset.StandardCharsets
 
 class MainViewModel constructor(
     serverAdapter: ServerAdapter,
@@ -23,51 +30,38 @@ class MainViewModel constructor(
         private set
 
     @get:Bindable
-    var servers: List<Server>? by bindingProperty(listOf())
+    var servers: List<VpnServer>? by bindingProperty(listOf())
+
+
+    @get:Bindable
+    var selectedServer: VpnServer? by bindingProperty(null)
+        private set
+
+    fun connectToVPN() {
+        selectedServer?.let {
+            val data = Base64.decode(it.openVPNConfigDataBase64, Base64.DEFAULT)
+            val config = String(data, StandardCharsets.UTF_8)
+            val vpnConfig = VpnConfig(
+                country = it.countryLong,
+                username = "vpn",
+                password = "vpn",
+                config = config
+            )
+        }
+    }
+
 
     init {
         Timber.d("injection DashboardViewModel")
 
-        val serverList: ArrayList<Server> = ArrayList()
-
-        serverList.add(
-            Server(
-                "192.168.22.36", "United States", R.drawable.flag_usa,
-                "us.ovpn", "freeopenvpn", "416248023",
-            )
-        )
-
-        serverList.add(
-            Server(
-                "192.168.22.36", "Japan", R.drawable.flag_japan,
-                "japan.ovpn", "vpn", "vpn"
-            )
-        )
-
-        serverList.add(
-            Server(
-                "192.168.22.36", "Sweden", R.drawable.flag_sweden,
-                "sweden.ovpn", "vpn", "vpn"
-            )
-        )
-
-        serverList.add(
-            Server(
-                "192.168.22.36", "Korea", R.drawable.flag_korea,
-                "korea.ovpn", "vpn", "vpn"
-            )
-        )
-
-        serverList.add(
-            Server(
-                "192.168.22.36", "Thailand", R.drawable.flag_thailand,
-                "thailand.ovpn", "vpn", "vpn"
-            )
-        )
-
-        servers = serverList
-        serverAdapter.updateServerList(servers!!)
-
+        viewModelScope.launch(Dispatchers.IO) {
+            servers = getVPNServers()
+            servers?.let {
+                withContext(Dispatchers.Main) {
+                    serverAdapter.updateServerList(it)
+                }
+            }
+        }
     }
 
 }

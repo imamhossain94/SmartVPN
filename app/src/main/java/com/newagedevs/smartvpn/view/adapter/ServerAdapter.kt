@@ -7,13 +7,14 @@ import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ItemServerBinding
 import com.newagedevs.smartvpn.interfaces.ChangeServer
 import com.newagedevs.smartvpn.model.Server
+import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.view.ui.CountryPickerActivity
 import com.skydoves.bindables.binding
 
 
 class ServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapter<ServerAdapter.ServerViewHolder>() {
 
-    private val items = mutableListOf<Server>()
+    private val items = mutableListOf<VpnServer>()
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServerViewHolder {
 
@@ -32,7 +33,7 @@ class ServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapt
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateServerList(servers: List<Server>) {
+    fun updateServerList(servers: List<VpnServer>) {
         items.clear()
         items.addAll(servers)
         notifyDataSetChanged()
@@ -47,7 +48,7 @@ class ServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapt
         }
     }
 
-    fun getServer(index: Int): Server = items[index]
+    fun getServer(index: Int): VpnServer = items[index]
 
     class ServerViewHolder(val binding: ItemServerBinding) :
         RecyclerView.ViewHolder(binding.root)
