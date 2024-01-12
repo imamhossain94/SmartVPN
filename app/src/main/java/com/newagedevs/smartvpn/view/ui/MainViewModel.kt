@@ -1,24 +1,23 @@
 package com.newagedevs.smartvpn.view.ui
 
+import android.util.Base64
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
-import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.base.DisposableViewModel
-import com.newagedevs.smartvpn.model.Server
+import com.newagedevs.smartvpn.model.VpnConfig
+import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.network.APIs.Companion.getVPNServers
+import com.newagedevs.smartvpn.preferences.SharedPrefRepository
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.bindables.bindingProperty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
-import android.util.Base64
-import com.newagedevs.smartvpn.model.VpnServer
-import com.newagedevs.smartvpn.model.VpnConfig
 import java.nio.charset.StandardCharsets
 
 class MainViewModel constructor(
-    serverAdapter: ServerAdapter,
+    private val sharedPref: SharedPrefRepository,
+    private val serverAdapter: ServerAdapter,
 ) : DisposableViewModel() {
 
     @get:Bindable
@@ -35,33 +34,43 @@ class MainViewModel constructor(
 
     @get:Bindable
     var selectedServer: VpnServer? by bindingProperty(null)
-        private set
 
-    fun connectToVPN() {
+    fun connectToVPN(): VpnConfig? {
         selectedServer?.let {
             val data = Base64.decode(it.openVPNConfigDataBase64, Base64.DEFAULT)
             val config = String(data, StandardCharsets.UTF_8)
-            val vpnConfig = VpnConfig(
+
+            return VpnConfig(
                 country = it.countryLong,
                 username = "vpn",
                 password = "vpn",
                 config = config
             )
         }
+        return null
     }
 
-
-    init {
-        Timber.d("injection DashboardViewModel")
-
+    fun fetchVpnServer(onComplete: () -> Unit = { }) {
         viewModelScope.launch(Dispatchers.IO) {
             servers = getVPNServers()
             servers?.let {
                 withContext(Dispatchers.Main) {
                     serverAdapter.updateServerList(it)
+                    //sharedPref.saveVpnServers(it)
                 }
             }
+            onComplete.invoke()
         }
+    }
+
+    init {
+        fetchVpnServer()
+//        val servers = sharedPref.getVpnServers()
+//        if(servers.isNotEmpty()) {
+//            serverAdapter.updateServerList(servers)
+//        } else {
+//            fetchVpnServer()
+//        }
     }
 
 }

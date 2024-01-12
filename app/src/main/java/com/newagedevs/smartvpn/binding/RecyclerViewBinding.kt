@@ -10,12 +10,14 @@ import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.whatif.whatIfNotNullAs
 import com.skydoves.whatif.whatIfNotNullOrEmpty
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator
 
 object RecyclerViewBinding {
     @JvmStatic
     @BindingAdapter("adapter")
     fun bindAdapter(view: RecyclerView, baseAdapter: RecyclerView.Adapter<*>) {
-        view.adapter = baseAdapter
+        view.adapter = baseAdapter//AlphaInAnimationAdapter(baseAdapter)
 //        val dividerItemDecoration = DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL)
 //        view.addItemDecoration(dividerItemDecoration)
     }
@@ -30,10 +32,11 @@ object RecyclerViewBinding {
 
     @JvmStatic
     @BindingAdapter("adapterServerList")
-    fun bindAdapterServerList(view: RecyclerView, medications: List<VpnServer>?) {
-        medications.whatIfNotNullOrEmpty { items ->
+    fun bindAdapterServerList(view: RecyclerView, items: List<VpnServer>?) {
+        //view.itemAnimator = SlideInLeftAnimator()
+        items.whatIfNotNullOrEmpty {
             view.adapter.whatIfNotNullAs<ServerAdapter> { adapter ->
-                adapter.updateServerList(items)
+                adapter.updateServerList(it)
             }
         }
     }

@@ -21,7 +21,7 @@
         <ImageView
             style="@style/Icon"
             android:importantForAccessibility="no"
-            app:loadResource="@{server}"/>
+            app:loadServerFlag="@{server}"/>
 
         <LinearLayout style="@style/CountryTitleContainer">
 
@@ -37,7 +37,7 @@
         <ImageView
             style="@style/Icon"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_network" />
+            app:loadServerPing="@{server}" />
     </LinearLayout>
 
 

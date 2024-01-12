@@ -30,17 +30,23 @@
             app:leftIcon="@drawable/ic_left_2"
             app:title="Select server" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/racecard_list"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:background="#fafafa"
-            android:orientation="vertical"
-            app:adapter="@{adapter}"
-            app:adapterServerList="@{vm.servers}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_server" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                android:background="#fafafa"
+                android:orientation="vertical"
+                app:adapter="@{adapter}"
+                app:adapterServerList="@{vm.servers}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_server" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
