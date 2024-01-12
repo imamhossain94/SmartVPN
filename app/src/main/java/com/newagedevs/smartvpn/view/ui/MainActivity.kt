@@ -1,6 +1,5 @@
 package com.newagedevs.smartvpn.view.ui
 
-
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -19,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ShareCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager.*
+import androidx.multidex.MultiDex
 import androidx.recyclerview.widget.RecyclerView
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
@@ -28,9 +28,8 @@ import com.newagedevs.smartvpn.databinding.ActivityMainBinding
 import com.newagedevs.smartvpn.interfaces.ChangeServer
 import com.newagedevs.smartvpn.model.CustomItem
 import com.newagedevs.smartvpn.model.ItemUtils
-import com.newagedevs.smartvpn.model.Server
 import com.newagedevs.smartvpn.model.VpnServer
-import com.newagedevs.smartvpn.utils.CheckInternetConnection
+import com.newagedevs.smartvpn.preferences.SharedPrefRepository
 import com.newagedevs.smartvpn.utils.Constants
 import com.newagedevs.smartvpn.utils.NotificationUtil
 import com.newagedevs.smartvpn.utils.SharedPreference
@@ -44,6 +43,7 @@ import com.skydoves.balloon.Balloon
 import com.skydoves.bindables.BindingActivity
 import de.blinkt.openvpn.VpnProfile
 import de.blinkt.openvpn.core.ConfigParser
+import de.blinkt.openvpn.core.ConfigParser.ConfigParseError
 import de.blinkt.openvpn.core.OpenVPNService
 import de.blinkt.openvpn.core.ProfileManager
 import de.blinkt.openvpn.core.VPNLaunchHelper
@@ -51,26 +51,22 @@ import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.io.StringReader
+import java.security.AccessController.getContext
 import java.util.Locale
 
 
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main), CustomAdapter.CustomViewHolder.Delegate, ChangeServer {
 
+    private val sharedPrefRepository: SharedPrefRepository by inject { parametersOf(this)  }
     private val serverAdapter: ServerAdapter by inject { parametersOf(this)  }
-    private val viewModel: MainViewModel by viewModel { parametersOf(serverAdapter) }
+    private val viewModel: MainViewModel by viewModel { parametersOf(sharedPrefRepository, serverAdapter) }
 
     private val customAdapter by lazy { CustomAdapter(this) }
     lateinit var customListBalloon: Balloon
 
-    private var server: Server? = null
-    private var connection: CheckInternetConnection? = null
 
-    var vpnStart = false
     private var preference: SharedPreference? = null
 
 
@@ -88,7 +84,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private var bypassPackages: ArrayList<String>? = null
 
-    private val attached = true
+    private var attached = true
 
     private var localJson: JSONObject? = null
 
@@ -154,29 +150,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         binding.ivConnectServerButton.setOnClickListener {
 
+            val server = viewModel.connectToVPN()
 
-            val conf: InputStream = this.assets.open("japan.ovpn")
-            val isr = InputStreamReader(conf)
-            val br = BufferedReader(isr)
-            config = ""
-            var line: String?
-            while (true) {
-                line = br.readLine()
-                if (line == null) break
-                config += line + "\n"
-            }
-            br.readLine()
+            config = server?.config.toString()
+            name = server?.country.toString()
+            username = server?.username.toString()
+            password = server?.password.toString()
 
-            name = "Japan"
-            username = "vpn"
-            password = "vpn"
-            dns1 = ""
-            dns2 = ""
-            bypassPackages = null
             prepareVPN()
 
-            Toast.makeText(this, "Started ${config}", Toast.LENGTH_SHORT).show()
-
+            //Toast.makeText(this, "Started ${config}", Toast.LENGTH_SHORT).show()
         }
 
         getInstance(this).registerReceiver(object : BroadcastReceiver() {
@@ -191,8 +174,25 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     var byteOut = intent.getStringExtra("byteOut")
                     if (duration == null) duration = "00:00:00"
                     if (lastPacketReceive == null) lastPacketReceive = "0"
-                    if (byteIn == null) byteIn = " "
-                    if (byteOut == null) byteOut = " "
+
+//                    byteIn = try{
+//                        byteIn?.split("-")?.first()?.trim() ?: "0"
+//                    } catch (_:Exception) {
+//                        "0"
+//                    }
+//
+//                    byteOut = try{
+//                        byteOut?.split("-")?.first()?.trim() ?: "0"
+//                    } catch (_:Exception) {
+//                        "0"
+//                    }
+
+                    binding.tvServerBytesIn.text = byteIn ?: "0 mbps"
+                    binding.tvServerBytesOut.text = byteOut ?: "0  mbps"
+                    binding.tvServerDuration.text = duration
+
+                    binding.tvServerIpAddress.text = viewModel.selectedServer?.ip
+
                     val jsonObject = JSONObject()
                     jsonObject.put("duration", duration)
                     jsonObject.put("last_packet_receive", lastPacketReceive)
@@ -286,104 +286,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initializeAll() {
         preference = SharedPreference(this@MainActivity)
-        server = preference?.server
-
-//        val call = "start"
-//
-//
-//
-//
-//
-//        when (call) {
-//            "stop" -> {
-//                OpenVPNThread.stop()
-//                setStage("disconnected")
-//            }
-//
-//            //    _listVpn.add(VpnConfig(config: await rootBundle.loadString("assets/vpn/japan.ovpn"), name: "Japan"));
-//            //    _listVpn.add(VpnConfig(config: await rootBundle.loadString("assets/vpn/us.ovpn"), name: "United State"));
-//
-//
-//            "start" -> {
-//                config = call.argument("config")
-//                name = "Japan"
-//                username = call.argument("username")
-//                password = call.argument("password")
-//                if (call.argument("dns1") != null) dns1 = call.argument("dns1")
-//                if (call.argument("dns2") != null) dns2 = call.argument("dns2")
-//                bypassPackages = call.argument("bypass_packages")
-//                prepareVPN()
-//            }
-//
-//            "refresh" -> updateVPNStages()
-//            "refresh_status" -> updateVPNStatus()
-//            "stage" -> OpenVPNService.getStatus()
-//            "kill_switch" -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                val intent = Intent(Settings.ACTION_VPN_SETTINGS)
-//                startActivity(intent)
-//            }
-//        }
 
     }
 
 
-    private fun prepareVPN() {
-        if (isConnected()) {
-            setStage("prepare")
-            try {
-                val configParser = ConfigParser()
-                configParser.parseConfig(StringReader(config))
-                vpnProfile = configParser.convertProfile()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            } catch (configParseError: ConfigParser.ConfigParseError) {
-                configParseError.printStackTrace()
-            }
-            val vpnIntent = VpnService.prepare(this)
-            if (vpnIntent != null) startActivityForResult(vpnIntent, VPN_REQUEST_ID) else startVPN()
-        } else {
-            setStage("nonetwork")
-        }
-    }
 
-    private fun startVPN() {
-        try {
-            setStage("connecting")
-            if (vpnProfile!!.checkProfile(this) != de.blinkt.openvpn.R.string.no_error_found) {
-                throw RemoteException(getString(vpnProfile!!.checkProfile(this)))
-            }
-            vpnProfile!!.mName = name
-            vpnProfile!!.mProfileCreator = packageName
-            vpnProfile!!.mUsername = username
-            vpnProfile!!.mPassword = password
-            vpnProfile!!.mDNS1 = dns1
-            vpnProfile!!.mDNS2 = dns2
-            if (dns1 != null && dns2 != null) {
-                vpnProfile!!.mOverrideDNS = true
-            }
-            if (bypassPackages != null && (bypassPackages?.size ?: 0) > 0) {
-                vpnProfile!!.mAllowedAppsVpn.addAll(bypassPackages!!)
-                vpnProfile!!.mAllowAppVpnBypass = true
-            }
-            ProfileManager.setTemporaryProfile(this, vpnProfile)
-            VPNLaunchHelper.startOpenVpn(vpnProfile, this)
-        } catch (e: RemoteException) {
-            setStage("disconnected")
-            e.printStackTrace()
-        }
-    }
-
-
-    private fun updateVPNStages() {
-        setStage(OpenVPNService.getStatus())
-    }
-
-    private fun updateVPNStatus() {
-        if (attached) {
-            // Success
-            localJson.toString()
-        }
-    }
 
 
     @Suppress("DEPRECATION")
@@ -408,28 +315,38 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
 
     private fun setStage(stage: String) {
+
         if (attached){
             when (stage.uppercase(Locale.getDefault())) {
                 "CONNECTED" -> {
                     //connected
+                    status("connected")
                 }
                 "DISCONNECTED" -> {
                     //disconnected
+                    status("connect")
+                    binding.tvServerStatusLog.setText("")
                 }
                 "WAIT" -> {
                     //wait_connection
+                    binding.tvServerStatusLog.setText("waiting for server connection!!")
                 }
                 "AUTH" -> {
                     //authenticating
+                    binding.tvServerStatusLog.setText("server authenticating!!")
                 }
                 "RECONNECTING" -> {
                     //reconnect
+                    status("connecting")
+                    binding.tvServerStatusLog.setText("Reconnecting...")
                 }
                 "NONETWORK" -> {
                     //no_connection
+                    binding.tvServerStatusLog.setText("No network connection")
                 }
                 "CONNECTING" -> {
                     //connecting
+                    status("connecting")
                 }
                 "PREPARE" -> {
                     //prepare
@@ -441,9 +358,100 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    override fun newServer(server: VpnServer?) {
-        TODO("Not yet implemented")
+    fun status(status: String) {
+        if (status == "connect") {
+            binding.tvServerStatus.setText(getString(R.string.connect))
+        } else if (status == "connecting") {
+            binding.tvServerStatus.setText(getString(R.string.connecting))
+        } else if (status == "connected") {
+            binding.tvServerStatus.setText(getString(R.string.disconnect))
+        } else if (status == "tryDifferentServer") {
+            binding.tvServerStatus.setText("Try Different\nServer")
+        } else if (status == "loading") {
+            binding.tvServerStatus.setText("Loading Server..")
+        } else if (status == "invalidDevice") {
+            binding.tvServerStatus.setText("Invalid Device")
+        } else if (status == "authenticationCheck") {
+            binding.tvServerStatus.setText("Authentication \n Checking...")
+        }
     }
 
+
+
+
+
+    override fun newServer(server: VpnServer?) {
+        viewModel.selectedServer = server
+    }
+
+
+    private fun prepareVPN() {
+        if (isConnected()) {
+            setStage("PREPARE")
+            try {
+                val configParser = ConfigParser()
+                configParser.parseConfig(StringReader(config))
+                vpnProfile = configParser.convertProfile()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (configParseError: ConfigParseError) {
+                configParseError.printStackTrace()
+            }
+            val vpnIntent = VpnService.prepare(this)
+            if (vpnIntent != null) startActivityForResult(vpnIntent, VPN_REQUEST_ID) else startVPN()
+        } else {
+            setStage("NONETWORK")
+        }
+    }
+
+
+    private fun startVPN() {
+        try {
+            setStage("CONNECTING")
+            if (vpnProfile!!.checkProfile(this) != de.blinkt.openvpn.R.string.no_error_found) {
+                throw RemoteException(getString(vpnProfile!!.checkProfile(this)))
+            }
+            vpnProfile!!.mName = name
+            vpnProfile!!.mProfileCreator = packageName
+            vpnProfile!!.mUsername = username
+            vpnProfile!!.mPassword = password
+            vpnProfile!!.mDNS1 = dns1
+            vpnProfile!!.mDNS2 = dns2
+            if (dns1 != null && dns2 != null) {
+                vpnProfile!!.mOverrideDNS = true
+            }
+            if (bypassPackages != null && bypassPackages!!.size > 0) {
+                vpnProfile!!.mAllowedAppsVpn.addAll(bypassPackages!!)
+                vpnProfile!!.mAllowAppVpnBypass = true
+            }
+            ProfileManager.setTemporaryProfile(this, vpnProfile)
+            VPNLaunchHelper.startOpenVpn(vpnProfile, this)
+        } catch (e: RemoteException) {
+            setStage("DISCONNECTED")
+            e.printStackTrace()
+        }
+    }
+
+    private fun updateVPNStages() {
+        setStage(OpenVPNService.getStatus())
+    }
+
+    private fun updateVPNStatus() {
+        if (attached) {
+            // Success
+            localJson.toString()
+        }
+    }
+
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
+        MultiDex.install(this)
+    }
+
+    override fun onDetachedFromWindow() {
+        attached = false
+        super.onDetachedFromWindow()
+    }
 
 }

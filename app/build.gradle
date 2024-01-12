@@ -26,6 +26,7 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        multiDexEnabled true
     }
 
     buildFeatures {
@@ -56,6 +57,10 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':vpnLib')
+    implementation 'androidx.multidex:multidex:2.0.1'
+
     // android supports
     //noinspection GradleDependency
     implementation "com.google.android.material:material:$versions.materialVersion"
@@ -108,10 +113,15 @@ dependencies {
 
     implementation "androidx.core:core-splashscreen:1.0.1"
 
-    implementation 'com.github.nizwar:openvpn_library:5f06771b85'
+//    implementation 'com.github.nizwar:openvpn_library:5f06771b85'
 
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.2")
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+
 
 
 }

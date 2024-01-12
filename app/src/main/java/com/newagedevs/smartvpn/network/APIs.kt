@@ -42,13 +42,12 @@ class APIs {
                             for (j in header.indices) {
                                 tempJson[header[j]] = list[i][j]
                             }
+
                             vpnList.add(VpnServer(tempJson))
                         }
-
-                        println("Test-----------------I ${vpnList.size}")
                     }
 
-                    vpnList
+                    vpnList //.shuffled()
                 }
             }
         }
