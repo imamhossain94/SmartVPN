@@ -26,7 +26,7 @@ class ServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapt
                 val server = items[position]
                 changeServer.newServer(server)
                 (view.context as CountryPickerActivity).finish()
-                notifyDataSetChanged()
+                //notifyDataSetChanged()
             }
         }
 

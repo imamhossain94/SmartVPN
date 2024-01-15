@@ -27,15 +27,15 @@
 
             <TextView
                 style="@style/CountryTitleText"
-                android:text="@{server.countryLong}"/>
+                android:text="@{server.countryLong + ` - ` + server.speed}"/>
 
             <TextView
                 style="@style/CountryTitleIPText"
-                android:text="@{` (` + server.ip + `)`}" />
+                android:text="@{server.ip}" />
         </LinearLayout>
 
         <ImageView
-            style="@style/Icon"
+            style="@style/ActionIcon"
             android:importantForAccessibility="no"
             app:loadServerPing="@{server}" />
     </LinearLayout>

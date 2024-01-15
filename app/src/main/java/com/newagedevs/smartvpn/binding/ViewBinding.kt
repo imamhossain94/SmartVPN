@@ -1,11 +1,14 @@
 package com.newagedevs.smartvpn.binding
 
+import android.view.View
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.extensions.getResource
 import com.newagedevs.smartvpn.model.VpnServer
+import com.skydoves.whatif.whatIfNotNull
 
 
 object ViewBinding {
@@ -51,5 +54,21 @@ object ViewBinding {
         .into(view)
     }
   }
+
+  @JvmStatic
+  @BindingAdapter("startShimmer")
+  fun bindShimmerAnimation(view: ShimmerFrameLayout, value: Boolean?) {
+    value.whatIfNotNull {
+      if (it) {
+        view.visibility = View.VISIBLE
+        view.startShimmer()
+      } else {
+        view.stopShimmer()
+        view.visibility = View.GONE
+      }
+    }
+  }
+  
+  
 
 }
