@@ -15,8 +15,11 @@ import java.nio.charset.Charset
 
 class APIs {
     companion object {
-        suspend fun getVPNServers(): List<VpnServer> {
-            return withContext(Dispatchers.IO) {
+        suspend fun getVPNServers(
+            onFailure: (message: String) -> Unit,
+            onSuccess: suspend (servers: List<VpnServer>) -> Unit
+        ) {
+            try {
                 val vpnList = mutableListOf<VpnServer>()
 
                 val request = Request.Builder()
@@ -27,7 +30,8 @@ class APIs {
 
                 client.newCall(request).execute().use { response ->
                     if (!response.isSuccessful) {
-                        throw IOException("Unexpected code $response")
+                        onFailure("Unexpected code ${response.code}")
+                        return
                     }
 
                     val csvString = response.body!!.string().split("#")[1].replace("*", "").trim()
@@ -47,8 +51,10 @@ class APIs {
                         }
                     }
 
-                    vpnList //.shuffled()
+                    onSuccess(vpnList)
                 }
+            } catch (e: Exception) {
+                onFailure(e.message ?: "Unknown error")
             }
         }
 

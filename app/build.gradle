@@ -113,15 +113,13 @@ dependencies {
 
     implementation "androidx.core:core-splashscreen:1.0.1"
 
-//    implementation 'com.github.nizwar:openvpn_library:5f06771b85'
-
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:1.9.2")
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
     implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     implementation 'com.google.code.gson:gson:2.10.1'
 
-
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
 
 }

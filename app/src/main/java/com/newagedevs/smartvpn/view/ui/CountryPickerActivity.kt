@@ -2,7 +2,6 @@ package com.newagedevs.smartvpn.view.ui
 
 
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.R
@@ -45,6 +44,7 @@ class CountryPickerActivity : BindingActivity<ActivityCountryPickerBinding>(R.la
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
+
 
     }
 

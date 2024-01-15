@@ -29,48 +29,62 @@ class MainViewModel constructor(
         private set
 
     @get:Bindable
-    var servers: List<VpnServer>? by bindingProperty(listOf())
+    var servers: List<VpnServer> by bindingProperty(listOf())
+        private set
 
 
     @get:Bindable
     var selectedServer: VpnServer? by bindingProperty(null)
 
-    fun connectToVPN(): VpnConfig? {
+    @get:Bindable
+    var selectedServerConfig: VpnConfig? by bindingProperty(null)
+        private set
+
+    fun connectToVPN() {
+        if(selectedServer == null) {
+            selectedServerConfig = null
+        }
         selectedServer?.let {
             val data = Base64.decode(it.openVPNConfigDataBase64, Base64.DEFAULT)
             val config = String(data, StandardCharsets.UTF_8)
-
-            return VpnConfig(
+            selectedServerConfig = VpnConfig(
                 country = it.countryLong,
                 username = "vpn",
                 password = "vpn",
                 config = config
             )
         }
-        return null
     }
 
     fun fetchVpnServer(onComplete: () -> Unit = { }) {
+        isLoading = true
         viewModelScope.launch(Dispatchers.IO) {
-            servers = getVPNServers()
-            servers?.let {
-                withContext(Dispatchers.Main) {
-                    serverAdapter.updateServerList(it)
-                    //sharedPref.saveVpnServers(it)
+            getVPNServers(
+                onFailure = {
+                    println("Error: $it")
+                    onComplete.invoke()
+                    isLoading = false
+                },
+                onSuccess = {
+                    servers = it
+                    withContext(Dispatchers.Main) {
+                        serverAdapter.updateServerList(it)
+                        sharedPref.saveVpnServers(it)
+                    }
+                    onComplete.invoke()
+                    isLoading = false
                 }
-            }
-            onComplete.invoke()
+            )
         }
     }
 
     init {
-        fetchVpnServer()
-//        val servers = sharedPref.getVpnServers()
-//        if(servers.isNotEmpty()) {
-//            serverAdapter.updateServerList(servers)
-//        } else {
-//            fetchVpnServer()
-//        }
+        val servers = sharedPref.getVpnServers()
+        if(servers.isNotEmpty()) {
+            serverAdapter.updateServerList(servers)
+        } else {
+            fetchVpnServer()
+        }
     }
 
 }

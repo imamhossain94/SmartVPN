@@ -18,8 +18,6 @@ object RecyclerViewBinding {
     @BindingAdapter("adapter")
     fun bindAdapter(view: RecyclerView, baseAdapter: RecyclerView.Adapter<*>) {
         view.adapter = baseAdapter//AlphaInAnimationAdapter(baseAdapter)
-//        val dividerItemDecoration = DividerItemDecoration(view.context, LinearLayoutManager.VERTICAL)
-//        view.addItemDecoration(dividerItemDecoration)
     }
 
     @JvmStatic
@@ -33,7 +31,6 @@ object RecyclerViewBinding {
     @JvmStatic
     @BindingAdapter("adapterServerList")
     fun bindAdapterServerList(view: RecyclerView, items: List<VpnServer>?) {
-        //view.itemAnimator = SlideInLeftAnimator()
         items.whatIfNotNullOrEmpty {
             view.adapter.whatIfNotNullAs<ServerAdapter> { adapter ->
                 adapter.updateServerList(it)

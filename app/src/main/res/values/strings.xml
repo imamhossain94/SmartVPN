@@ -6,13 +6,16 @@
     <string name="download">Download</string>
     <string name="mbps">" mbps"</string>
     <string name="_0">0</string>
+    <string name="_0_mbps">0 MB/s</string>
     <string name="upload">Upload</string>
     <string name="ip">"IP: "</string>
     <string name="_0_0_0_0">0.0.0.0</string>
     <string name="status">"Status: "</string>
     <string name="_0_0_0">0:0:0</string>
     <string name="country">Country</string>
-    <string name="ip_0_0_0_0">" (0.0.0.0)"</string>
+    <string name="ip_0_0_0_0">"0.0.0.0"</string>
+
+    <string name="change_server_location">"Change server location"</string>
 
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
@@ -42,6 +45,7 @@
     <string name="connection_close_confirm">Would you like to cancel the current VPN Connection?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="_0_0_kb_0_0_b_s">0.0 kB - 0.0 B/s</string>
 
 
 </resources>

@@ -1,6 +1,5 @@
 package com.newagedevs.smartvpn.model
 
-import com.newagedevs.smartvpn.extensions.formatBytes
 import com.newagedevs.smartvpn.extensions.formatSize
 
 data class VpnServer(

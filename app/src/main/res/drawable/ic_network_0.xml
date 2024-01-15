@@ -10,6 +10,6 @@
         android:pathData="M9.5,13L9.5,22" android:strokeColor="#260F0F0F"
         android:strokeLineCap="round" android:strokeLineJoin="round" android:strokeWidth="1"/>
     <path android:fillColor="#00000000"
-        android:pathData="M3.5,17L3.5,22" android:strokeColor="#FF2323"
+        android:pathData="M3.5,17L3.5,22" android:strokeColor="#ffa873"
         android:strokeLineCap="round" android:strokeLineJoin="round" android:strokeWidth="1"/>
 </vector>

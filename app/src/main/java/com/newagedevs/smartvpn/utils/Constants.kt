@@ -21,7 +21,21 @@ class Constants {
         const val vpnServersKey: String = "vpn_servers_key"
 
 
+        // Request Ids
+        const val VPN_REQUEST_ID = 1
 
+
+        object ServerStatus {
+            const val CONNECTED = "CONNECTED"
+            const val DISCONNECTED = "DISCONNECTED"
+            const val WAIT = "WAIT"
+            const val AUTH = "AUTH"
+            const val RECONNECTING = "RECONNECTING"
+            const val NO_NETWORK = "NO_NETWORK"
+            const val CONNECTING = "CONNECTING"
+            const val PREPARE = "PREPARE"
+            const val DENIED = "DENIED"
+        }
 
     }
 
