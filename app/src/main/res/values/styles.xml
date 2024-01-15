@@ -32,7 +32,7 @@
     <style name="SpeedValue">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black75</item>
+        <item name="android:textColor">?attr/titleColor</item>
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
@@ -47,6 +47,7 @@
     <style name="SpeedLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/subtitleColor</item>
         <item name="android:textStyle">normal</item>
     </style>
 
@@ -82,6 +83,7 @@
         <item name="android:layout_width">@dimen/dp_24</item>
         <item name="android:layout_height">@dimen/dp_36</item>
         <item name="android:layout_margin">@dimen/dp_10</item>
+        <item name="android:tint">?attr/iconColor</item>
     </style>
 
     <style name="ActionIcon">
@@ -94,12 +96,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/country</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/black75</item>
+        <item name="android:textColor">?attr/titleColor</item>
     </style>
 
     <style name="CountryTitleIPText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/titleColor</item>
         <item name="android:textStyle">normal</item>
         <item name="android:text">@string/ip_0_0_0_0</item>
     </style>

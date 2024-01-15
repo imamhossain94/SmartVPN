@@ -180,7 +180,24 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     fun onServerInfoClicked(view: View) {
-        Toast.makeText(this, "Server Info", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Server Info Clicked", Toast.LENGTH_SHORT).show()
+        viewModel.fetchIpDetails {
+            this@MainActivity.runOnUiThread {
+                viewModel.currentIPDetails?.let {
+                    AboutDialog.Builder(this@MainActivity)
+                        .setCancelable(true)
+                        .setCanceledOnTouchOutside(true)
+                        .setTitle(it.country)
+                        .setVersionName(it.ip)
+                        .setDescription("Internet Provider: ${it.isp}\n" +
+                                "Location: ${it.city}, ${it.regionName}, ${it.country}\n" +
+                                "Timezone: ${it.timezone}")
+                        .setListener(object : AboutDialog.OnListener {
+                            override fun onClick(dialog: BaseDialog?) { }
+                        }).show()
+                }
+            }
+        }
     }
 
 

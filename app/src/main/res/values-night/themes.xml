@@ -10,13 +10,23 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">#000000</item>
+        <item name="android:statusBarColor">#1c2227</item>
         <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
+        <item name="iconColor">@color/white</item>
+        <item name="titleColor">@color/white</item>
+        <item name="subtitleColor">@color/white80</item>
+        <item name="textColor">@color/white</item>
+        <item name="bgColor">#1c2227</item>
+        <item name="cardBgColor">#29313a</item>
+
+        <item name="dialogBgColor">#29313a</item>
+        <item name="dialogTitleColor">@color/white</item>
+        <item name="dialogSubtitleColor">@color/white</item>
+        <item name="dialogTextColor">@color/white</item>
     </style>
 
     <style name="Theme.App.starting" parent="Theme.SplashScreen">
-<!--        <item name="windowSplashScreenBackground">#1e1f22</item>-->
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app</item>
         <item name="windowSplashScreenAnimationDuration">300</item>
         <item name="postSplashScreenTheme">@style/Theme.VPNThunderShield</item>

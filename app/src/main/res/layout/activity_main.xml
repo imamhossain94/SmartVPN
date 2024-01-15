@@ -5,13 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
             name="vm"
             type="com.newagedevs.smartvpn.view.ui.MainViewModel" />
-
     </data>
 
     <LinearLayout
@@ -19,6 +16,7 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:background="?attr/bgColor"
         tools:context=".view.ui.MainActivity">
 
         <com.hjq.bar.TitleBar
@@ -28,7 +26,11 @@
             android:background="?android:statusBarColor"
             app:leftIcon="@drawable/ic_hamburger_menu"
             app:rightIcon="@drawable/ic_globe"
-            app:title="Smart VPN" />
+            app:leftIconTint="?attr/iconColor"
+            app:rightIconTint="?attr/iconColor"
+            app:titleColor="?attr/titleColor"
+            app:title="Smart VPN"
+            app:lineVisible="false"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,6 +118,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:textColor="?attr/titleColor"
                 android:text="@string/ip" />
 
             <TextView
@@ -123,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/_0_0_0_0"
-                android:textColor="@color/black75"
+                android:textColor="?attr/textColor"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -152,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/connected"
-                android:textColor="@color/black75"
+                android:textColor="?attr/textColor"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -164,6 +167,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:textColor="?attr/titleColor"
                     android:text="@string/status" />
 
                 <TextView
@@ -171,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/connected"
-                    android:textColor="@color/black75"
+                    android:textColor="?attr/textColor"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -179,6 +183,7 @@
                 android:id="@+id/tv_server_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="?attr/textColor"
                 android:text="@string/_0_0_0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"

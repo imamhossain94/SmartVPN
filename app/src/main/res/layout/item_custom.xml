@@ -21,7 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground">
+    android:background="@color/transparent">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/item_custom_icon"
@@ -29,6 +29,7 @@
         android:layout_height="@dimen/dp_24"
         android:layout_gravity="center_vertical"
         android:layout_margin="@dimen/dp_8"
+        android:tint="?attr/iconColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="10dp"
-        android:textColor="@color/black75"
+        android:textColor="?attr/subtitleColor"
         app:layout_constraintBottom_toBottomOf="@id/item_custom_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
