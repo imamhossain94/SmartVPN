@@ -66,10 +66,10 @@ class APIs {
                     url.readText(Charset.defaultCharset())
                 }
                 val data = JSONObject(res)
-                Timber.d(data.toString())
+                println(data.toString())
                 ipDetails = IPDetails.fromJson(data)
             } catch (e: Exception) {
-                Timber.d("\ngetIPDetailsE: $e")
+                println("\ngetIPDetailsE: $e")
             }
             return ipDetails
         }

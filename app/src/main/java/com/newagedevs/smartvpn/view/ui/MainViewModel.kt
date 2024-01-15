@@ -4,8 +4,10 @@ import android.util.Base64
 import androidx.databinding.Bindable
 import androidx.lifecycle.viewModelScope
 import com.newagedevs.smartvpn.base.DisposableViewModel
+import com.newagedevs.smartvpn.model.IPDetails
 import com.newagedevs.smartvpn.model.VpnConfig
 import com.newagedevs.smartvpn.model.VpnServer
+import com.newagedevs.smartvpn.network.APIs.Companion.getIPDetails
 import com.newagedevs.smartvpn.network.APIs.Companion.getVPNServers
 import com.newagedevs.smartvpn.preferences.SharedPrefRepository
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
@@ -38,6 +40,10 @@ class MainViewModel constructor(
 
     @get:Bindable
     var selectedServerConfig: VpnConfig? by bindingProperty(null)
+        private set
+
+    @get:Bindable
+    var currentIPDetails: IPDetails? by bindingProperty(null)
         private set
 
     fun connectToVPN() {
@@ -75,6 +81,13 @@ class MainViewModel constructor(
                     isLoading = false
                 }
             )
+        }
+    }
+
+    fun fetchIpDetails(onComplete: () -> Unit = { }) {
+        viewModelScope.launch(Dispatchers.IO) {
+            currentIPDetails = getIPDetails()
+            onComplete.invoke()
         }
     }
 

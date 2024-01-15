@@ -5,11 +5,9 @@
 
     <data>
         <import type="android.view.View" />
-
         <variable
             name="vm"
             type="com.newagedevs.smartvpn.view.ui.MainViewModel" />
-
         <variable
             name="adapter"
             type="com.newagedevs.smartvpn.view.adapter.ServerAdapter" />
@@ -20,6 +18,7 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:background="?attr/bgColor"
         tools:context=".view.ui.MainActivity">
 
         <com.hjq.bar.TitleBar
@@ -28,7 +27,11 @@
             android:layout_height="wrap_content"
             android:background="?android:statusBarColor"
             app:leftIcon="@drawable/ic_left_2"
-            app:title="Select server" />
+            app:title="Select server"
+            app:leftIconTint="?attr/iconColor"
+            app:rightIconTint="?attr/iconColor"
+            app:titleColor="?attr/titleColor"
+            app:lineVisible="false"/>
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/shimmer"
@@ -78,7 +81,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:background="#fafafa"
                 android:orientation="vertical"
                 app:adapter="@{adapter}"
                 app:adapterServerList="@{vm.servers}"

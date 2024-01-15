@@ -27,27 +27,33 @@ import com.skydoves.balloon.BalloonSizeSpec
 class CustomListBalloonFactory : Balloon.Factory() {
 
   override fun create(context: Context, lifecycle: LifecycleOwner?): Balloon {
-    return Balloon.Builder(context)
+    val balloonBuilder = Balloon.Builder(context)
       .setLayout(R.layout.layout_custom_list)
       .setWidth(BalloonSizeSpec.WRAP)
       .setHeight(BalloonSizeSpec.WRAP)
       .setArrowOrientation(ArrowOrientation.TOP)
-//      .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
       .setArrowPosition(0.15f)
       .setArrowSize(10)
       .setTextSize(12f)
-      .setCornerRadius(6f)
+      .setCornerRadius(10f)
       .setMarginRight(12)
       .setElevation(6)
-      .setBackgroundColorResource(R.color.white)
       .setBalloonAnimation(BalloonAnimation.FADE)
       .setIsVisibleOverlay(true)
-//      .setOverlayColorResource(R.color.overlay)
       .setOverlayPadding(12.5f)
       .setDismissWhenShowAgain(true)
       .setDismissWhenTouchOutside(true)
       .setDismissWhenOverlayClicked(false)
       .setLifecycleOwner(lifecycle)
-      .build()
+
+    // Check the theme and set the background color accordingly
+    val theme = context.theme
+    val typedArray = theme.obtainStyledAttributes(intArrayOf(R.attr.cardBgColor))
+    val backgroundColor = typedArray.getColor(0, 0)
+    typedArray.recycle()
+
+    balloonBuilder.setBackgroundColor(backgroundColor)
+
+    return balloonBuilder.build()
   }
 }

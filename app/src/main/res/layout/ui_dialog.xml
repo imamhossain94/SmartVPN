@@ -5,7 +5,7 @@
     android:layout_width="@dimen/dp_240"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="?attr/dialogBgColor"
     app:cardCornerRadius="@dimen/dialog_ui_round_size"
     app:cardElevation="0px"
     tools:context=".view.dialog.CommonDialog">
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textColor="#333333"
+            android:textColor="?attr/textColor"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold"
             tools:text="标题" />
