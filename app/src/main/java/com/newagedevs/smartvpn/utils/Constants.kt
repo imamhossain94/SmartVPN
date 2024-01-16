@@ -18,7 +18,9 @@ class Constants {
         const val clickCountKey = "clickCount"
         const val openCountKey = "openCount"
         const val isConnectedKey = "isConnected"
-        const val vpnServersKey: String = "vpn_servers_key"
+        const val vpnServersKey = "vpn_servers_key"
+
+        const val selectedVpnServersKey: String = "selected_vpn_servers_key"
 
 
         // Request Ids

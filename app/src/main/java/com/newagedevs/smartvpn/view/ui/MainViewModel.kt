@@ -18,7 +18,7 @@ import kotlinx.coroutines.withContext
 import java.nio.charset.StandardCharsets
 
 class MainViewModel constructor(
-    private val sharedPref: SharedPrefRepository,
+    val sharedPref: SharedPrefRepository,
     private val serverAdapter: ServerAdapter,
 ) : DisposableViewModel() {
 
@@ -95,7 +95,7 @@ class MainViewModel constructor(
     init {
         val servers = sharedPref.getVpnServers()
         if(servers.isNotEmpty()) {
-            selectedServer = servers.first()
+            selectedServer = sharedPref.getSelectedVpnServer() ?: servers.first()
             serverAdapter.updateServerList(servers)
         } else {
             fetchVpnServer()

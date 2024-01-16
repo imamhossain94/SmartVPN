@@ -360,6 +360,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun newServer(server: VpnServer?) {
         viewModel.selectedServer = server
+        server?.let { viewModel.sharedPref.saveSelectedVpnServer(it) }
     }
 
     private fun setStage(stage: String) {
