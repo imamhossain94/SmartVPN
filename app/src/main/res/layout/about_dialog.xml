@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/dp_m_1"
-                app:srcCompat="@drawable/top_bg_light" />
+                app:srcCompat="@drawable/top_bg" />
 
             <LinearLayout
                 android:layout_width="match_parent"
