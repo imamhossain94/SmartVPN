@@ -41,6 +41,7 @@ import com.skydoves.bindables.BindingActivity
 import de.blinkt.openvpn.VpnProfile
 import de.blinkt.openvpn.core.ConfigParser
 import de.blinkt.openvpn.core.ConfigParser.ConfigParseError
+import de.blinkt.openvpn.core.OpenVPNService
 import de.blinkt.openvpn.core.OpenVPNThread
 import de.blinkt.openvpn.core.ProfileManager
 import de.blinkt.openvpn.core.VPNLaunchHelper
@@ -159,8 +160,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 MessageDialog.Builder(this@MainActivity)
                     .setTitle("Cancel VPN Connection")
                     .setMessage("Are you sure you want to cancel the current VPN connection?")
-                    .setConfirm(getString(R.string.yes))
-                    .setCancel(getString(R.string.no))
+                    .setConfirm(getString(R.string.confirm))
+                    .setCancel(getString(R.string.cancel))
                     .setListener(object : MessageDialog.OnListener {
                         override fun onConfirm(dialog: BaseDialog?) {
                             stopVpn()
@@ -168,11 +169,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                         override fun onCancel(dialog: BaseDialog?) {  }
                     }).show()
             }else {
-                viewModel.connectToVPN()
-                prepareVPN()
+                viewModel.selectedServer?.let {
+                    viewModel.connectToVPN()
+                    prepareVPN()
+                }
             }
 
         }
+
+        setStage(OpenVPNService.getStatus())
     }
 
     fun onChangeServerClicked(view: View) {
