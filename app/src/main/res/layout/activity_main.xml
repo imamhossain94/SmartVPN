@@ -216,7 +216,7 @@
                     android:id="@+id/tv_selected_server_titile_ip_address"
                     style="@style/CountryTitleIPText"
                     android:text="@{vm.selectedServer != null ? vm.selectedServer.ip : @string/ip_0_0_0_0}"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
             </LinearLayout>
 
             <ImageView
@@ -226,7 +226,7 @@
                 android:clickable="true"
                 android:onClick="onServerInfoClicked"
                 android:focusable="true"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
         </LinearLayout>
 
         <TextView
