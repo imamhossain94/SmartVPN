@@ -7,7 +7,7 @@
         <clip-path android:pathData="M0,0h1024v1024h-1024z" />
         <path
             android:fillAlpha="0.933333"
-            android:fillColor="#FAFAFA"
+            android:fillColor="?attr/windowSplashScreenAnimatedIconBackgroundColor"
             android:pathData="M0,-4609h1024v10241h-1024z" />
         <path
             android:fillAlpha="0.5"
