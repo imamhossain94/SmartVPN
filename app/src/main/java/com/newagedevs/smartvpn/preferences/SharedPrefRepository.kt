@@ -8,6 +8,7 @@ import com.newagedevs.smartvpn.utils.Constants
 import com.newagedevs.smartvpn.utils.Constants.Companion.clickCountKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.isConnectedKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.openCountKey
+import com.newagedevs.smartvpn.utils.Constants.Companion.selectedVpnServersKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.sharedPrefName
 import com.newagedevs.smartvpn.utils.Constants.Companion.vpnServersKey
 
@@ -122,6 +123,24 @@ class SharedPrefRepository(private val context: Context) {
             gson.fromJson(json, type)
         } else {
             emptyList()
+        }
+    }
+
+    fun saveSelectedVpnServer(vpnServer: VpnServer) {
+        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        editor.putString(selectedVpnServersKey, gson.toJson(vpnServer))
+        editor.apply()
+    }
+
+    fun getSelectedVpnServer(): VpnServer? {
+        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
+        val json = sharedPref.getString(selectedVpnServersKey, null)
+        return if (json != null) {
+            val type = object : TypeToken<VpnServer>() {}.type
+            gson.fromJson(json, type)
+        } else {
+            null
         }
     }
 
