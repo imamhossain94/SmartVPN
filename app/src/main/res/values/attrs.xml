@@ -14,5 +14,19 @@
     <attr name="dialogTitleColor" format="color" />
     <attr name="dialogSubtitleColor" format="color" />
     <attr name="dialogTextColor" format="color" />
+    <attr name="dialogLineColor" format="color" />
+
+    <!--  Power button colors  -->
+    <attr name="powerConnectedBtnStrokeColor" format="color" />
+    <attr name="powerConnectedBtnBgColor" format="color" />
+    <attr name="powerConnectedBtnIcColor" format="color" />
+
+    <attr name="powerNotConnectedBtnStrokeColor" format="color" />
+    <attr name="powerNotConnectedBtnBgColor" format="color" />
+    <attr name="powerNotConnectedBtnIcColor" format="color" />
+
+    <attr name="powerConnectingBtnStrokeColor" format="color" />
+    <attr name="powerConnectingBtnBgColor" format="color" />
+    <attr name="powerConnectingBtnIcColor" format="color" />
 
 </resources>

@@ -73,6 +73,7 @@ class MainViewModel constructor(
                 },
                 onSuccess = {
                     servers = it
+                    selectedServer = it.first()
                     withContext(Dispatchers.Main) {
                         serverAdapter.updateServerList(it)
                         sharedPref.saveVpnServers(it)
@@ -94,6 +95,7 @@ class MainViewModel constructor(
     init {
         val servers = sharedPref.getVpnServers()
         if(servers.isNotEmpty()) {
+            selectedServer = servers.first()
             serverAdapter.updateServerList(servers)
         } else {
             fetchVpnServer()

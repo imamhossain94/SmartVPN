@@ -24,6 +24,19 @@
         <item name="dialogTitleColor">@color/white</item>
         <item name="dialogSubtitleColor">@color/white</item>
         <item name="dialogTextColor">@color/white</item>
+        <item name="dialogLineColor">#373737</item>
+
+        <item name="powerConnectedBtnStrokeColor">#8000C853</item>
+        <item name="powerConnectedBtnBgColor">#81000000</item>
+        <item name="powerConnectedBtnIcColor">#2E7D32</item>
+
+        <item name="powerNotConnectedBtnStrokeColor">#802962FF</item>
+        <item name="powerNotConnectedBtnBgColor">#81000000</item>
+        <item name="powerNotConnectedBtnIcColor">#2962FF</item>
+
+        <item name="powerConnectingBtnStrokeColor">#80FF6D00</item>
+        <item name="powerConnectingBtnBgColor">#81000000</item>
+        <item name="powerConnectingBtnIcColor">#FF6D00</item>
     </style>
 
     <style name="Theme.App.starting" parent="Theme.SplashScreen">
