@@ -185,24 +185,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     fun onServerInfoClicked(view: View) {
-        Toast.makeText(this, "Server Info Clicked", Toast.LENGTH_SHORT).show()
-        viewModel.fetchIpDetails {
-            this@MainActivity.runOnUiThread {
-                viewModel.currentIPDetails?.let {
-                    AboutDialog.Builder(this@MainActivity)
-                        .setCancelable(true)
-                        .setCanceledOnTouchOutside(true)
-                        .setTitle(it.country)
-                        .setVersionName(it.ip)
-                        .setDescription("Internet Provider: ${it.isp}\n" +
-                                "Location: ${it.city}, ${it.regionName}, ${it.country}\n" +
-                                "Timezone: ${it.timezone}")
-                        .setListener(object : AboutDialog.OnListener {
-                            override fun onClick(dialog: BaseDialog?) { }
-                        }).show()
-                }
-            }
-        }
+        startActivity(Intent(this@MainActivity, NetworkInfoActivity::class.java))
     }
 
 
@@ -318,19 +301,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.sourceCodeUrl)))
             }
             getString(R.string.about) -> {
-                AboutDialog.Builder(this@MainActivity)
-                    .setCancelable(true)
-                    .setCanceledOnTouchOutside(true)
-                    .setTitle("About ${getString(R.string.app_name)}")
-                    .setVersionName(BuildConfig.VERSION_NAME)
-                    .setDescription("Enhances your online privacy and security with an ultra-fast connection, providing continuous safeguarding for your digital experience.")
-                    .setListener(object : AboutDialog.OnListener {
-                        override fun onClick(dialog: BaseDialog?) {
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                            intent.setData(Uri.parse("package:$packageName"))
-                            startActivity(intent)
-                        }
-                    }).show()
+                startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+//                AboutDialog.Builder(this@MainActivity)
+//                    .setCancelable(true)
+//                    .setCanceledOnTouchOutside(true)
+//                    .setTitle("About ${getString(R.string.app_name)}")
+//                    .setVersionName(BuildConfig.VERSION_NAME)
+//                    .setDescription("Enhances your online privacy and security with an ultra-fast connection, providing continuous safeguarding for your digital experience.")
+//                    .setListener(object : AboutDialog.OnListener {
+//                        override fun onClick(dialog: BaseDialog?) {
+//                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//                            intent.setData(Uri.parse("package:$packageName"))
+//                            startActivity(intent)
+//                        }
+//                    }).show()
             }
         }
     }

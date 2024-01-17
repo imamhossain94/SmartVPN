@@ -46,6 +46,8 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="_0_0_kb_0_0_b_s">0.0 kB - 0.0 B/s</string>
+    <string name="copyright_2023_8211_2024">Copyright © 2023 – 2024</string>
+    <string name="app_description">Enhances your online privacy and security with an ultra-fast connection, providing continuous safeguarding for your digital experience.</string>
 
 
 </resources>

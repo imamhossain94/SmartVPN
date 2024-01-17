@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:background="?android:statusBarColor"
             app:leftIcon="@drawable/ic_left_2"
-            app:title="Select server"
+            app:title="Select Server"
             app:leftIconTint="?attr/iconColor"
             app:rightIconTint="?attr/iconColor"
             app:titleColor="?attr/titleColor"
