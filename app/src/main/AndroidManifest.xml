@@ -45,6 +45,13 @@
             android:name=".view.ui.CountryPickerActivity"
             android:exported="true"/>
 
+        <activity
+            android:name=".view.ui.NetworkInfoActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".view.ui.AboutActivity"
+            android:exported="true"/>
 
         <activity
             android:name="de.blinkt.openvpn.DisconnectVPNActivity"
