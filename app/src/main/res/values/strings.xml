@@ -49,5 +49,18 @@
     <string name="copyright_2023_8211_2024">Copyright © 2023 – 2024</string>
     <string name="app_description">Enhances your online privacy and security with an ultra-fast connection, providing continuous safeguarding for your digital experience.</string>
 
+    <string-array name="ranges">
+        <item>16</item>
+        <item>25</item>
+        <item>40</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="rangeColors">
+        <item>#E7202B</item>
+        <item>#E86F21</item>
+        <item>#E8E721</item>
+        <item>#1BCA21</item>
+    </string-array>
 
 </resources>

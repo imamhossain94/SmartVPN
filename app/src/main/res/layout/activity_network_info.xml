@@ -31,6 +31,30 @@
             app:titleColor="?attr/titleColor"
             app:lineVisible="false"/>
 
+    <LinearLayout
+        style="@style/SelectedCountryLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10"
+        android:background="@drawable/ripple_background"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_1">
+
+        <com.newagedevs.smartvpn.view.GaugeView
+            android:id="@+id/mGaugeView"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:background="#ffffff"
+            app:showOuterShadow="false"
+            app:showOuterRim="false"
+            app:showInnerRim="false"
+            app:needleWidth="0.010"
+            app:needleHeight="0.40"
+            app:scaleStartValue="0"
+            app:scaleEndValue="100"/>
+
+    </LinearLayout>
 
         <LinearLayout
             style="@style/SelectedCountryLayout"
@@ -39,7 +63,8 @@
             android:layout_margin="@dimen/dp_10"
             android:background="@drawable/ripple_background"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/dp_1">
 
             <com.newagedevs.smartvpn.view.SettingBar
                 android:id="@+id/ip_address"
