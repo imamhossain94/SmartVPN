@@ -4,8 +4,8 @@
 4
 5    <uses-sdk
 6        android:minSdkVersion="16"
-6-->E:\AndroidProjects\00Test\SmartVPN\vpnLib\src\main\AndroidManifest.xml
+6-->D:\Projects\AndroidProjects\SmartVPN\vpnLib\src\main\AndroidManifest.xml
 7        android:targetSdkVersion="33" />
-7-->E:\AndroidProjects\00Test\SmartVPN\vpnLib\src\main\AndroidManifest.xml
+7-->D:\Projects\AndroidProjects\SmartVPN\vpnLib\src\main\AndroidManifest.xml
 8
 9</manifest>

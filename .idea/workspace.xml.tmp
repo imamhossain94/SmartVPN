@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+    <layouts>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/about_dialog.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_about.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_country_picker.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_network_info.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_server.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/message_dialog.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/shimmer_layout.xml">
+        <config>
+          <theme>@style/Theme.VPNThunderShield</theme>
+        </config>
+      </layout>
+    </layouts>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2b6ab447-9c43-497f-b014-1756192c8b48" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/newagedevs/smartvpn/view/SettingBar.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/newagedevs/smartvpn/view/SettingBar.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_network_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_network_info.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_menu_archive.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_menu_archive.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_menu_copy_holo_light.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_menu_copy_holo_light.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_menu_log.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_menu_log.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_quick.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_quick.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn_empty_halo.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn_empty_halo.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn_offline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn_offline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn_outline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_ic_stat_vpn_outline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_vpn_item_settings.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-hdpi-v4_vpn_item_settings.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_menu_archive.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_menu_archive.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_menu_copy_holo_light.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_menu_copy_holo_light.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_menu_log.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_menu_log.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_quick.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_quick.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn_empty_halo.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn_empty_halo.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn_offline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn_offline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn_outline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_ic_stat_vpn_outline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_vpn_item_settings.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-mdpi-v4_vpn_item_settings.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_menu_archive.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_menu_archive.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_menu_copy_holo_light.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_menu_copy_holo_light.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_menu_log.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_menu_log.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_quick.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_quick.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn_empty_halo.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn_empty_halo.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn_offline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn_offline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn_outline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_ic_stat_vpn_outline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_vpn_item_settings.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xhdpi-v4_vpn_item_settings.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_menu_copy_holo_light.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_menu_copy_holo_light.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_menu_log.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_menu_log.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_quick.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_quick.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn_empty_halo.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn_empty_halo.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn_offline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn_offline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn_outline.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable-xxhdpi-v4_ic_stat_vpn_outline.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable_ic_notification.png.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/drawable_ic_notification.png.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_api_confirm.xml.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_api_confirm.xml.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_import_as_config.xml.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_import_as_config.xml.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_launchvpn.xml.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_launchvpn.xml.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_userpass.xml.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/layout_userpass.xml.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/xml_app_restrictions.xml.flat" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/compiled_local_resources/debug/out/xml_app_restrictions.xml.flat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/incremental/debug/packageDebugResources/compile-file-map.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/incremental/debug/packageDebugResources/merger.xml" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/incremental/debug/packageDebugResources/merger.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vpnLib/build/outputs/logs/manifest-merger-debug-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/vpnLib/build/outputs/logs/manifest-merger-debug-report.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[R58M41WTLWX]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="SmartVPN" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="SmartVPN" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="SmartVPN" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="SmartVPN" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="resourceFile" />
+        <option value="layoutResourceFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2aJCZCsKvrr1P4tVcOxS0Ee51SO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "android-custom-viewD:/Projects/AndroidProjects/SmartVPN/app/src/main/java/com/newagedevs/smartvpn/view/SettingBar.kt_SELECTED": "SettingBar",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/Projects/AndroidProjects/SmartVPN/app/src/main/res/drawable",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\AndroidProjects\SmartVPN\app\src\main\res\drawable" />
+      <recent name="D:\Projects\AndroidProjects\SmartVPN\app\src\main\java\com\newagedevs\smartvpn" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.newagedevs.smartvpn.utils" />
+      <recent name="com.newagedevs.smartvpn.model" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
+      <module name="SmartVPN.app.main" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="CLEAR_APP_STORAGE" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Hybrid>
+      <Java>
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Java>
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b6ab447-9c43-497f-b014-1756192c8b48" name="Changes" comment="" />
+      <created>1704027347930</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1704027347930</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
