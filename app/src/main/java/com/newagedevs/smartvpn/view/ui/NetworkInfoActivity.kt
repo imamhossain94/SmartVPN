@@ -13,6 +13,7 @@ import com.newagedevs.smartvpn.view.dialog.AboutDialog
 import com.newagedevs.smartvpn.view.dialog.BaseDialog
 import com.skydoves.bindables.BindingActivity
 import org.koin.android.viewmodel.ext.android.viewModel
+import kotlin.random.Random
 
 
 class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout.activity_network_info) {
@@ -35,6 +36,8 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
 
             }
         })
+
+        binding.mGaugeView.setTargetValue(Random.nextInt(100).toFloat())
 
         viewModel.fetchIpDetails {
             this@NetworkInfoActivity.runOnUiThread {

@@ -198,15 +198,15 @@ class SettingBar @JvmOverloads constructor(
             val drawable = StateListDrawable()
             drawable.addState(
                 intArrayOf(android.R.attr.state_pressed),
-                ColorDrawable(ContextCompat.getColor(getContext(), R.color.black5))
+                ColorDrawable(ContextCompat.getColor(getContext(), R.color.transparent))
             )
             drawable.addState(
                 intArrayOf(android.R.attr.state_selected),
-                ColorDrawable(ContextCompat.getColor(getContext(), R.color.black5))
+                ColorDrawable(ContextCompat.getColor(getContext(), R.color.transparent))
             )
             drawable.addState(
                 intArrayOf(android.R.attr.state_focused),
-                ColorDrawable(ContextCompat.getColor(getContext(), R.color.black5))
+                ColorDrawable(ContextCompat.getColor(getContext(), R.color.transparent))
             )
             drawable.addState(
                 intArrayOf(),
