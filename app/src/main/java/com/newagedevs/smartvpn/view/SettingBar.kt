@@ -210,7 +210,7 @@ class SettingBar @JvmOverloads constructor(
             )
             drawable.addState(
                 intArrayOf(),
-                ColorDrawable(ContextCompat.getColor(getContext(), R.color.white))
+                ColorDrawable(ContextCompat.getColor(getContext(), R.color.transparent))
             )
             background = drawable
 
