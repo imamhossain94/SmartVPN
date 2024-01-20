@@ -16,7 +16,7 @@
         <!-- Customize your theme here. -->
         <item name="iconColor">@color/black</item>
         <item name="titleColor">@color/black</item>
-        <item name="subtitleColor">@color/black80</item>
+        <item name="subtitleColor">@color/black75</item>
         <item name="textColor">@color/black</item>
         <item name="bgColor">#f2f2f7</item>
         <item name="cardBgColor">@color/white</item>

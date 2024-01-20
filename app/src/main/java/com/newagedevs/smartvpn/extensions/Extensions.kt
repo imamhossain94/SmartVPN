@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.newagedevs.smartvpn.R
 import java.lang.Exception
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 
 fun formatSize(v: Long): String {
@@ -25,4 +27,20 @@ fun Context.isNetworkConnected(): Boolean {
     }
 }
 
+
+fun Int.round(value: Double): Double {
+    require(this >= 0)
+    var bd: BigDecimal = try {
+        BigDecimal(value)
+    } catch (ex: Exception) {
+        return 0.0
+    }
+    bd = bd.setScale(this, RoundingMode.HALF_UP)
+    return bd.toDouble()
+}
+
+fun Double.round(places: Int): Double {
+    require(places >= 0)
+    return toBigDecimal().setScale(places, RoundingMode.HALF_UP).toDouble()
+}
 
