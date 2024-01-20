@@ -1,5 +1,7 @@
 package com.newagedevs.smartvpn.utils
 
+import java.net.URL
+
 class Constants {
     companion object {
         val feedbackMail = arrayOf("imamagun94@gmail.com")
@@ -38,6 +40,9 @@ class Constants {
             const val PREPARE = "PREPARE"
             const val DENIED = "DENIED"
         }
+
+        val speedTestClientURL = URL("https://www.speedtest.net/speedtest-config.php")
+        val speedTestServerURL = URL("https://www.speedtest.net/speedtest-servers-static.php")
 
     }
 
