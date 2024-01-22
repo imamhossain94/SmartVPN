@@ -94,7 +94,7 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
         val defaultMbps = "0 MB/s"
         val defaultMs = "0.0 ms"
 
-        binding.bestServer.setRightText("---")
+        binding.bestServer.setRightText("---ed")
         binding.ping.setRightText(defaultMs)
         binding.downloadSpeed.setRightText(defaultMbps)
         binding.uploadSpeed.setRightText(defaultMbps)
