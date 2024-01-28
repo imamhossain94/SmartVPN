@@ -65,7 +65,7 @@
                         style="@style/ButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Test"
+                        android:text="@string/start_test"
                         android:layout_marginTop="-25dp"/>
                 </LinearLayout>
 
@@ -92,7 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:bar_leftText="Download Speed"
-                        app:bar_rightText="@string/_0_mbps"
+                        app:bar_rightText="---"
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
@@ -101,7 +101,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:bar_leftText="Upload Speed"
-                        app:bar_rightText="@string/_0_mbps"
+                        app:bar_rightText="---"
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
@@ -110,7 +110,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:bar_leftText="Ping"
-                        app:bar_rightText="0.0 ms"
+                        app:bar_rightText="---"
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"
                         app:bar_lineVisible="false"/>
@@ -131,7 +131,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:bar_leftText="IP Address"
-                        app:bar_rightText="@string/_0_0_0_0"
+                        app:bar_rightText="---"
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 

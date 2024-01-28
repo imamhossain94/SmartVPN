@@ -10,6 +10,7 @@ import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.network.APIs.Companion.getIPDetails
 import com.newagedevs.smartvpn.network.APIs.Companion.getVPNServers
 import com.newagedevs.smartvpn.preferences.SharedPrefRepository
+import com.newagedevs.smartvpn.view.adapter.FavoriteServerAdapter
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.bindables.bindingProperty
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,7 @@ import java.nio.charset.StandardCharsets
 class MainViewModel constructor(
     val sharedPref: SharedPrefRepository,
     private val serverAdapter: ServerAdapter,
+    private val favoriteServerAdapter: FavoriteServerAdapter,
 ) : DisposableViewModel() {
 
     @get:Bindable
@@ -34,6 +36,9 @@ class MainViewModel constructor(
     var servers: List<VpnServer> by bindingProperty(listOf())
         private set
 
+    @get:Bindable
+    var favoriteServers: List<VpnServer> by bindingProperty(listOf())
+        private set
 
     @get:Bindable
     var selectedServer: VpnServer? by bindingProperty(null)
@@ -92,6 +97,11 @@ class MainViewModel constructor(
         }
     }
 
+    fun refreshFavoriteServerList() {
+        favoriteServers = sharedPref.getFavoriteVpnServers()
+        favoriteServerAdapter.updateServerList(favoriteServers)
+    }
+
     init {
         val servers = sharedPref.getVpnServers()
         if(servers.isNotEmpty()) {
@@ -100,6 +110,7 @@ class MainViewModel constructor(
         } else {
             fetchVpnServer()
         }
+        refreshFavoriteServerList()
     }
 
 }
