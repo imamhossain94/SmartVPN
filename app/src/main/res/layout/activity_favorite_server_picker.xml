@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="vm"
+            type="com.newagedevs.smartvpn.view.ui.MainViewModel" />
+        <variable
+            name="adapter"
+            type="com.newagedevs.smartvpn.view.adapter.FavoriteServerAdapter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="?attr/bgColor"
+        tools:context=".view.ui.MainActivity">
+
+        <com.hjq.bar.TitleBar
+            android:id="@+id/tb_main_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:statusBarColor"
+            app:leftIcon="@drawable/ic_left_2"
+            app:title="Favorite Server"
+            app:leftIconTint="?attr/iconColor"
+            app:rightIconTint="?attr/iconColor"
+            app:titleColor="?attr/titleColor"
+            app:lineVisible="false"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            app:adapter="@{adapter}"
+            app:favoriteServerList="@{vm.servers}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_server" />
+
+    </LinearLayout>
+
+</layout>

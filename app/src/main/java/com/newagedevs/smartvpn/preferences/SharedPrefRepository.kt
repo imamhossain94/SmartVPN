@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken
 import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.utils.Constants
 import com.newagedevs.smartvpn.utils.Constants.Companion.clickCountKey
+import com.newagedevs.smartvpn.utils.Constants.Companion.favoriteVpnServersKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.isConnectedKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.openCountKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.selectedVpnServersKey
@@ -141,6 +142,41 @@ class SharedPrefRepository(private val context: Context) {
             gson.fromJson(json, type)
         } else {
             null
+        }
+    }
+
+    // Favorites
+    fun addToFavoriteVpnServers(vpnServer: VpnServer) {
+        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        val vpnServers = getFavoriteVpnServers().toMutableList()
+        vpnServers.add(vpnServer)
+        editor.putString(favoriteVpnServersKey, gson.toJson(vpnServers))
+        editor.apply()
+    }
+
+    fun removeFromFavoriteVpnServers(vpnServer: VpnServer) {
+        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+        val vpnServers = getFavoriteVpnServers().toMutableList()
+        vpnServers.remove(vpnServer)
+        editor.putString(favoriteVpnServersKey, gson.toJson(vpnServers))
+        editor.apply()
+    }
+
+    fun isFavoriteVpnServer(vpnServer: VpnServer): Boolean {
+        val vpnServers = getFavoriteVpnServers()
+        return vpnServers.contains(vpnServer)
+    }
+
+    fun getFavoriteVpnServers(): List<VpnServer> {
+        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
+        val json = sharedPref.getString(favoriteVpnServersKey, null)
+        return if (json != null) {
+            val type = object : TypeToken<List<VpnServer>>() {}.type
+            gson.fromJson(json, type)
+        } else {
+            emptyList()
         }
     }
 

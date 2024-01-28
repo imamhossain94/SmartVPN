@@ -2,6 +2,7 @@ package com.newagedevs.smartvpn.view.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.R
@@ -55,21 +56,6 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
                     binding.postalCode.setRightText(it.zip)
                     binding.timezone.setRightText(it.timezone)
 
-//                    AboutDialog.Builder(this@NetworkInfoActivity)
-//                        .setCancelable(true)
-//                        .setCanceledOnTouchOutside(true)
-//                        .setTitle(it.country)
-//                        .setVersionName(it.ip)
-//                        .setDescription("Internet Provider: ${it.isp}\n" +
-//                                "Location: ${it.city}, ${it.regionName}, ${it.country}\n" +
-//                                "Timezone: ${it.timezone}")
-//                        .setListener(object : AboutDialog.OnListener {
-//                            override fun onClick(dialog: BaseDialog?) { }
-//                        }).show()
-
-
-
-
                 }
             }
         }
@@ -81,20 +67,12 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
 
     }
 
-
-
-
-
-
-
-
-
-
     private fun networkSpeedTest() {
-        val defaultMbps = "0 MB/s"
-        val defaultMs = "0.0 ms"
+        val defaultMbps = "---"
+        val defaultMs = "---"
 
-        binding.bestServer.setRightText("---ed")
+        binding.speedTestButton.text = "Test Running"
+        binding.bestServer.setRightText("---")
         binding.ping.setRightText(defaultMs)
         binding.downloadSpeed.setRightText(defaultMbps)
         binding.uploadSpeed.setRightText(defaultMbps)
@@ -197,6 +175,8 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
                             binding.gaugeView.setTargetValue(0f)
                             binding.uploadSpeed.setRightText(String.format("%s Mbps", uploadTest.finalUploadRate.round(2)))
                         }
+                        binding.speedTestButton.text = "Start Test"
+                        Toast.makeText(this@NetworkInfoActivity, "Speed test completed", Toast.LENGTH_SHORT).show()
                     } else {
                         binding.gaugeView.setTargetValue(uploadTest.instantUploadRate.toFloat())
                         binding.uploadSpeed.setRightText(String.format("%s Mbps", uploadTest.instantUploadRate.round(2)))
@@ -233,19 +213,5 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

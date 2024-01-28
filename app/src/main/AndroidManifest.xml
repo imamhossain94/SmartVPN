@@ -42,7 +42,11 @@
         </activity>
 
         <activity
-            android:name=".view.ui.CountryPickerActivity"
+            android:name=".view.ui.ServerPickerActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".view.ui.FavoriteServerPickerActivity"
             android:exported="true"/>
 
         <activity

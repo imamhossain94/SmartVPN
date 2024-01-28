@@ -26,10 +26,9 @@ object ItemUtils {
     fun getCustomSamples(context: Context): List<CustomItem> {
         val samples = ArrayList<CustomItem>()
         samples.add(CustomItem(drawable(context, R.drawable.ic_share), context.getString(R.string.share)))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_info), context.getString(R.string.network_info)))
+        samples.add(CustomItem(drawable(context, R.drawable.ic_heart_outlined), context.getString(R.string.favorite_server)))
         samples.add(CustomItem(drawable(context, R.drawable.ic_star), context.getString(R.string.rate_us)))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_shopping_cart), context.getString(R.string.other_app)))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_lock), context.getString(R.string.privacy_policy)))
-        samples.add(CustomItem(drawable(context, R.drawable.ic_source_control), context.getString(R.string.source_code)))
         samples.add(CustomItem(drawable(context, R.drawable.ic_alert), context.getString(R.string.about)))
         return samples
     }

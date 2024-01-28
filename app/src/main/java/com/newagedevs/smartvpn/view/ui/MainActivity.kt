@@ -8,8 +8,8 @@ import android.net.Uri
 import android.net.VpnService
 import android.os.Bundle
 import android.os.RemoteException
-import android.provider.Settings
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ShareCompat
@@ -18,7 +18,6 @@ import androidx.multidex.MultiDex
 import androidx.recyclerview.widget.RecyclerView
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
-import com.newagedevs.smartvpn.BuildConfig
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ActivityMainBinding
 import com.newagedevs.smartvpn.extensions.isNetworkConnected
@@ -32,12 +31,13 @@ import com.newagedevs.smartvpn.utils.Constants.Companion.ServerStatus
 import com.newagedevs.smartvpn.utils.Constants.Companion.VPN_REQUEST_ID
 import com.newagedevs.smartvpn.view.CustomListBalloonFactory
 import com.newagedevs.smartvpn.view.adapter.CustomAdapter
+import com.newagedevs.smartvpn.view.adapter.FavoriteServerAdapter
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
-import com.newagedevs.smartvpn.view.dialog.AboutDialog
 import com.newagedevs.smartvpn.view.dialog.BaseDialog
 import com.newagedevs.smartvpn.view.dialog.MessageDialog
 import com.skydoves.balloon.Balloon
 import com.skydoves.bindables.BindingActivity
+import com.skydoves.whatif.whatIf
 import de.blinkt.openvpn.VpnProfile
 import de.blinkt.openvpn.core.ConfigParser
 import de.blinkt.openvpn.core.ConfigParser.ConfigParseError
@@ -64,7 +64,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private val sharedPrefRepository: SharedPrefRepository by inject { parametersOf(this)  }
     private val serverAdapter: ServerAdapter by inject { parametersOf(this)  }
-    private val viewModel: MainViewModel by viewModel { parametersOf(sharedPrefRepository, serverAdapter) }
+    private val favoriteServerAdapter: FavoriteServerAdapter by inject { parametersOf(this)  }
+    private val viewModel: MainViewModel by viewModel { parametersOf(sharedPrefRepository, serverAdapter, favoriteServerAdapter) }
 
     private val customAdapter by lazy { CustomAdapter(this) }
 
@@ -98,13 +99,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                         .setListener(object : MessageDialog.OnListener {
                             override fun onConfirm(dialog: BaseDialog?) {
                                 if(stopVpn()){
-                                    startActivity(Intent(this@MainActivity, CountryPickerActivity::class.java))
+                                    startActivity(Intent(this@MainActivity, ServerPickerActivity::class.java))
                                 }
                             }
                             override fun onCancel(dialog: BaseDialog?) {  }
                         }).show()
                 }else {
-                    startActivity(Intent(this@MainActivity, CountryPickerActivity::class.java))
+                    startActivity(Intent(this@MainActivity, ServerPickerActivity::class.java))
                 }
             }
         })
@@ -178,14 +179,30 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
 
         setStage(OpenVPNService.getStatus())
+
+        viewModel.selectedServer?.let {
+            if (viewModel.sharedPref.isFavoriteVpnServer(it)) {
+                binding.favoriteServerIvIcon.setImageResource(R.drawable.ic_heart_field)
+            } else {
+                binding.favoriteServerIvIcon.setImageResource(R.drawable.ic_heart_outlined)
+            }
+        }
     }
 
     fun onChangeServerClicked(view: View) {
         Toast.makeText(this, "Change Server", Toast.LENGTH_SHORT).show()
     }
 
-    fun onServerInfoClicked(view: View) {
-        startActivity(Intent(this@MainActivity, NetworkInfoActivity::class.java))
+    fun onFavServerClicked(view: View) {
+        viewModel.selectedServer?.let {
+            if (viewModel.sharedPref.isFavoriteVpnServer(it)) {
+                viewModel.sharedPref.removeFromFavoriteVpnServers(it)
+                (view as ImageView).setImageResource(R.drawable.ic_heart_outlined)
+            } else {
+                viewModel.sharedPref.addToFavoriteVpnServers(it)
+                (view as ImageView).setImageResource(R.drawable.ic_heart_field)
+            }
+        }
     }
 
 
@@ -271,6 +288,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCustomItemClick(customItem: CustomItem) {
         this.customListBalloon.dismiss()
         when (customItem.title) {
+            getString(R.string.network_info) -> {
+                startActivity(Intent(this@MainActivity, NetworkInfoActivity::class.java))
+            }
+            getString(R.string.favorite_server) -> {
+                startActivity(Intent(this@MainActivity, FavoriteServerPickerActivity::class.java))
+            }
             getString(R.string.share) -> {
                 ShareCompat.IntentBuilder(this@MainActivity)
                     .setType("text/plain")
@@ -290,15 +313,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                         }
                         override fun onCancel(dialog: BaseDialog?) {  }
                     }).show()
-            }
-            getString(R.string.other_app) -> {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.publisherName)))
-            }
-            getString(R.string.privacy_policy) -> {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.privacyPolicyUrl)))
-            }
-            getString(R.string.source_code) -> {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(Constants.sourceCodeUrl)))
             }
             getString(R.string.about) -> {
                 startActivity(Intent(this@MainActivity, AboutActivity::class.java))
@@ -344,7 +358,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun newServer(server: VpnServer?) {
         viewModel.selectedServer = server
-        server?.let { viewModel.sharedPref.saveSelectedVpnServer(it) }
+        server?.let {
+            if (viewModel.sharedPref.isFavoriteVpnServer(it)) {
+                binding.favoriteServerIvIcon.setImageResource(R.drawable.ic_heart_field)
+            } else {
+                binding.favoriteServerIvIcon.setImageResource(R.drawable.ic_heart_outlined)
+            }
+            viewModel.sharedPref.saveSelectedVpnServer(it)
+        }
     }
 
     private fun setStage(stage: String) {

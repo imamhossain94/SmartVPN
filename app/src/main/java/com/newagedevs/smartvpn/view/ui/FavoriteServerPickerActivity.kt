@@ -5,16 +5,16 @@ import android.os.Bundle
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.R
-import com.newagedevs.smartvpn.databinding.ActivityCountryPickerBinding
-import com.newagedevs.smartvpn.view.adapter.ServerAdapter
+import com.newagedevs.smartvpn.databinding.ActivityFavoriteServerPickerBinding
+import com.newagedevs.smartvpn.view.adapter.FavoriteServerAdapter
 import com.skydoves.bindables.BindingActivity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class CountryPickerActivity : BindingActivity<ActivityCountryPickerBinding>(R.layout.activity_country_picker) {
+class FavoriteServerPickerActivity : BindingActivity<ActivityFavoriteServerPickerBinding>(R.layout.activity_favorite_server_picker) {
 
-    private val serverAdapter: ServerAdapter by inject()
+    private val favoriteServerAdapter: FavoriteServerAdapter by inject()
     private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class CountryPickerActivity : BindingActivity<ActivityCountryPickerBinding>(R.la
 
         binding {
             vm = viewModel
-            adapter = serverAdapter
+            adapter = favoriteServerAdapter
         }
 
         binding.tbMainBar.setOnTitleBarListener(object : OnTitleBarListener {
@@ -39,13 +39,7 @@ class CountryPickerActivity : BindingActivity<ActivityCountryPickerBinding>(R.la
             }
         })
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.fetchVpnServer {
-                binding.swipeRefreshLayout.isRefreshing = false
-            }
-        }
-
-
+        viewModel.refreshFavoriteServerList()
     }
 
 }

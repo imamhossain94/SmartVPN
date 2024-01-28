@@ -156,7 +156,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/connected"
                 android:textColor="?attr/textColor"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -220,11 +221,12 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/favorite_server_iv_icon"
                 style="@style/HomeActionIcon"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_info"
+                android:src="@drawable/ic_heart_outlined"
                 android:clickable="true"
-                android:onClick="onServerInfoClicked"
+                android:onClick="onFavServerClicked"
                 android:focusable="true"
                 android:visibility="visible"/>
         </LinearLayout>

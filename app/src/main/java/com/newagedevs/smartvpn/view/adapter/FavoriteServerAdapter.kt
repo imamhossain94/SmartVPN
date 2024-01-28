@@ -7,11 +7,12 @@ import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ItemServerBinding
 import com.newagedevs.smartvpn.interfaces.ChangeServer
 import com.newagedevs.smartvpn.model.VpnServer
+import com.newagedevs.smartvpn.view.ui.FavoriteServerPickerActivity
 import com.newagedevs.smartvpn.view.ui.ServerPickerActivity
 import com.skydoves.bindables.binding
 
 
-class ServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapter<ServerAdapter.ServerViewHolder>() {
+class FavoriteServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapter<FavoriteServerAdapter.ServerViewHolder>() {
 
     private val items = mutableListOf<VpnServer>()
     @SuppressLint("NotifyDataSetChanged")
@@ -24,7 +25,7 @@ class ServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapt
                 val position = adapterPosition.takeIf { it != RecyclerView.NO_POSITION } ?: return@setOnClickListener
                 val server = items[position]
                 changeServer.newServer(server)
-                (view.context as ServerPickerActivity).finish()
+                (view.context as FavoriteServerPickerActivity).finish()
                 //notifyDataSetChanged()
             }
         }
