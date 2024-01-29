@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package com.newagedevs.smartvpn.model
+package com.newagedevs.smartvpn.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.newagedevs.smartvpn.R
+import com.newagedevs.smartvpn.model.CustomItem
 
 object ItemUtils {
     fun getCustomSamples(context: Context): List<CustomItem> {

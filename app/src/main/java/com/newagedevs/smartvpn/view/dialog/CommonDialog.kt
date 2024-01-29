@@ -5,7 +5,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import com.newagedevs.smartvpn.action.AnimAction
+import com.newagedevs.smartvpn.interfaces.action.AnimAction
 import com.newagedevs.smartvpn.R
 
 /**

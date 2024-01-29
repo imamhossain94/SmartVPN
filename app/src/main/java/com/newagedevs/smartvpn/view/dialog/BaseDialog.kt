@@ -16,7 +16,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.newagedevs.smartvpn.R
-import com.newagedevs.smartvpn.action.*
+import com.newagedevs.smartvpn.interfaces.action.ActivityAction
+import com.newagedevs.smartvpn.interfaces.action.AnimAction
+import com.newagedevs.smartvpn.interfaces.action.ClickAction
+import com.newagedevs.smartvpn.interfaces.action.HandlerAction
+import com.newagedevs.smartvpn.interfaces.action.KeyboardAction
+import com.newagedevs.smartvpn.interfaces.action.ResourcesAction
 import java.lang.ref.SoftReference
 import java.util.*
 

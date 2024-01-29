@@ -1,4 +1,4 @@
-package com.newagedevs.smartvpn.view
+package com.newagedevs.smartvpn.view.customview
 
 import android.content.Context
 import android.content.res.TypedArray

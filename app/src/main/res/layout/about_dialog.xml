@@ -33,7 +33,7 @@
                 android:layout_marginBottom="@dimen/dp_5"
                 android:orientation="vertical">
 
-                <com.newagedevs.smartvpn.view.SmartTextView
+                <com.newagedevs.smartvpn.view.customview.SmartTextView
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                     android:textStyle="bold"
                     android:text="@string/update_title"/>
 
-                <com.newagedevs.smartvpn.view.SmartTextView
+                <com.newagedevs.smartvpn.view.customview.SmartTextView
                     android:id="@+id/tv_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

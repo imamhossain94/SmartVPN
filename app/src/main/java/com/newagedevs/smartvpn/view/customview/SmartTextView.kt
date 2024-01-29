@@ -1,4 +1,4 @@
-package com.newagedevs.smartvpn.view
+package com.newagedevs.smartvpn.view.customview
 
 import android.content.*
 import android.graphics.drawable.Drawable

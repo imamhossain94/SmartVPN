@@ -23,7 +23,7 @@ import com.newagedevs.smartvpn.databinding.ActivityMainBinding
 import com.newagedevs.smartvpn.extensions.isNetworkConnected
 import com.newagedevs.smartvpn.interfaces.ChangeServer
 import com.newagedevs.smartvpn.model.CustomItem
-import com.newagedevs.smartvpn.model.ItemUtils
+import com.newagedevs.smartvpn.utils.ItemUtils
 import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.preferences.SharedPrefRepository
 import com.newagedevs.smartvpn.utils.Constants
@@ -37,7 +37,6 @@ import com.newagedevs.smartvpn.view.dialog.BaseDialog
 import com.newagedevs.smartvpn.view.dialog.MessageDialog
 import com.skydoves.balloon.Balloon
 import com.skydoves.bindables.BindingActivity
-import com.skydoves.whatif.whatIf
 import de.blinkt.openvpn.VpnProfile
 import de.blinkt.openvpn.core.ConfigParser
 import de.blinkt.openvpn.core.ConfigParser.ConfigParseError

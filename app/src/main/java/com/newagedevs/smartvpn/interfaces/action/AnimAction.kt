@@ -1,4 +1,4 @@
-package com.newagedevs.smartvpn.action
+package com.newagedevs.smartvpn.interfaces.action
 
 import com.newagedevs.smartvpn.R
 

@@ -5,7 +5,7 @@ import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.TextView
 import com.newagedevs.smartvpn.R
-import com.newagedevs.smartvpn.action.AnimAction
+import com.newagedevs.smartvpn.interfaces.action.AnimAction
 import com.newagedevs.smartvpn.aop.SingleClick
 
 /**
