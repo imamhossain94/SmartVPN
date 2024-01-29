@@ -47,7 +47,7 @@
                     android:orientation="vertical"
                     android:padding="@dimen/dp_10">
 
-                    <com.newagedevs.smartvpn.view.GaugeView
+                    <com.newagedevs.smartvpn.view.customview.GaugeView
                         android:id="@+id/gauge_view"
                         android:layout_width="@dimen/dp_200"
                         android:layout_height="@dimen/dp_200"
@@ -78,7 +78,7 @@
                     android:orientation="vertical"
                     android:padding="@dimen/dp_1">
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/best_server"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/download_speed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/upload_speed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/ping"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
                     android:orientation="vertical"
                     android:padding="@dimen/dp_1">
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/ip_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/internet_provider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/postal_code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
                         app:bar_leftTextColor="?attr/titleColor"
                         app:bar_rightTextColor="?attr/subtitleColor"/>
 
-                    <com.newagedevs.smartvpn.view.SettingBar
+                    <com.newagedevs.smartvpn.view.customview.SettingBar
                         android:id="@+id/timezone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
