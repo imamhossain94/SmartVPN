@@ -14,7 +14,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
         android:orientation="vertical"
         android:background="?attr/bgColor"
         tools:context=".view.ui.MainActivity">
@@ -32,211 +31,223 @@
             app:title="Smart VPN"
             app:lineVisible="false"/>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <!-- Download Layout -->
             <LinearLayout
-                style="@style/SpeedInfoLayout"
-                android:layout_weight="1"
-                android:background="@drawable/layout_background"
-                android:gravity="center">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
-                <ImageView
-                    style="@style/SpeedIcon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_download"
-                    app:tint="#ffa873" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                <LinearLayout style="@style/SpeedTextContainer">
+                    <!-- Download Layout -->
+                    <LinearLayout
+                        style="@style/SpeedInfoLayout"
+                        android:layout_weight="1"
+                        android:background="@drawable/layout_background"
+                        android:gravity="center">
 
-                    <LinearLayout style="@style/SpeedValueContainer">
+                        <ImageView
+                            style="@style/SpeedIcon"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_download"
+                            app:tint="#ffa873" />
 
-                        <TextView
-                            android:id="@+id/tv_server_bytes_in"
-                            style="@style/SpeedValue"
-                            android:text="@string/_0_0_kb_0_0_b_s" />
+                        <LinearLayout style="@style/SpeedTextContainer">
 
-                        <TextView
-                            android:visibility="gone"
-                            style="@style/SpeedUnit"
-                            android:text="@string/mbps" />
+                            <LinearLayout style="@style/SpeedValueContainer">
+
+                                <TextView
+                                    android:id="@+id/tv_server_bytes_in"
+                                    style="@style/SpeedValue"
+                                    android:text="@string/_0_0_kb_0_0_b_s" />
+
+                                <TextView
+                                    android:visibility="gone"
+                                    style="@style/SpeedUnit"
+                                    android:text="@string/mbps" />
+                            </LinearLayout>
+
+                            <TextView
+                                style="@style/SpeedLabel"
+                                android:text="@string/download" />
+                        </LinearLayout>
                     </LinearLayout>
 
-                    <TextView
-                        style="@style/SpeedLabel"
-                        android:text="@string/download" />
-                </LinearLayout>
-            </LinearLayout>
+                    <!-- Upload Layout -->
+                    <LinearLayout
+                        style="@style/SpeedInfoLayout"
+                        android:layout_weight="1"
+                        android:background="@drawable/layout_background"
+                        android:gravity="center">
 
-            <!-- Upload Layout -->
-            <LinearLayout
-                style="@style/SpeedInfoLayout"
-                android:layout_weight="1"
-                android:background="@drawable/layout_background"
-                android:gravity="center">
+                        <ImageView
+                            style="@style/SpeedIcon"
+                            android:importantForAccessibility="no"
+                            android:src="@drawable/ic_upload"
+                            app:tint="#64c882" />
 
-                <ImageView
-                    style="@style/SpeedIcon"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_upload"
-                    app:tint="#64c882" />
+                        <LinearLayout style="@style/SpeedTextContainer">
 
-                <LinearLayout style="@style/SpeedTextContainer">
+                            <LinearLayout style="@style/SpeedValueContainer">
 
-                    <LinearLayout style="@style/SpeedValueContainer">
+                                <TextView
+                                    android:id="@+id/tv_server_bytes_out"
+                                    style="@style/SpeedValue"
+                                    android:text="@string/_0_0_kb_0_0_b_s" />
 
-                        <TextView
-                            android:id="@+id/tv_server_bytes_out"
-                            style="@style/SpeedValue"
-                            android:text="@string/_0_0_kb_0_0_b_s" />
+                                <TextView
+                                    android:visibility="gone"
+                                    style="@style/SpeedUnit"
+                                    android:text="@string/mbps" />
+                            </LinearLayout>
 
-                        <TextView
-                            android:visibility="gone"
-                            style="@style/SpeedUnit"
-                            android:text="@string/mbps" />
+                            <TextView
+                                style="@style/SpeedLabel"
+                                android:text="@string/upload" />
+                        </LinearLayout>
                     </LinearLayout>
-
-                    <TextView
-                        style="@style/SpeedLabel"
-                        android:text="@string/upload" />
                 </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
 
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_50"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="?attr/titleColor"
-                android:text="@string/ip" />
-
-            <TextView
-                android:id="@+id/tv_server_ip_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/_0_0_0_0"
-                android:textColor="?attr/textColor"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/iv_connect_server_button"
-            android:layout_width="@dimen/dp_200"
-            android:layout_height="@dimen/dp_200"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_50"
-            android:foreground="@drawable/ripple_foreground"
-            android:importantForAccessibility="no"
-            android:src="@drawable/ic_power_not_connected"
-            android:clickable="true"
-            android:focusable="true"/>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_60"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_server_status_log"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/connected"
-                android:textColor="?attr/textColor"
-                android:textStyle="bold"
-                android:visibility="gone"/>
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="?attr/titleColor"
-                    android:text="@string/status" />
-
-                <TextView
-                    android:id="@+id/tv_server_status"
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/connected"
-                    android:textColor="?attr/textColor"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:layout_marginTop="@dimen/dp_25"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_server_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?attr/textColor"
-                android:text="@string/_0_0_0"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-                app:layout_constraintStart_toStartOf="@+id/linearLayout" />
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textColor="?attr/titleColor"
+                        android:text="@string/ip" />
+
+                    <TextView
+                        android:id="@+id/tv_server_ip_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/_0_0_0_0"
+                        android:textColor="?attr/textColor"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_connect_server_button"
+                    android:layout_width="@dimen/dp_200"
+                    android:layout_height="@dimen/dp_200"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/dp_50"
+                    android:foreground="@drawable/ripple_foreground"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_power_not_connected"
+                    android:clickable="true"
+                    android:focusable="true"/>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_25"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_server_status_log"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/connected"
+                        android:textColor="?attr/textColor"
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:textColor="?attr/titleColor"
+                            android:text="@string/status" />
+
+                        <TextView
+                            android:id="@+id/tv_server_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/connected"
+                            android:textColor="?attr/textColor"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_server_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/textColor"
+                        android:text="@string/_0_0_0"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+                        app:layout_constraintStart_toStartOf="@+id/linearLayout" />
+                </LinearLayout>
 
 
-        <LinearLayout
-            style="@style/SelectedCountryLayout"
-            android:clickable="true"
-            android:onClick="onChangeServerClicked"
-            android:focusable="true">
+                <LinearLayout
+                    style="@style/SelectedCountryLayout"
+                    android:clickable="true"
+                    android:onClick="onChangeServerClicked"
+                    android:focusable="true">
 
-            <ImageView
-                style="@style/Icon"
-                android:importantForAccessibility="no"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_marginTop="@dimen/dp_10"
-                android:layout_marginBottom="@dimen/dp_10"
-                app:loadServerFlag="@{vm.selectedServer}"/>
+                    <ImageView
+                        style="@style/Icon"
+                        android:importantForAccessibility="no"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        app:loadServerFlag="@{vm.selectedServer}"/>
 
-            <LinearLayout
-                style="@style/CountryTitleContainer">
+                    <LinearLayout
+                        style="@style/CountryTitleContainer">
+                        <TextView
+                            android:id="@+id/tv_selected_server_title_country_name"
+                            style="@style/CountryTitleText"
+                            android:text="@{vm.selectedServer != null ? vm.selectedServer.countryLong + ` - ` + vm.selectedServer.speed  : @string/change_server_location }" />
+
+                        <TextView
+                            android:id="@+id/tv_selected_server_titile_ip_address"
+                            style="@style/CountryTitleIPText"
+                            android:text="@{vm.selectedServer != null ? vm.selectedServer.ip : @string/ip_0_0_0_0}"
+                            android:visibility="visible"/>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/favorite_server_iv_icon"
+                        style="@style/HomeActionIcon"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_heart_outlined"
+                        android:clickable="true"
+                        android:onClick="onFavServerClicked"
+                        android:focusable="true"
+                        android:visibility="visible"/>
+                </LinearLayout>
+
                 <TextView
-                    android:id="@+id/tv_selected_server_title_country_name"
-                    style="@style/CountryTitleText"
-                    android:text="@{vm.selectedServer != null ? vm.selectedServer.countryLong + ` - ` + vm.selectedServer.speed  : @string/change_server_location }" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_10"
+                    android:gravity="center"
+                    android:text="@string/developer_message" />
 
-                <TextView
-                    android:id="@+id/tv_selected_server_titile_ip_address"
-                    style="@style/CountryTitleIPText"
-                    android:text="@{vm.selectedServer != null ? vm.selectedServer.ip : @string/ip_0_0_0_0}"
-                    android:visibility="visible"/>
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/favorite_server_iv_icon"
-                style="@style/HomeActionIcon"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_heart_outlined"
-                android:clickable="true"
-                android:onClick="onFavServerClicked"
-                android:focusable="true"
-                android:visibility="visible"/>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
-            android:gravity="center"
-            android:text="@string/developer_message" />
+        </ScrollView>
 
 
     </LinearLayout>
