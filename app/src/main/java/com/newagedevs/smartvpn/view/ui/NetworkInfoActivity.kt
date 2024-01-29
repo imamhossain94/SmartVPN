@@ -71,7 +71,7 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
         val defaultMbps = "---"
         val defaultMs = "---"
 
-        binding.speedTestButton.text = "Test Running"
+        binding.speedTestButton.text = this@NetworkInfoActivity.getString(R.string.test_running)
         binding.bestServer.setRightText("---")
         binding.ping.setRightText(defaultMs)
         binding.downloadSpeed.setRightText(defaultMbps)
@@ -175,8 +175,6 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
                             binding.gaugeView.setTargetValue(0f)
                             binding.uploadSpeed.setRightText(String.format("%s Mbps", uploadTest.finalUploadRate.round(2)))
                         }
-                        binding.speedTestButton.text = "Start Test"
-                        Toast.makeText(this@NetworkInfoActivity, "Speed test completed", Toast.LENGTH_SHORT).show()
                     } else {
                         binding.gaugeView.setTargetValue(uploadTest.instantUploadRate.toFloat())
                         binding.uploadSpeed.setRightText(String.format("%s Mbps", uploadTest.instantUploadRate.round(2)))
@@ -187,6 +185,8 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
             if (pingTestFinished && downloadTestFinished && uploadTest.isFinished) {
                 withContext(Dispatchers.Main) {
                     binding.gaugeView.setTargetValue(0f)
+                    Toast.makeText(this@NetworkInfoActivity, "Speed test completed", Toast.LENGTH_SHORT).show()
+                    binding.speedTestButton.text = this@NetworkInfoActivity.getString(R.string.start_test)
                 }
                 break
             }
