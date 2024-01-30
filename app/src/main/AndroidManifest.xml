@@ -53,6 +53,7 @@
 
         <activity
             android:name=".view.ui.NetworkInfoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"/>
 
         <activity

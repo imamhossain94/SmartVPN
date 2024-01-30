@@ -31,117 +31,83 @@
             app:titleColor="?attr/titleColor"
             app:lineVisible="false"/>
 
-        <LinearLayout
-            style="@style/SelectedCountryLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dp_10"
-            android:background="@drawable/ripple_background"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dp_10"
-                android:gravity="center"
-                android:text="@string/app_description" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/dp_10"
-            android:layout_marginVertical="@dimen/dp_5"
-            android:padding="@dimen/dp_10"
-            android:orientation="horizontal"
-            android:background="@drawable/ripple_background"
-            android:gravity="center"
-            android:clickable="true"
-            android:onClick="onSourceCodeClicked"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_source_control"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:textColor="?attr/titleColor"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:text="@string/source_code" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/dp_10"
-            android:layout_marginVertical="@dimen/dp_5"
-            android:padding="@dimen/dp_10"
-            android:orientation="horizontal"
-            android:background="@drawable/ripple_background"
-            android:gravity="center"
-            android:clickable="true"
-            android:onClick="onOtherAppClicked"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_shopping_cart"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:textColor="?attr/titleColor"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:text="@string/other_app" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginHorizontal="@dimen/dp_10"
-            android:layout_marginVertical="@dimen/dp_5"
-            android:padding="@dimen/dp_10"
-            android:orientation="horizontal"
-            android:background="@drawable/ripple_background"
-            android:gravity="center"
-            android:clickable="true"
-            android:onClick="onPrivacyPolicyClicked"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_shield_keyhole"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="@dimen/dp_10"
-                android:textColor="?attr/titleColor"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:text="@string/privacy_policy" />
-        </LinearLayout>
-
-
-
-        <Space
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <LinearLayout
+                    style="@style/SelectedCountryLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_10"
+                    android:background="@drawable/ripple_background"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dp_10"
+                        android:gravity="center"
+                        android:text="@string/app_description" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="@dimen/dp_10"
+                    android:layout_marginVertical="@dimen/dp_5"
+                    android:padding="@dimen/dp_15"
+                    android:background="@drawable/ripple_background"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:onClick="onSourceCodeClicked"
+                    android:focusable="true"
+                    android:textColor="?attr/titleColor"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:text="@string/source_code" />
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="@dimen/dp_10"
+                    android:layout_marginVertical="@dimen/dp_5"
+                    android:padding="@dimen/dp_15"
+                    android:background="@drawable/ripple_background"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:onClick="onSourceCodeClicked"
+                    android:focusable="true"
+                    android:textColor="?attr/titleColor"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:text="@string/other_app" />
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="@dimen/dp_10"
+                    android:layout_marginVertical="@dimen/dp_5"
+                    android:padding="@dimen/dp_15"
+                    android:background="@drawable/ripple_background"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:onClick="onSourceCodeClicked"
+                    android:focusable="true"
+                    android:textColor="?attr/titleColor"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:text="@string/privacy_policy" />
+
+            </LinearLayout>
+        </ScrollView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
