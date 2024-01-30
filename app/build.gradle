@@ -29,6 +29,14 @@ android {
         multiDexEnabled true
     }
 
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+
+    bundle { abi { enableSplit = false } }
+
     buildFeatures {
         dataBinding true
     }
