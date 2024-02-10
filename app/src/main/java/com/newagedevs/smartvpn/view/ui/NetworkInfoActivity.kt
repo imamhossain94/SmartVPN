@@ -22,6 +22,7 @@ import kotlinx.coroutines.withContext
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.net.URL
 import com.newagedevs.smartvpn.extensions.round
+import com.newagedevs.smartvpn.utils.AdsHelper
 
 class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout.activity_network_info) {
 
@@ -33,6 +34,8 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
         binding {
             vm = viewModel
         }
+
+        AdsHelper.createBannerAd(this, binding.adsContainer)
 
         binding.tbMainBar.setOnTitleBarListener(object : OnTitleBarListener {
             override fun onLeftClick(titleBar: TitleBar) {

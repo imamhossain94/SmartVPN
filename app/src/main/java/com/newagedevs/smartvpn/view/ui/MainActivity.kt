@@ -26,6 +26,7 @@ import com.newagedevs.smartvpn.model.CustomItem
 import com.newagedevs.smartvpn.utils.ItemUtils
 import com.newagedevs.smartvpn.model.VpnServer
 import com.newagedevs.smartvpn.preferences.SharedPrefRepository
+import com.newagedevs.smartvpn.utils.AdsHelper
 import com.newagedevs.smartvpn.utils.Constants
 import com.newagedevs.smartvpn.utils.Constants.Companion.ServerStatus
 import com.newagedevs.smartvpn.utils.Constants.Companion.VPN_REQUEST_ID
@@ -74,6 +75,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         binding {
             vm = viewModel
         }
+
+        AdsHelper.createBannerAd(this, binding.adsContainer)
+        var interstitialAd = AdsHelper.createInterstitialAd(this)
 
         customListBalloon = CustomListBalloonFactory().create(this, this)
         val listRecycler: RecyclerView = customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
@@ -164,11 +168,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     .setCancel(getString(R.string.cancel))
                     .setListener(object : MessageDialog.OnListener {
                         override fun onConfirm(dialog: BaseDialog?) {
+                            if (interstitialAd.isReady) {
+                                interstitialAd.showAd()
+                            }
                             stopVpn()
                         }
                         override fun onCancel(dialog: BaseDialog?) {  }
                     }).show()
             }else {
+                if (interstitialAd.isReady) {
+                    interstitialAd.showAd()
+                }
                 viewModel.selectedServer?.let {
                     viewModel.connectToVPN()
                     prepareVPN()

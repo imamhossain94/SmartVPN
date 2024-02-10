@@ -6,6 +6,7 @@ import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ActivityServerPickerBinding
+import com.newagedevs.smartvpn.utils.AdsHelper
 import com.newagedevs.smartvpn.view.adapter.ServerAdapter
 import com.skydoves.bindables.BindingActivity
 import org.koin.android.ext.android.inject
@@ -24,6 +25,8 @@ class ServerPickerActivity : BindingActivity<ActivityServerPickerBinding>(R.layo
             vm = viewModel
             adapter = serverAdapter
         }
+
+        AdsHelper.createBannerAd(this, binding.adsContainer)
 
         binding.tbMainBar.setOnTitleBarListener(object : OnTitleBarListener {
             override fun onLeftClick(titleBar: TitleBar) {
