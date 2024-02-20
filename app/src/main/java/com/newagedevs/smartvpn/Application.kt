@@ -5,6 +5,7 @@ package com.newagedevs.smartvpn
 import android.app.Application
 import androidx.databinding.ktx.BuildConfig
 import com.applovin.sdk.AppLovinSdk
+import com.applovin.sdk.AppLovinSdkSettings
 import com.newagedevs.smartvpn.di.viewModelModule
 import com.newagedevs.smartvpn.utils.AppOpenManager
 import org.koin.android.ext.koin.androidContext

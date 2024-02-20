@@ -16,6 +16,7 @@ import androidx.core.app.ShareCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager.getInstance
 import androidx.multidex.MultiDex
 import androidx.recyclerview.widget.RecyclerView
+import com.applovin.sdk.AppLovinSdk
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.R
@@ -77,7 +78,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
 
         AdsHelper.createBannerAd(this, binding.adsContainer)
-        var interstitialAd = AdsHelper.createInterstitialAd(this)
+        val interstitialAd = AdsHelper.createInterstitialAd(this)
 
         customListBalloon = CustomListBalloonFactory().create(this, this)
         val listRecycler: RecyclerView = customListBalloon.getContentView().findViewById(R.id.list_recyclerView)
@@ -89,7 +90,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 customListBalloon.showAlignBottom(titleBar.leftView, 0, 0)
             }
 
-            override fun onTitleClick(titleBar: TitleBar) { }
+            override fun onTitleClick(titleBar: TitleBar) {
+                //AppLovinSdk.getInstance(this@MainActivity).showMediationDebugger()
+            }
 
             override fun onRightClick(titleBar: TitleBar) {
 

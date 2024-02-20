@@ -138,6 +138,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
     implementation 'com.applovin:applovin-sdk:12.1.0'
     implementation "androidx.lifecycle:lifecycle-process:2.5.1"
-
     
 }
