@@ -23,8 +23,8 @@ public class DisconnectVPNActivity extends Activity implements DialogInterface.O
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
 //            // We've bound to LocalService, cast the IBinder and get LocalService instance
-            OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
-            mService = binder.getService();
+//            OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
+//            mService = service.getService();
         }
 
         @Override

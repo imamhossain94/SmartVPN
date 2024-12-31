@@ -121,7 +121,8 @@ class SharedPrefRepository(private val context: Context) {
         val json = sharedPref.getString(vpnServersKey, null)
         return if (json != null) {
             val type = object : TypeToken<List<VpnServer>>() {}.type
-            gson.fromJson(json, type)
+            val servers = gson.fromJson<List<VpnServer>>(json, type)
+            servers.sortedBy { it.ping.toIntOrNull() }
         } else {
             emptyList()
         }

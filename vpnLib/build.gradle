@@ -1,14 +1,18 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 33
+    apply from: '../dependencies.gradle'
+    compileSdk versions.compileSdk
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 33
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -16,10 +20,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'de.blinkt.openvpn'
+    buildFeatures {
+        aidl true
+        buildConfig true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+//    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
 }

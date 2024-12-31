@@ -51,6 +51,7 @@ class APIs {
                         }
                     }
 
+                    vpnList.sortBy { it.ping.toIntOrNull() }
                     onSuccess(vpnList)
                 }
             } catch (e: Exception) {
