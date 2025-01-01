@@ -108,23 +108,15 @@ public class ExtAuthHelper {
     public static byte[] signData(@NonNull Context context,
                                   @NonNull String extAuthPackageName,
                                   @NonNull String alias,
-                                  @NonNull byte[] data,
-                                  @NonNull Bundle extra
+                                  @NonNull byte[] data
     ) throws KeyChainException, InterruptedException
 
     {
 
 
-        try (ExternalAuthProviderConnection authProviderConnection =
-                     bindToExtAuthProvider(context.getApplicationContext(), extAuthPackageName)) {
+        try (ExternalAuthProviderConnection authProviderConnection = bindToExtAuthProvider(context.getApplicationContext(), extAuthPackageName)) {
             ExternalCertificateProvider externalAuthProvider = authProviderConnection.getService();
-
-            byte[] result = externalAuthProvider.getSignedDataWithExtra(alias, data, extra);
-            // When the desired method is not implemented, a default implementation is called, returning null
-            if (result == null)
-                result = externalAuthProvider.getSignedData(alias, data);
-
-            return result;
+            return externalAuthProvider.getSignedData(alias, data);
 
         } catch (RemoteException e) {
             throw new KeyChainException(e);

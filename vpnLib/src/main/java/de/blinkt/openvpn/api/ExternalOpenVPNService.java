@@ -20,7 +20,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.VpnService;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -50,8 +49,6 @@ import de.blinkt.openvpn.core.VpnStatus.StateListener;
 public class ExternalOpenVPNService extends Service implements StateListener {
 
     private static final int SEND_TOALL = 0;
-
-    private static final String EXTRA_INLINE_PROFILE_ALLOW_VPN_BYPASS = "de.blinkt.openvpn.api.ALLOW_VPN_BYPASS";
 
     final RemoteCallbackList<IOpenVPNStatusCallback> mCallbacks =
             new RemoteCallbackList<>();
@@ -164,8 +161,7 @@ public class ExternalOpenVPNService extends Service implements StateListener {
             startProfile(vp);
         }
 
-        @Override
-        public void startVPNwithExtras(String inlineConfig, Bundle extras) throws RemoteException {
+        public void startVPN(String inlineConfig) throws RemoteException {
             String callingApp = mExtAppDb.checkOpenVPNPermission(getPackageManager());
 
             ConfigParser cp = new ConfigParser();
@@ -177,10 +173,6 @@ public class ExternalOpenVPNService extends Service implements StateListener {
                     throw new RemoteException(getString(vp.checkProfile(getApplicationContext())));
 
                 vp.mProfileCreator = callingApp;
-
-                if (extras != null) {
-                    vp.mAllowAppVpnBypass = extras.getBoolean(EXTRA_INLINE_PROFILE_ALLOW_VPN_BYPASS, false);
-                }
 
                 /*int needpw = vp.needUserPWInput(false);
                 if(needpw !=0)
@@ -196,10 +188,6 @@ public class ExternalOpenVPNService extends Service implements StateListener {
             }
         }
 
-        @Override
-        public void startVPN(String inlineConfig) throws RemoteException {
-            startVPNwithExtras(inlineConfig, null);
-        }
 
         @Override
         public boolean addVPNProfile(String name, String config) throws RemoteException {

@@ -11,10 +11,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.drawable.ColorDrawable;
 import android.os.IBinder;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import de.blinkt.openvpn.core.OpenVPNService;
+import de.blinkt.openvpn.core.OpenVPNThread;
 import de.blinkt.openvpn.core.ProfileManager;
 
 public class DisconnectVPNActivity extends Activity implements DialogInterface.OnClickListener, DialogInterface.OnCancelListener {
@@ -23,8 +31,8 @@ public class DisconnectVPNActivity extends Activity implements DialogInterface.O
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
 //            // We've bound to LocalService, cast the IBinder and get LocalService instance
-//            OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
-//            mService = service.getService();
+            OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
+            mService = binder.getService();
         }
 
         @Override
@@ -58,6 +66,37 @@ public class DisconnectVPNActivity extends Activity implements DialogInterface.O
         builder.setPositiveButton(android.R.string.yes, this);
         builder.setOnCancelListener(this);
         builder.show();
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AlertDialogTheme);
+//        View view = LayoutInflater.from(this).inflate(R.layout.dialog,(ConstraintLayout)findViewById(R.id.layoutDialogContainer)
+//        );
+//        builder.setView(view);
+//        ((TextView) view.findViewById(R.id.textTitle)).setText(R.string.title_cancel);
+//        ((TextView) view.findViewById(R.id.textMessage)).setText(R.string.cancel_connection_query);
+//        ((Button) view.findViewById(R.id.buttonNo)).setText(android.R.string.no);
+//        ((Button) view.findViewById(R.id.buttonYes)).setText(android.R.string.yes);
+//
+//        final AlertDialog alertDialog = builder.create();
+//
+//        view.findViewById(R.id.buttonYes).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alertDialog.dismiss();
+//                stopVpn();
+//            }
+//        });
+//
+//        view.findViewById(R.id.buttonNo).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                alertDialog.dismiss();
+//            }
+//        });
+//        if (alertDialog.getWindow() != null){
+//            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+//        }
+//        alertDialog.show();
+
     }
 
     @Override

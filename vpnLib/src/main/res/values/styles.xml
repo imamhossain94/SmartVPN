@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="blinkt.baseTheme" parent="android:Theme.DeviceDefault.Light" />
+    <style name="blinkt" parent="blinkt.baseTheme" />
+
+    <style name="blinkt.dialog" parent="android:Theme.DeviceDefault.Light.Dialog" />
+
+
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+</resources>

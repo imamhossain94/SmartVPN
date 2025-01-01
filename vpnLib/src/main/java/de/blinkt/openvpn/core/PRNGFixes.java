@@ -154,7 +154,7 @@ public final class PRNGFixes {
                     1.0,
                     "A Linux-specific random number provider that uses"
                             + " /dev/urandom");
-            // Although /dev/urandom is not a SHA-1 PRNG, some apps
+            // Although /dev/urandom is not a SHA-1 PRNG, some trackless
             // explicitly request a SHA1PRNG SecureRandom and we thus need to
             // prevent them from getting the default implementation whose output
             // may have low entropy.

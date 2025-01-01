@@ -51,7 +51,7 @@ public class VPNLaunchHelper {
             }
         }
 
-        throw new RuntimeException("Cannot find any executable for this device's ABIs " + Arrays.toString(abis));
+        throw new RuntimeException("Cannot find any execulte for this device's ABIs " + abis.toString());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -79,13 +79,17 @@ public class VPNLaunchHelper {
         String binaryName = writeMiniVPN(c);
         // Add fixed paramenters
         //args.add("/data/data/de.blinkt.openvpn/lib/openvpn");
+        if (binaryName == null) {
+            VpnStatus.logError("Error writing minivpn binary");
+            return null;
+        }
 
         args.add(binaryName);
 
         args.add("--config");
         args.add(getConfigFilePath(c));
 
-        return args.toArray(new String[0]);
+        return args.toArray(new String[args.size()]);
     }
 
     private static boolean writeMiniVPNBinary(Context context, String abi, File mvpnout) {
@@ -102,7 +106,7 @@ public class VPNLaunchHelper {
 
             FileOutputStream fout = new FileOutputStream(mvpnout);
 
-            byte[] buf = new byte[4096];
+            byte buf[] = new byte[4096];
 
             int lenread = mvpn.read(buf);
             while (lenread > 0) {
