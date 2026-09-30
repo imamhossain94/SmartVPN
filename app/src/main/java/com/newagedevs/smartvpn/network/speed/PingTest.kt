@@ -1,10 +1,7 @@
 package com.newagedevs.smartvpn.network.speed
 
-import android.os.Build
 import timber.log.Timber
 import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.util.concurrent.TimeUnit
 
 /**
  * Latency probe built on the system `ping` binary.
@@ -40,6 +37,26 @@ class PingTest(
             builder.redirectErrorStream(true)
             process = builder.start()
 
+            // Watchdog: the reader below blocks until the child closes stdout.
+            // Android's `ping` is absent on many builds and, where present, is
+            // frequently denied by SELinux -- in both cases the child can sit
+            // there silent forever, which stalled the whole test. Kill it after
+            // a fixed budget so this phase always terminates.
+            val child = process
+            val watchdog = Thread {
+                try {
+                    Thread.sleep(WATCHDOG_MS)
+                    // Process.isAlive() is API 26+ and minSdk is 23, so ask for
+                    // the exit value instead: null means it is still running.
+                    if (child.exitValue() == null) {
+                        Timber.w("ping to %s did not finish in time; terminating", server)
+                        child.destroy()
+                    }
+                } catch (_: InterruptedException) {
+                    Thread.currentThread().interrupt()
+                }
+            }.apply { isDaemon = true; start() }
+
             process.inputStream.bufferedReader().use { reader: BufferedReader ->
                 var line = reader.readLine()
                 while (line != null) {
@@ -48,14 +65,7 @@ class PingTest(
                 }
             }
 
-            // Process.waitFor(long, TimeUnit) only exists from API 26, but
-            // minSdk is 23. The reader above already drains the output to EOF,
-            // so waiting is a best-effort guard against a child that never exits.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                !process.waitFor(10, TimeUnit.SECONDS)
-            ) {
-                process.destroyForcibly()
-            }
+            watchdog.interrupt()
         } catch (e: Exception) {
             // No `ping` binary, or the host refused. The result simply stays 0,
             // which the UI already renders as "unknown".
@@ -68,6 +78,11 @@ class PingTest(
             }
             isFinished = true
         }
+    }
+
+    private companion object {
+        /** Hard ceiling for the ping phase, in milliseconds. */
+        const val WATCHDOG_MS = 8_000L
     }
 
     private fun parseLine(line: String) {

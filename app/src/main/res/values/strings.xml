@@ -54,6 +54,11 @@
     <string name="test_running">Test Running</string>
     <string name="speed_test_completed">Speed test completed</string>
     <string name="speed_test_unavailable">Could not reach a speed test server</string>
+    <string name="speed_test_failed">Speed test failed: the test server did not respond</string>
+    <string name="ping_ms">%1$s ms</string>
+    <string name="ping_unavailable">n/a</string>
+    <string name="rate_mbps">%1$s Mbps</string>
+    <string name="rate_unavailable">n/a</string>
     <string name="no_servers_yet">No servers yet. Pull down to refresh.</string>
 
     <!-- Connect / disconnect flow -->

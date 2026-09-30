@@ -739,7 +739,12 @@ class GaugeView @JvmOverloads constructor(
             if (value < mRangeValues[i]) return mRangePaints[i]
         }
         if (value <= mRangeValues[length - 1]) return mRangePaints[length - 1]
-        throw IllegalArgumentException("Value $value out of range!")
+        // Anything above the top of the scale (e.g. a speed test reporting more
+        // than scaleEndValue Mbps) is drawn with the top colour instead of
+        // throwing out of the draw pass. setTargetValue() only clamps when
+        // showScale/showRanges is on, so without this a fast connection would
+        // crash the screen mid-test.
+        return mRangePaints[length - 1]
     }
 
     private fun drawNeedle(canvas: Canvas) {

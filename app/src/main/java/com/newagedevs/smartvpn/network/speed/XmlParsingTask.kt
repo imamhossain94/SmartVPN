@@ -107,9 +107,14 @@ suspend fun findBestServer(client: Client): Server? = withContext(Dispatchers.IO
 
 private fun fetchXml(url: URL): String {
     val connection = (url.openConnection() as HttpURLConnection).apply {
-        connectTimeout = 15_000
-        readTimeout = 20_000
+        // These endpoints are small but the networks this app runs on are often
+        // slow: the VPNGate feed was measured taking 154 s on a mobile link. A
+        // 15 s budget made the whole speed test fail before it started.
+        connectTimeout = 30_000
+        readTimeout = 60_000
         requestMethod = "GET"
+        setRequestProperty("Accept", "application/xml, text/xml, */*")
+        setRequestProperty("User-Agent", "SmartVPN/1.0 (Android)")
     }
     try {
         if (connection.responseCode != HttpURLConnection.HTTP_OK) {

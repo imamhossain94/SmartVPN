@@ -100,10 +100,15 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
             }
 
             binding.bestServer.setRightText(server.sponsor.ifBlank { "-" })
-            runTests(server)
+            val measured = runTests(server)
 
             finishSpeedTestUi()
-            toast(getString(R.string.speed_test_completed))
+            toast(
+                getString(
+                    if (measured) R.string.speed_test_completed
+                    else R.string.speed_test_failed
+                )
+            )
         }
     }
 
@@ -134,12 +139,12 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
      * bounded by [TEST_TIMEOUT_MS], runs on [lifecycleScope], and exits as soon as
      * the Activity is destroyed.
      */
-    private suspend fun runTests(server: Server) {
+    private suspend fun runTests(server: Server): Boolean {
         val baseUrl = baseUrlOf(server)
         val pingHost = server.host.substringBefore(':').ifBlank { null }
         if (baseUrl == null || pingHost == null) {
             Timber.w("Skipping speed test for a server with an unusable URL/host")
-            return
+            return false
         }
 
         val ping = PingTest(pingHost, PING_COUNT)
@@ -153,8 +158,13 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
         while (currentCoroutineContext().isActive && System.currentTimeMillis() < deadline) {
             when (phase) {
                 Phase.PING -> {
+                    // Ping needs the system binary, which many Android builds
+                    // deny, so "unavailable" is a normal outcome, not a failure.
                     val rtt = ping.avgRtt.takeIf { it > 0.0 } ?: ping.instantRtt
-                    binding.ping.setRightText("${rtt.format1()} ms")
+                    binding.ping.setRightText(
+                        if (rtt > 0.0) getString(R.string.ping_ms, rtt.format1())
+                        else getString(R.string.ping_unavailable)
+                    )
                     if (ping.isFinished) {
                         download.start()
                         phase = Phase.DOWNLOAD
@@ -162,32 +172,43 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
                 }
 
                 Phase.DOWNLOAD -> {
-                    binding.gaugeView.setTargetValue(download.instantDownloadRate.toFloat())
-                    binding.downloadSpeed.setRightText("${download.instantDownloadRate.format2()} Mbps")
+                    val live = download.instantDownloadRate
+                    binding.gaugeView.setTargetValue(live.coerceIn(0.0, GAUGE_MAX.toDouble()).toFloat())
+                    binding.downloadSpeed.setRightText(formatRate(live))
                     if (download.isFinished) {
                         binding.gaugeView.setTargetValue(0f)
-                        binding.downloadSpeed.setRightText("${download.finalDownloadRate.format2()} Mbps")
+                        binding.downloadSpeed.setRightText(formatRate(download.finalDownloadRate))
                         upload.start()
                         phase = Phase.UPLOAD
                     }
                 }
 
                 Phase.UPLOAD -> {
-                    binding.gaugeView.setTargetValue(upload.instantUploadRate.toFloat())
-                    binding.uploadSpeed.setRightText("${upload.instantUploadRate.format2()} Mbps")
+                    val live = upload.instantUploadRate
+                    binding.gaugeView.setTargetValue(live.coerceIn(0.0, GAUGE_MAX.toDouble()).toFloat())
+                    binding.uploadSpeed.setRightText(formatRate(live))
                     if (upload.isFinished) {
                         binding.gaugeView.setTargetValue(0f)
-                        binding.uploadSpeed.setRightText("${upload.finalUploadRate.format2()} Mbps")
+                        binding.uploadSpeed.setRightText(formatRate(upload.finalUploadRate))
                         phase = Phase.DONE
                     }
                 }
 
-                Phase.DONE -> return
+                Phase.DONE -> return download.downloadedBytes > 0L || upload.uploadedKBytes > 0L
             }
 
             delay(POLL_INTERVAL_MS)
         }
+
+        // Ran out of time before every phase reported.
+        Timber.w("Speed test hit the ${TEST_TIMEOUT_MS}ms budget before completing")
+        return download.downloadedBytes > 0L || upload.uploadedKBytes > 0L
     }
+
+    /** Renders a rate, distinguishing "no data" from a genuine 0.00 Mbps. */
+    private fun formatRate(mbps: Double): String =
+        if (mbps > 0.0) getString(R.string.rate_mbps, mbps.format2())
+        else getString(R.string.rate_unavailable)
 
     /**
      * Builds the `/speedtest/` base URL for an Ookla server.
@@ -215,5 +236,8 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
         const val PING_COUNT = 3
         const val POLL_INTERVAL_MS = 300L
         const val TEST_TIMEOUT_MS = 45_000L
+
+        /** Matches `app:scaleEndValue` on the gauge so the needle never overruns. */
+        const val GAUGE_MAX = 100.0
     }
 }
