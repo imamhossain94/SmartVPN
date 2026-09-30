@@ -141,13 +141,15 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
      */
     private suspend fun runTests(server: Server): Boolean {
         val baseUrl = baseUrlOf(server)
-        val pingHost = server.host.substringBefore(':').ifBlank { null }
-        if (baseUrl == null || pingHost == null) {
+        // The host attribute carries "host:port"; fall back to the port from
+        // the url attribute when it is missing.
+        val pingTarget = parseHostPort(server.host, URL(server.serverUrl).port)
+        if (baseUrl == null || pingTarget == null) {
             Timber.w("Skipping speed test for a server with an unusable URL/host")
             return false
         }
 
-        val ping = PingTest(pingHost, PING_COUNT)
+        val ping = PingTest(pingTarget.first, pingTarget.second, PING_COUNT)
         val download = DownloadTest(baseUrl)
         val upload = UploadTest(baseUrl)
 
@@ -223,6 +225,16 @@ class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout
         "${parsed.protocol}://${parsed.host}$port/speedtest/"
     }.onFailure { Timber.e(it, "Malformed test server URL: %s", server.serverUrl) }
         .getOrNull()
+
+    /** Splits an Ookla "host:port" pair, falling back to the URL's own port. */
+    private fun parseHostPort(raw: String, fallbackPort: Int): Pair<String, Int>? {
+        val host = raw.substringBefore(':').trim()
+        if (host.isEmpty()) return null
+        val port = raw.substringAfter(':', "").toIntOrNull()
+            ?: fallbackPort.takeIf { it > 0 }
+            ?: return null
+        return host to port
+    }
 
     private fun Double.format1(): String =
         if (isNaN() || isInfinite()) "0.0" else String.format(Locale.US, "%.1f", this)

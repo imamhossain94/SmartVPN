@@ -2,7 +2,7 @@ package com.newagedevs.smartvpn.network.speed
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.io.InputStream
+import timber.log.Timber
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import kotlin.math.max
@@ -34,8 +34,12 @@ class DownloadTest(private val fileURL: String, private val timeoutSeconds: Int 
         private set
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(15, TimeUnit.SECONDS)
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        // Ookla's discovery URLs answer 307 and point at a different host, so
+        // redirects have to be followed for the transfer to start at all.
+        .followRedirects(true)
+        .followSslRedirects(true)
         .build()
 
     private var startTime = 0L
@@ -45,26 +49,16 @@ class DownloadTest(private val fileURL: String, private val timeoutSeconds: Int 
     override fun run() {
         startTime = System.currentTimeMillis()
         try {
-            files.forEach { name ->
-                val body = downloadOnce("$fileURL$name") ?: return
-                try {
-                    val buffer = ByteArray(64 * 1024)
-                    while (true) {
-                        val read = body.read(buffer)
-                        if (read == -1) break
-                        downloadedBytes += read
-                        val elapsed = elapsedSeconds()
-                        if (elapsed <= 0.0) continue
-                        instantDownloadRate = megabitsPerSecond(downloadedBytes, elapsed)
-                        if (elapsed >= timeoutSeconds) break
-                    }
-                } finally {
-                    body.closeQuietly()
-                }
-                if (elapsedSeconds() >= timeoutSeconds) return
+            for (name in files) {
+                // The response body must be consumed inside `use`: returning a
+                // stream out of that block closes it, and every subsequent
+                // read throws, which is why the download used to report 0.
+                val read = streamOnce("$fileURL$name") ?: break
+                downloadedBytes += read
+                if (elapsedSeconds() >= timeoutSeconds) break
             }
         } catch (e: IOException) {
-            // A failed transfer is reported as a zero rate, not as a stuck test.
+            Timber.w(e, "Download test failed for %s", fileURL)
         } finally {
             val elapsed = elapsedSeconds()
             finalDownloadRate = if (elapsed > 0.0) megabitsPerSecond(downloadedBytes, elapsed) else 0.0
@@ -73,11 +67,37 @@ class DownloadTest(private val fileURL: String, private val timeoutSeconds: Int 
         }
     }
 
-    private fun downloadOnce(url: String): InputStream? {
+    /**
+     * Streams [url] to the end (or until the timeout) and returns the byte count.
+     *
+     * Reading happens inside the `use` block on purpose. Handing the stream back
+     * to the caller and closing the response there closes the stream too, and
+     * every later read throws -- that is what made the download leg report 0
+     * while the upload leg worked.
+     */
+    private fun streamOnce(url: String): Long {
         val request = Request.Builder().url(url).build()
         client.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) return null
-            return response.body.byteStream()
+            if (!response.isSuccessful) {
+                Timber.w("Download %s returned HTTP %d", url, response.code)
+                return 0L
+            }
+
+            val stream = response.body.byteStream()
+            val buffer = ByteArray(64 * 1024)
+            var total = 0L
+            while (true) {
+                val read = stream.read(buffer)
+                if (read == -1) break
+                total += read
+                downloadedBytes = total
+                val elapsed = elapsedSeconds()
+                if (elapsed > 0.0) {
+                    instantDownloadRate = megabitsPerSecond(total, elapsed)
+                }
+                if (elapsed >= timeoutSeconds) break
+            }
+            return total
         }
     }
 
@@ -91,6 +111,3 @@ class DownloadTest(private val fileURL: String, private val timeoutSeconds: Int 
     }
 }
 
-internal fun java.io.Closeable.closeQuietly() {
-    runCatching { close() }
-}
