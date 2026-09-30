@@ -10,11 +10,12 @@ import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ActivityAboutBinding
+import com.newagedevs.smartvpn.extensions.applyEdgeToEdgeInsets
 import com.newagedevs.smartvpn.utils.Constants
 import com.newagedevs.smartvpn.view.dialog.BaseDialog
 import com.newagedevs.smartvpn.view.dialog.MessageDialog
 import com.skydoves.bindables.BindingActivity
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AboutActivity : BindingActivity<ActivityAboutBinding>(R.layout.activity_about) {
@@ -23,6 +24,8 @@ class AboutActivity : BindingActivity<ActivityAboutBinding>(R.layout.activity_ab
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        applyEdgeToEdgeInsets(binding.root)
 
         binding {
             vm = viewModel

@@ -125,8 +125,13 @@ public class OpenVPNThread implements Runnable {
     }
 
     public static boolean stop(){
-        mService.openvpnStopped();
-        mProcess.destroy();
+        // `mProcess` stays null until the OpenVPN binary has actually been
+        // spawned, so a disconnect during CONNECTING (or after a failed auth)
+        // used to throw NPE here and leave the UI stuck on "connecting".
+        if (mService != null)
+            mService.openvpnStopped();
+        if (mProcess != null)
+            mProcess.destroy();
         return true;
     }
 
@@ -201,9 +206,13 @@ public class OpenVPNThread implements Runnable {
         } catch (InterruptedException | IOException e) {
             VpnStatus.logException("Error reading from output of OpenVPN process", e);
             stopProcess();
+        } catch (Exception e) {
+            // Anything else here (SELinux denials on the helper binary, a bad
+            // argv, a missing .so) used to kill the thread silently and leave the
+            // UI showing "connecting" forever.
+            VpnStatus.logException("Could not start the OpenVPN process: " + argvlist, e);
+            stopProcess();
         }
-
-
     }
 
     private String genLibraryPath(String[] argv, ProcessBuilder pb) {

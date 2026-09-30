@@ -5,31 +5,27 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ItemServerBinding
-import com.newagedevs.smartvpn.interfaces.ChangeServer
 import com.newagedevs.smartvpn.model.VpnServer
-import com.newagedevs.smartvpn.view.ui.FavoriteServerPickerActivity
-import com.newagedevs.smartvpn.view.ui.ServerPickerActivity
 import com.skydoves.bindables.binding
 
-
-class FavoriteServerAdapter(private val changeServer: ChangeServer) : RecyclerView.Adapter<FavoriteServerAdapter.ServerViewHolder>() {
+/** Renders the user's favourite VPN servers. See [ServerAdapter] for the DI rationale. */
+class FavoriteServerAdapter(
+    private val onServerSelected: (VpnServer) -> Unit,
+) : RecyclerView.Adapter<FavoriteServerAdapter.ServerViewHolder>() {
 
     private val items = mutableListOf<VpnServer>()
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ServerViewHolder {
-
         val binding = parent.binding<ItemServerBinding>(R.layout.item_server)
 
         return ServerViewHolder(binding).apply {
-            binding.root.setOnClickListener { view ->
-                val position = adapterPosition.takeIf { it != RecyclerView.NO_POSITION } ?: return@setOnClickListener
-                val server = items[position]
-                changeServer.newServer(server)
-                (view.context as FavoriteServerPickerActivity).finish()
-                //notifyDataSetChanged()
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                onServerSelected(items[position])
             }
         }
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -52,6 +48,4 @@ class FavoriteServerAdapter(private val changeServer: ChangeServer) : RecyclerVi
 
     class ServerViewHolder(val binding: ItemServerBinding) :
         RecyclerView.ViewHolder(binding.root)
-
 }
-

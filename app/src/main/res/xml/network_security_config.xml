@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config cleartextTrafficPermitted="false"/>
+    <!--
+        Cleartext has to stay available: the Ookla speed test measures against
+        dynamically discovered test servers that only speak plain HTTP on port
+        8080, and their hostnames cannot be enumerated here. Everything the app
+        itself talks to (the VPNGate server list, the public IP lookup) is HTTPS,
+        and the VPN tunnel itself is unaffected by this setting.
+    -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">ip-api.com</domain>
     </domain-config>

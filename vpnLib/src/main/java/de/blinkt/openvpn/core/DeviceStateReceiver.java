@@ -92,7 +92,10 @@ public class DeviceStateReceiver extends BroadcastReceiver implements ByteCountL
         long total = diffIn + diffOut;
         trafficdata.add(new Datapoint(System.currentTimeMillis(), total));
 
-        while (trafficdata.getFirst().timestamp <= (System.currentTimeMillis() - TRAFFIC_WINDOW * 1000)) {
+        // `isEmpty()` matters: if every queued datapoint has already aged out,
+        // removeFirst() empties the list and the next getFirst() throws.
+        while (!trafficdata.isEmpty()
+                && trafficdata.getFirst().timestamp <= (System.currentTimeMillis() - TRAFFIC_WINDOW * 1000L)) {
             trafficdata.removeFirst();
         }
 

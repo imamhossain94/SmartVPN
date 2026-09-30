@@ -1,184 +1,91 @@
 package com.newagedevs.smartvpn.preferences
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.newagedevs.smartvpn.model.VpnServer
-import com.newagedevs.smartvpn.utils.Constants
-import com.newagedevs.smartvpn.utils.Constants.Companion.clickCountKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.favoriteVpnServersKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.isConnectedKey
-import com.newagedevs.smartvpn.utils.Constants.Companion.openCountKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.selectedVpnServersKey
 import com.newagedevs.smartvpn.utils.Constants.Companion.sharedPrefName
 import com.newagedevs.smartvpn.utils.Constants.Companion.vpnServersKey
+import timber.log.Timber
 
-class SharedPrefRepository(private val context: Context) {
+class SharedPrefRepository(context: Context) {
 
     private val gson = Gson()
 
+    private val prefs: SharedPreferences =
+        context.applicationContext.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
 
-    // Increment click count
-    private fun incrementClickCount() {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val currentCount = sharedPref.getInt(clickCountKey, 0)
-        val editor = sharedPref.edit()
-        editor.putInt(clickCountKey, currentCount + 1)
-        editor.apply()
-    }
+    // Connection state
 
-    // Get click count
-    private fun getClickCount(): Int {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        return sharedPref.getInt(clickCountKey, 0)
-    }
+    fun isConnected(): Boolean = prefs.getBoolean(isConnectedKey, false)
 
-    // Reset click count
-    private fun resetClickCount() {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putInt(clickCountKey, 0)
-        editor.apply()
-    }
-
-    // Increment open count
-    private fun incrementOpenCount() {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val currentCount = sharedPref.getInt(openCountKey, 0)
-        val editor = sharedPref.edit()
-        editor.putInt(openCountKey, currentCount + 1)
-        editor.apply()
-    }
-
-    // Get open count
-    private fun getOpenCount(): Int {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        return sharedPref.getInt(openCountKey, 0)
-    }
-
-    // Reset open count
-    private fun resetOpenCount() {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putInt(openCountKey, 0)
-        editor.apply()
-    }
-
-    // Check if interstitial ads should be shown
-    fun shouldShowInterstitialAds(): Boolean {
-        val clickCount = getClickCount()
-        return if (clickCount == 0) {
-            true
-        } else if (clickCount < Constants.showAdsOnEveryClick) {
-            incrementClickCount()
-            false
-        } else {
-            resetClickCount()
-            true
-        }
-    }
-
-    // Check if app open ads should be shown
-    fun shouldShowAppOpenAds(): Boolean {
-        val clickCount = getOpenCount()
-        return if (clickCount == 0) {
-            true
-        } else if (clickCount < Constants.showAdsOnEveryOpen) {
-            incrementOpenCount()
-            false
-        } else {
-            resetOpenCount()
-            true
-        }
-    }
-
-
-    // New properties
-
-    // Check if the app is running
-    fun isConnected(): Boolean {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        return sharedPref.getBoolean(isConnectedKey, false)
-    }
-
-    // Set the app running state
     fun setConnected(isRunning: Boolean) {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putBoolean(isConnectedKey, isRunning)
-        editor.apply()
+        prefs.edit().putBoolean(isConnectedKey, isRunning).apply()
     }
+
+    // Server list
 
     fun saveVpnServers(vpnServers: List<VpnServer>) {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putString(vpnServersKey, gson.toJson(vpnServers))
-        editor.apply()
+        prefs.edit().putString(vpnServersKey, gson.toJson(vpnServers)).apply()
     }
 
-    fun getVpnServers(): List<VpnServer> {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val json = sharedPref.getString(vpnServersKey, null)
-        return if (json != null) {
-            val type = object : TypeToken<List<VpnServer>>() {}.type
-            val servers = gson.fromJson<List<VpnServer>>(json, type)
-            servers.sortedBy { it.ping.toIntOrNull() }
-        } else {
-            emptyList()
-        }
-    }
+    fun getVpnServers(): List<VpnServer> =
+        decodeList(vpnServersKey, VpnServerListType)
+            .sortedBy { it.ping.toIntOrNull() ?: Int.MAX_VALUE }
+
+    // Selected server
 
     fun saveSelectedVpnServer(vpnServer: VpnServer) {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        editor.putString(selectedVpnServersKey, gson.toJson(vpnServer))
-        editor.apply()
+        prefs.edit().putString(selectedVpnServersKey, gson.toJson(vpnServer)).apply()
     }
 
     fun getSelectedVpnServer(): VpnServer? {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val json = sharedPref.getString(selectedVpnServersKey, null)
-        return if (json != null) {
-            val type = object : TypeToken<VpnServer>() {}.type
-            gson.fromJson(json, type)
-        } else {
-            null
-        }
+        val json = prefs.getString(selectedVpnServersKey, null) ?: return null
+        return runCatching { gson.fromJson<VpnServer>(json, VpnServerType) }
+            .onFailure { Timber.e(it, "Stored VPN server selection was unreadable") }
+            .getOrNull()
     }
 
     // Favorites
+
     fun addToFavoriteVpnServers(vpnServer: VpnServer) {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        val vpnServers = getFavoriteVpnServers().toMutableList()
-        vpnServers.add(vpnServer)
-        editor.putString(favoriteVpnServersKey, gson.toJson(vpnServers))
-        editor.apply()
+        val updated = getFavoriteVpnServers().toMutableList()
+        if (updated.contains(vpnServer)) return
+        updated.add(vpnServer)
+        prefs.edit().putString(favoriteVpnServersKey, gson.toJson(updated)).apply()
     }
 
     fun removeFromFavoriteVpnServers(vpnServer: VpnServer) {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val editor = sharedPref.edit()
-        val vpnServers = getFavoriteVpnServers().toMutableList()
-        vpnServers.remove(vpnServer)
-        editor.putString(favoriteVpnServersKey, gson.toJson(vpnServers))
-        editor.apply()
+        val updated = getFavoriteVpnServers().toMutableList()
+        if (!updated.remove(vpnServer)) return
+        prefs.edit().putString(favoriteVpnServersKey, gson.toJson(updated)).apply()
     }
 
-    fun isFavoriteVpnServer(vpnServer: VpnServer): Boolean {
-        val vpnServers = getFavoriteVpnServers()
-        return vpnServers.contains(vpnServer)
+    fun isFavoriteVpnServer(vpnServer: VpnServer): Boolean =
+        getFavoriteVpnServers().contains(vpnServer)
+
+    fun getFavoriteVpnServers(): List<VpnServer> =
+        decodeList(favoriteVpnServersKey, VpnServerListType)
+
+    /**
+     * Gson happily returns `null` for the literal `"null"` or for a truncated
+     * blob, and the Kotlin-side type would otherwise be a platform type that
+     * crashes on first use. Anything unreadable degrades to an empty list.
+     */
+    private fun decodeList(key: String, type: java.lang.reflect.Type): List<VpnServer> {
+        val json = prefs.getString(key, null) ?: return emptyList()
+        return runCatching { gson.fromJson<List<VpnServer>>(json, type) }
+            .onFailure { Timber.e(it, "Stored list for %s was unreadable", key) }
+            .getOrNull()
+            .orEmpty()
     }
 
-    fun getFavoriteVpnServers(): List<VpnServer> {
-        val sharedPref = context.getSharedPreferences(sharedPrefName, Context.MODE_PRIVATE)
-        val json = sharedPref.getString(favoriteVpnServersKey, null)
-        return if (json != null) {
-            val type = object : TypeToken<List<VpnServer>>() {}.type
-            gson.fromJson(json, type)
-        } else {
-            emptyList()
-        }
+    private companion object {
+        val VpnServerType = object : TypeToken<VpnServer>() {}.type
+        val VpnServerListType = object : TypeToken<List<VpnServer>>() {}.type
     }
-
 }

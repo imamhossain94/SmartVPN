@@ -25,7 +25,7 @@
             android:id="@+id/tb_main_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:statusBarColor"
+            android:background="?attr/bgColor"
             app:leftIcon="@drawable/ic_left_2"
             app:title="Favorite Server"
             app:leftIconTint="?attr/iconColor"
@@ -39,7 +39,7 @@
             android:layout_marginTop="5dp"
             android:orientation="vertical"
             app:adapter="@{adapter}"
-            app:favoriteServerList="@{vm.servers}"
+            app:favoriteServerList="@{vm.favoriteServers}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_server" />
 

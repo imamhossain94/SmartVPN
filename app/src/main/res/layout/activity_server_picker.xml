@@ -25,7 +25,7 @@
             android:id="@+id/tb_main_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:statusBarColor"
+            android:background="?attr/bgColor"
             app:leftIcon="@drawable/ic_left_2"
             app:title="Select Server"
             app:leftIconTint="?attr/iconColor"
@@ -82,25 +82,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical"
-                    app:adapter="@{adapter}"
-                    app:adapterServerList="@{vm.servers}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_server" />
+                    android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_servers"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical"
+                        app:adapter="@{adapter}"
+                        app:adapterServerList="@{vm.servers}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_server" />
+
+                    <!-- Shown only when the list is empty, so a failed fetch is
+                         visible instead of looking like a blank screen. -->
+                    <TextView
+                        android:id="@+id/tv_empty_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="24dp"
+                        android:text="@{vm.loadError != null ? vm.loadError : @string/no_servers_yet}"
+                        android:textColor="?attr/subtitleColor"
+                        android:textSize="15sp"
+                        android:visibility="@{vm.servers.size() > 0 || vm.isLoading ? View.GONE : View.VISIBLE}"
+                        tools:visibility="gone" />
+
+                </FrameLayout>
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ads_container"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
 
     </LinearLayout>
 

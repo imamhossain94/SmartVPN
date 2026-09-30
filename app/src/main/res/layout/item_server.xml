@@ -15,7 +15,6 @@
     <LinearLayout
         style="@style/ItemServerLayout"
         android:clickable="true"
-        android:onClick="onChangeCountryClicked"
         android:focusable="true">
 
         <ImageView

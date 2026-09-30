@@ -1,106 +1,96 @@
 package com.newagedevs.smartvpn.network.speed
 
-import com.newagedevs.smartvpn.extensions.round
 import java.io.DataOutputStream
-import java.math.BigDecimal
+import java.net.HttpURLConnection
 import java.net.URL
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.HttpsURLConnection
-import javax.net.ssl.SSLSocketFactory
+import java.util.concurrent.TimeUnit
 
-class UploadTest(fileURL: String) : Thread() {
-    var fileURL = ""
-    var uploadElapsedTime = 0.0
-    var isFinished = false
-    var elapsedTime = 0.0
+/**
+ * Measures upload throughput against an Ookla-compatible test server.
+ *
+ * The byte counter is an instance field: it used to live in a `companion object`,
+ * so every subsequent test kept adding to the previous run's total.
+ */
+class UploadTest(
+    private val fileURL: String,
+    private val timeoutSeconds: Int = 8,
+) : Thread() {
+
+    @Volatile
     var finalUploadRate = 0.0
-    var startTime: Long = 0
+        private set
 
-    init {
-        this.fileURL = fileURL
-    }
+    @Volatile
+    var instantUploadRate = 0.0
+        private set
 
-    val instantUploadRate: Double
-        get() {
-            try {
-                val bd = BigDecimal(uploadedKByte)
-            } catch (ex: Exception) {
-                return 0.0
-            }
-            return if (uploadedKByte >= 0) {
-                val now = System.currentTimeMillis()
-                elapsedTime = (now - startTime) / 1000.0
-                2.round((uploadedKByte / 1000.0 * 8 / elapsedTime))
-            } else {
-                0.0
-            }
-        }
+    @Volatile
+    var uploadedKBytes = 0L
+        private set
+
+    @Volatile
+    var isFinished = false
+        private set
+
+    private var startTime = 0L
+
+    private val workers = 4
 
     override fun run() {
+        startTime = System.currentTimeMillis()
         try {
-            val url = URL(fileURL)
-            uploadedKByte = 0
-            startTime = System.currentTimeMillis()
-            val executor: ExecutorService = Executors.newFixedThreadPool(4)
-            for (i in 0..3) {
-                executor.execute(HandlerUpload(url))
-            }
-            executor.shutdown()
-            while (!executor.isTerminated) {
-                try {
-                    sleep(100)
-                } catch (_: InterruptedException) {
-                }
-            }
-            val now = System.currentTimeMillis()
-            uploadElapsedTime = (now - startTime) / 1000.0
-            finalUploadRate = (uploadedKByte / 1000.0 * 8 / uploadElapsedTime)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-        isFinished = true
-    }
-
-    companion object {
-        var uploadedKByte = 0
-    }
-}
-
-internal class HandlerUpload(var url: URL) : Thread() {
-    override fun run() {
-        val buffer = ByteArray(150 * 1024)
-        val startTime = System.currentTimeMillis()
-        val timeout = 8
-        while (true) {
+            val url = URL("${fileURL}upload.php")
+            val executor = Executors.newFixedThreadPool(workers)
             try {
-                var conn: HttpsURLConnection?
-                conn = url.openConnection() as HttpsURLConnection
-                conn.doOutput = true
-                conn.requestMethod = "POST"
-                conn.setRequestProperty("Connection", "Keep-Alive")
-                conn.sslSocketFactory = SSLSocketFactory.getDefault() as SSLSocketFactory
-                conn.hostnameVerifier = HostnameVerifier { hostname, _ ->
-                    hostname == url.host
+                repeat(workers) { executor.execute { uploadLoop(url) } }
+            } finally {
+                executor.shutdown()
+                if (!executor.awaitTermination(timeoutSeconds + 5L, TimeUnit.SECONDS)) {
+                    executor.shutdownNow()
                 }
-                conn.connect()
-                val dos = DataOutputStream(conn.outputStream)
-                dos.write(buffer, 0, buffer.size)
-                dos.flush()
-                conn.responseCode
-                UploadTest.uploadedKByte += (buffer.size / 1024.0).toInt()
-                val endTime = System.currentTimeMillis()
-                val uploadElapsedTime = (endTime - startTime) / 1000.0
-                if (uploadElapsedTime >= timeout) {
-                    break
+            }
+        } catch (e: Exception) {
+            // Reported as a zero rate below.
+        } finally {
+            val elapsed = elapsedSeconds()
+            finalUploadRate = megabitsPerSecond(uploadedKBytes, elapsed)
+            instantUploadRate = 0.0
+            isFinished = true
+        }
+    }
+
+    private fun uploadLoop(url: URL) {
+        val payload = ByteArray(150 * 1024)
+        while (elapsedSeconds() < timeoutSeconds) {
+            var connection: HttpURLConnection? = null
+            try {
+                // Ookla test servers answer on plain HTTP; casting to
+                // HttpsURLConnection (as the previous code did) threw
+                // ClassCastException before a single byte was sent.
+                connection = (url.openConnection() as HttpURLConnection).apply {
+                    doOutput = true
+                    requestMethod = "POST"
+                    connectTimeout = 10_000
+                    readTimeout = 10_000
+                    setRequestProperty("Connection", "Keep-Alive")
+                    setRequestProperty("Content-Type", "application/octet-stream")
                 }
-                dos.close()
-                conn.disconnect()
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-                break
+                DataOutputStream(connection.outputStream).use { it.write(payload) }
+                connection.responseCode
+                uploadedKBytes += payload.size / 1024L
+            } catch (e: Exception) {
+                return
+            } finally {
+                connection?.disconnect()
             }
         }
+    }
+
+    private fun elapsedSeconds(): Double = (System.currentTimeMillis() - startTime) / 1000.0
+
+    private fun megabitsPerSecond(kbytes: Long, seconds: Double): Double {
+        if (kbytes <= 0L || seconds <= 0.0) return 0.0
+        return kbytes.toDouble() * 1024.0 * 8.0 / 1_000_000.0 / seconds
     }
 }

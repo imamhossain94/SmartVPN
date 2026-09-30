@@ -3,152 +3,120 @@ package com.newagedevs.smartvpn.network.speed
 import android.location.Location
 import com.newagedevs.smartvpn.network.speed.model.Client
 import com.newagedevs.smartvpn.network.speed.model.Server
-import com.newagedevs.smartvpn.utils.Constants.Companion.speedTestClientURL
-import com.newagedevs.smartvpn.utils.Constants.Companion.speedTestServerURL
+import com.newagedevs.smartvpn.utils.Constants
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
-import java.io.BufferedReader
-import java.io.InputStreamReader
+import timber.log.Timber
+import java.io.IOException
 import java.net.HttpURLConnection
+import java.net.URL
 
-fun parseClientXML(xmlData: String): Client? {
+/**
+ * Parses the Ookla `speedtest-config.php` payload and returns its `<client>` element.
+ */
+internal fun parseClientXML(xmlData: String): Client? = runCatching {
+    var result: Client? = null
+    forEachElement(xmlData, "client") { parser ->
+        result = Client(
+            parser.attr("ip").orEmpty(),
+            parser.attr("lat").orEmpty(),
+            parser.attr("lon").orEmpty(),
+            parser.attr("isp").orEmpty(),
+            parser.attr("isprating").orEmpty(),
+            parser.attr("rating").orEmpty(),
+            parser.attr("ispdlavg").orEmpty(),
+            parser.attr("ispulavg").orEmpty(),
+            parser.attr("loggedin").orEmpty(),
+            parser.attr("country").orEmpty(),
+        )
+    }
+    result
+}.onFailure { Timber.e(it, "Unable to parse the speed test client config") }.getOrNull()
+
+/** Parses the Ookla `speedtest-servers-static.php` payload into its `<server>` elements. */
+internal fun parseServerXML(xmlData: String): List<Server> = runCatching {
+    val servers = mutableListOf<Server>()
+    forEachElement(xmlData, "server") { parser ->
+        // A server without a usable url or host is useless to the test.
+        val url = parser.attr("url").orEmpty()
+        val host = parser.attr("host").orEmpty()
+        if (url.isBlank() || host.isBlank()) return@forEachElement
+
+        servers += Server(
+            url,
+            parser.attr("lat").orEmpty(),
+            parser.attr("lon").orEmpty(),
+            parser.attr("name").orEmpty(),
+            parser.attr("country").orEmpty(),
+            parser.attr("cc").orEmpty(),
+            parser.attr("sponsor").orEmpty(),
+            parser.attr("id").orEmpty(),
+            host,
+        )
+    }
+    servers
+}.onFailure { Timber.e(it, "Unable to parse the speed test server list") }.getOrDefault(emptyList())
+
+/** Walks the document, invoking [action] once per `<tag>` start event. */
+private inline fun forEachElement(xmlData: String, tag: String, action: (XmlPullParser) -> Unit) {
+    val parser = XmlPullParserFactory.newInstance().apply { isNamespaceAware = true }.newPullParser()
+    parser.setInput(xmlData.reader())
+
+    var event = parser.eventType
+    while (event != XmlPullParser.END_DOCUMENT) {
+        if (event == XmlPullParser.START_TAG && parser.name == tag) action(parser)
+        event = parser.next()
+    }
+}
+
+private fun XmlPullParser.attr(name: String): String? =
+    getAttributeValue(null, name)?.trim()?.takeIf { it.isNotEmpty() }
+
+suspend fun getNetworkClient(): Client? = withContext(Dispatchers.IO) {
+    runCatching { fetchXml(Constants.speedTestClientURL) }
+        .onFailure { Timber.e(it, "Unable to reach the speed test config endpoint") }
+        .getOrNull()
+        ?.let(::parseClientXML)
+}
+
+/** Picks the geometrically closest test server to the client. */
+suspend fun findBestServer(client: Client): Server? = withContext(Dispatchers.IO) {
+    val servers = runCatching { fetchXml(Constants.speedTestServerURL) }
+        .onFailure { Timber.e(it, "Unable to reach the speed test server list") }
+        .getOrNull()
+        ?.let(::parseServerXML)
+        .orEmpty()
+
+    val clientLat = client.lat.toDoubleOrNull() ?: return@withContext null
+    val clientLon = client.lon.toDoubleOrNull() ?: return@withContext null
+
+    servers
+        .filter { it.lat.toDoubleOrNull() != null && it.lon.toDoubleOrNull() != null }
+        .minByOrNull { server ->
+            val result = FloatArray(1)
+            Location.distanceBetween(
+                clientLat, clientLon,
+                server.lat.toDouble(), server.lon.toDouble(),
+                result,
+            )
+            result[0].toDouble()
+        }
+}
+
+private fun fetchXml(url: URL): String {
+    val connection = (url.openConnection() as HttpURLConnection).apply {
+        connectTimeout = 15_000
+        readTimeout = 20_000
+        requestMethod = "GET"
+    }
     try {
-        val factory = XmlPullParserFactory.newInstance()
-        factory.isNamespaceAware = true
-        val parser = factory.newPullParser()
-        parser.setInput(xmlData.reader())
-
-        var eventType = parser.eventType
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            when (eventType) {
-                XmlPullParser.START_TAG -> {
-                    val tagName = parser.name
-                    if (tagName == "client") {
-                        val ip = parser.getAttributeValue(null, "ip")
-                        val lat = parser.getAttributeValue(null, "lat")
-                        val lon = parser.getAttributeValue(null, "lon")
-                        val isp = parser.getAttributeValue(null, "isp")
-                        val isprating = parser.getAttributeValue(null, "isprating")
-                        val rating = parser.getAttributeValue(null, "rating")
-                        val ispdlavg = parser.getAttributeValue(null, "ispdlavg")
-                        val ispulavg = parser.getAttributeValue(null, "ispulavg")
-                        val loggedin = parser.getAttributeValue(null, "loggedin")
-                        val country = parser.getAttributeValue(null, "country")
-
-                        return Client(
-                            ip,
-                            lat,
-                            lon,
-                            isp,
-                            isprating,
-                            rating,
-                            ispdlavg,
-                            ispulavg,
-                            loggedin,
-                            country
-                        )
-                    }
-                }
-            }
-            eventType = parser.next()
+        if (connection.responseCode != HttpURLConnection.HTTP_OK) {
+            throw IOException("HTTP ${connection.responseCode} from $url")
         }
-
-    } catch (e: Exception) {
-        e.printStackTrace()
+        return connection.inputStream.bufferedReader().use { it.readText() }
+    } finally {
+        connection.disconnect()
     }
-    return null
-}
-
-fun parseServerXML(xmlData: String): ArrayList<Server>? {
-    try {
-        val servers = ArrayList<Server>()
-        val factory = XmlPullParserFactory.newInstance()
-        factory.isNamespaceAware = true
-        val parser = factory.newPullParser()
-        parser.setInput(xmlData.reader())
-
-        var eventType = parser.eventType
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            when (eventType) {
-                XmlPullParser.START_TAG -> {
-                    val tagName = parser.name
-                    if (tagName == "server") {
-                        val serverUrl = parser.getAttributeValue(null, "url")
-                        val lat = parser.getAttributeValue(null, "lat")
-                        val lon = parser.getAttributeValue(null, "lon")
-                        val name = parser.getAttributeValue(null, "name")
-                        val country = parser.getAttributeValue(null, "country")
-                        val cc = parser.getAttributeValue(null, "cc")
-                        val sponsor = parser.getAttributeValue(null, "sponsor")
-                        val id = parser.getAttributeValue(null, "id")
-                        val host = parser.getAttributeValue(null, "host")
-
-                        val server = Server(
-                            serverUrl,
-                            lat,
-                            lon,
-                            name,
-                            country,
-                            cc,
-                            sponsor,
-                            id,
-                            host
-                        )
-
-                        servers.add(server)
-                    }
-                }
-            }
-            eventType = parser.next()
-        }
-        return servers
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-    return null
-}
-
-fun getNetworkClient(): Client? {
-    val clientConnection = speedTestClientURL.openConnection() as HttpURLConnection
-    if (clientConnection.responseCode == 200) {
-        val clientBr = BufferedReader(InputStreamReader(clientConnection.inputStream))
-        val client = parseClientXML(clientBr.readText())
-        clientBr.close()
-        return client
-    }
-    return null
-}
-
-fun findBestServer(client: Client): Server? {
-    val serverConnection = speedTestServerURL.openConnection() as HttpURLConnection
-    if (serverConnection.responseCode == 200) {
-        val serverBr = BufferedReader(InputStreamReader(serverConnection.inputStream))
-        val servers = parseServerXML(serverBr.readText())
-        serverBr.close()
-
-        val source = Location("Source").apply {
-            latitude = client.lat.toDouble()
-            longitude = client.lon.toDouble()
-        }
-
-        var tmp = 19349458.0
-        var bestServer: Server? = null
-
-        if (servers != null) {
-            for (server in servers) {
-                val dest = Location("Dest").apply {
-                    latitude = server.lat.toDouble()
-                    longitude = server.lon.toDouble()
-                }
-
-                val distance = source.distanceTo(dest).toDouble()
-                if (tmp > distance) {
-                    tmp = distance
-                    bestServer = server
-                }
-            }
-        }
-        return bestServer
-    }
-    return null
 }

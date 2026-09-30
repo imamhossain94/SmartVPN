@@ -22,10 +22,12 @@ public class NetworkUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Network[] networks = conn.getAllNetworks();
             for (Network network : networks) {
-                NetworkInfo ni = conn.getNetworkInfo(network);
-                LinkProperties li = conn.getLinkProperties(network);
-
+                // A network can disappear between getAllNetworks() and these
+                // queries (routine during Wi-Fi <-> cellular handover), so both
+                // results are treated as optional instead of dereferenced blind.
                 NetworkCapabilities nc = conn.getNetworkCapabilities(network);
+                if (nc == null)
+                    continue;
 
                 // Skip VPN networks like ourselves
                 if (nc.hasTransport(NetworkCapabilities.TRANSPORT_VPN))
@@ -33,6 +35,10 @@ public class NetworkUtils {
 
                 // Also skip mobile networks
                 if (nc.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
+                    continue;
+
+                LinkProperties li = conn.getLinkProperties(network);
+                if (li == null)
                     continue;
 
 

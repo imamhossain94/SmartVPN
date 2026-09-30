@@ -86,6 +86,14 @@ public class ConfigParser {
             "topology",
             "user",
             "win-sys",
+            // These were added after the bundled ics-openvpn 2.5 engine. If they
+            // are forwarded verbatim the process aborts instantly with
+            // "Unrecognized option or missing or extra parameter(s)". VPNGate
+            // has started shipping data-ciphers, which broke every connection.
+            "data-ciphers",
+            "data-ciphers-fallback",
+            "tls-ciphersuites",
+            "tls-groups",
     };
     private final String[][] ignoreOptionsWithArg =
             {

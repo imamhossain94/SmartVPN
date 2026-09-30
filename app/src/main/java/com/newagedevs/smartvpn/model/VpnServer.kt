@@ -13,14 +13,16 @@ data class VpnServer(
     var openVPNConfigDataBase64: String = ""
 ) {
     constructor(json: Map<String, Any>) : this(
-        hostname = json["HostName"].toString(),
-        ip = json["IP"].toString(),
-        ping = json["Ping"].toString(),
-        speed = formatSize(json["Speed"].toString().toLong()),
-        countryLong = json["CountryLong"].toString(),
-        countryShort = json["CountryShort"].toString(),
-        numVpnSessions = json["NumVpnSessions"].toString(),
-        openVPNConfigDataBase64 = json["OpenVPN_ConfigData_Base64"].toString()
+        // VPNGate labels the first column "Filename"; fall back to the other
+        // spelling so both API revisions resolve.
+        hostname = json.string("HostName", "Filename"),
+        ip = json.string("IP"),
+        ping = json.string("Ping"),
+        speed = json["Speed"].toString().toLongOrNull()?.let(::formatSize) ?: "-",
+        countryLong = json.string("CountryLong"),
+        countryShort = json.string("CountryShort"),
+        numVpnSessions = json.string("NumVpnSessions"),
+        openVPNConfigDataBase64 = json.string("OpenVPN_ConfigData_Base64")
     )
 
     fun toJson(): Map<String, Any> {
@@ -36,3 +38,10 @@ data class VpnServer(
         )
     }
 }
+
+/**
+ * Reads a column, tolerating the trailing-whitespace and naming differences
+ * between VPNGate API revisions instead of throwing on a malformed row.
+ */
+private fun Map<String, Any>.string(vararg names: String): String =
+    names.firstNotNullOfOrNull { this[it] }?.toString()?.trim().orEmpty()

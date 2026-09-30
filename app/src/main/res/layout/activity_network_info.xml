@@ -22,7 +22,7 @@
             android:id="@+id/tb_main_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:statusBarColor"
+            android:background="?attr/bgColor"
             app:title="Network Information"
             app:leftIcon="@drawable/ic_left_2"
             app:leftIconTint="?attr/iconColor"
@@ -177,13 +177,6 @@
             </LinearLayout>
 
         </ScrollView>
-
-        <LinearLayout
-            android:id="@+id/ads_container"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
 
     </LinearLayout>
 </layout>

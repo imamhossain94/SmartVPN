@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.content.pm.ShortcutManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -41,6 +42,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ServiceCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.IOException;
@@ -323,11 +325,10 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             nBuilder.setContentIntent(pIntent);
         } else {
             PendingIntent contentPendingIntent = getContentIntent();
-            if (contentPendingIntent != null) {
+            if (contentPendingIntent == null)
+                contentPendingIntent = getGraphPendingIntent();
+            if (contentPendingIntent != null)
                 nBuilder.setContentIntent(contentPendingIntent);
-            } else {
-                nBuilder.setContentIntent(getGraphPendingIntent());
-            }
         }
 
         if (when != 0)
@@ -361,7 +362,16 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
             mNotificationManager.notify(notificationId, notification);
 
-            startForeground(notificationId, notification);
+            // Android 14+ (API 34) requires a declared foreground service type.
+            // A VPN client is not covered by any of the "normal" types, so the
+            // platform expects SPECIAL_USE together with a justification in the
+            // service declaration. Passing 0 on older releases keeps the
+            // two-argument behaviour via ServiceCompat.
+            int foregroundServiceType = 0;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
+            }
+            ServiceCompat.startForeground(this, notificationId, notification, foregroundServiceType);
 
             if (lastChannel != null && !channel.equals(lastChannel)) {
                 // Cancel old notification
@@ -475,16 +485,16 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     }
 
     PendingIntent getGraphPendingIntent() {
-        // Let the configure Button show the Log
+        // Let the configure Button show the Log.
+        // Use the host application's own launcher entry point rather than
+        // guessing a class name: the previous hardcoded "<pkg>.view.MainActivity"
+        // never resolved for real apps, so tapping the notification did nothing.
+        Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+        if (intent == null)
+            return null;
 
-
-        Intent intent = new Intent();
-        intent.setComponent(new ComponentName(this, getPackageName() + ".view.MainActivity"));
-
-        intent.putExtra("PAGE", "graph");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent startLW = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
-        return startLW;
+        return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     synchronized void registerDeviceStateReceiver(OpenVPNManagement magnagement) {

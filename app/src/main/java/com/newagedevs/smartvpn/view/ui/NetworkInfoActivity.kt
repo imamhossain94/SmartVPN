@@ -1,12 +1,16 @@
 package com.newagedevs.smartvpn.view.ui
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.hjq.bar.OnTitleBarListener
 import com.hjq.bar.TitleBar
 import com.newagedevs.smartvpn.R
 import com.newagedevs.smartvpn.databinding.ActivityNetworkInfoBinding
+import com.newagedevs.smartvpn.extensions.applyEdgeToEdgeInsets
+import com.newagedevs.smartvpn.model.IPDetails
 import com.newagedevs.smartvpn.network.speed.DownloadTest
 import com.newagedevs.smartvpn.network.speed.PingTest
 import com.newagedevs.smartvpn.network.speed.UploadTest
@@ -14,207 +18,202 @@ import com.newagedevs.smartvpn.network.speed.findBestServer
 import com.newagedevs.smartvpn.network.speed.getNetworkClient
 import com.newagedevs.smartvpn.network.speed.model.Server
 import com.skydoves.bindables.BindingActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.net.URL
-import com.newagedevs.smartvpn.extensions.round
-import com.newagedevs.smartvpn.utils.AdsHelper
+import java.util.Locale
 
 class NetworkInfoActivity : BindingActivity<ActivityNetworkInfoBinding>(R.layout.activity_network_info) {
 
     private val viewModel: MainViewModel by viewModel()
 
+    private var speedTestJob: Job? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding {
-            vm = viewModel
-        }
+        applyEdgeToEdgeInsets(binding.root)
 
-        AdsHelper.createBannerAd(this, binding.adsContainer)
+        binding { vm = viewModel }
 
         binding.tbMainBar.setOnTitleBarListener(object : OnTitleBarListener {
-            override fun onLeftClick(titleBar: TitleBar) {
-                finish()
-            }
-
-            override fun onRightClick(titleBar: TitleBar) {
-
-            }
+            override fun onLeftClick(titleBar: TitleBar) = finish()
+            override fun onTitleClick(titleBar: TitleBar) = Unit
+            override fun onRightClick(titleBar: TitleBar) = Unit
         })
 
         binding.gaugeView.setTargetValue(0f)
 
-        viewModel.fetchIpDetails {
-            this@NetworkInfoActivity.runOnUiThread {
-                viewModel.currentIPDetails?.let {
+        binding.speedTestButton.setOnClickListener { startSpeedTest() }
 
-                    binding.ipAddress.setRightText(it.ip)
-                    binding.internetProvider.setRightText(it.isp)
-                    binding.location.setRightText("${it.city}, ${it.regionName}, ${it.country}")
-                    binding.postalCode.setRightText(it.zip)
-                    binding.timezone.setRightText(it.timezone)
-
-                }
+        // Collect only while STARTED, so a late response can never touch a
+        // detached view hierarchy.
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentIPDetails.collectLatest(::renderIpDetails)
             }
         }
 
-        binding.speedTestButton.setOnClickListener {
-            networkSpeedTest()
-        }
-
-
+        viewModel.fetchIpDetails()
     }
 
-    private fun networkSpeedTest() {
-        val defaultMbps = "---"
-        val defaultMs = "---"
+    override fun onDestroy() {
+        speedTestJob?.cancel()
+        super.onDestroy()
+    }
 
-        binding.speedTestButton.text = this@NetworkInfoActivity.getString(R.string.test_running)
-        binding.bestServer.setRightText("---")
-        binding.ping.setRightText(defaultMs)
-        binding.downloadSpeed.setRightText(defaultMbps)
-        binding.uploadSpeed.setRightText(defaultMbps)
+    private fun renderIpDetails(details: IPDetails?) {
+        if (details == null) return
+        binding.ipAddress.setRightText(details.ip)
+        binding.internetProvider.setRightText(details.isp)
+        binding.location.setRightText(
+            listOf(details.city, details.regionName, details.country)
+                .filter { it.isNotBlank() }
+                .joinToString(", ")
+                .ifBlank { "-" }
+        )
+        binding.postalCode.setRightText(details.zip.ifBlank { "-" })
+        binding.timezone.setRightText(details.timezone.ifBlank { "-" })
+    }
 
-        //recheckButton.visibility = View.INVISIBLE
+    private fun startSpeedTest() {
+        if (speedTestJob?.isActive == true) return
 
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val client = getNetworkClient()
-                if (client != null) {
-                    val bestServer = findBestServer(client)
-                    if (bestServer != null) {
-                        withContext(Dispatchers.Main) {
-                            binding.bestServer.setRightText(bestServer.sponsor)
-                        }
+        speedTestJob = lifecycleScope.launch {
+            binding.speedTestButton.setText(R.string.test_running)
+            binding.bestServer.setRightText("-")
+            binding.ping.setRightText("-")
+            binding.downloadSpeed.setRightText("-")
+            binding.uploadSpeed.setRightText("-")
 
-                        runNetworkTests(bestServer)
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
+            val server = resolveBestServer()
+            if (server == null) {
+                finishSpeedTestUi()
+                toast(getString(R.string.speed_test_unavailable))
+                return@launch
             }
+
+            binding.bestServer.setRightText(server.sponsor.ifBlank { "-" })
+            runTests(server)
+
+            finishSpeedTestUi()
+            toast(getString(R.string.speed_test_completed))
         }
     }
 
-    private suspend fun runNetworkTests(bestServer: Server) {
-        withContext(Dispatchers.Main) {
-            try {
-                binding.bestServer.setRightText(bestServer.sponsor)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-
-        var pingTestStarted = false
-        var pingTestFinished = false
-        var downloadTestStarted = false
-        var downloadTestFinished = false
-        var uploadTestStarted = false
-        var uploadTestFinished = false
-
-        val url = URL(bestServer.serverUrl)
-        val baseUrl = url.protocol + "://" + url.host + ":" + url.port + "/speedtest/"
-
-        val pingTest = PingTest(bestServer.host.replace(":8080", ""), 3)
-        val downloadTest = DownloadTest(baseUrl.replace("http://", "https://"))
-        val uploadTest = UploadTest(baseUrl.replace("http://", "https://"))
-
-        while (true) {
-            if (!pingTestStarted) {
-                pingTest.start()
-                pingTestStarted = true
-            }
-            if (pingTestFinished && !downloadTestStarted) {
-                downloadTest.start()
-                downloadTestStarted = true
-            }
-            if (downloadTestFinished && !uploadTestStarted) {
-                uploadTest.start()
-                uploadTestStarted = true
-            }
-
-            //Ping Test
-            withContext(Dispatchers.Main) {
-                if (pingTestFinished) {
-                    if (pingTest.avgRtt.toInt() == 0) {
-                        println("Ping error...")
-                    } else {
-                        binding.ping.setRightText(String.format("%s ms", pingTest.avgRtt))
-                    }
-                } else {
-                    binding.ping.setRightText(String.format("%s ms", pingTest.instantRtt))
-                }
-            }
-
-            //Download Test
-            withContext(Dispatchers.Main) {
-                if (pingTestFinished) {
-                    if (downloadTestFinished) {
-                        if (downloadTest.finalDownloadRate.toInt() == 0) {
-                            println("Download error...")
-                        } else {
-                            binding.gaugeView.setTargetValue(0f)
-                            binding.downloadSpeed.setRightText(String.format("%s Mbps", downloadTest.finalDownloadRate.round(2)))
-                        }
-                    } else {
-                        binding.gaugeView.setTargetValue(downloadTest.instantDownloadRate.toFloat())
-                        binding.downloadSpeed.setRightText(String.format("%s Mbps", downloadTest.instantDownloadRate.round(2)))
-                    }
-                }
-            }
-
-            //Upload Test
-            withContext(Dispatchers.Main) {
-                if (downloadTestFinished) {
-                    if (uploadTestFinished) {
-                        if (uploadTest.finalUploadRate.toInt() == 0) {
-                            println("Upload error...")
-                        } else {
-                            binding.gaugeView.setTargetValue(0f)
-                            binding.uploadSpeed.setRightText(String.format("%s Mbps", uploadTest.finalUploadRate.round(2)))
-                        }
-                    } else {
-                        binding.gaugeView.setTargetValue(uploadTest.instantUploadRate.toFloat())
-                        binding.uploadSpeed.setRightText(String.format("%s Mbps", uploadTest.instantUploadRate.round(2)))
-                    }
-                }
-            }
-
-            if (pingTestFinished && downloadTestFinished && uploadTest.isFinished) {
-                withContext(Dispatchers.Main) {
-                    binding.gaugeView.setTargetValue(0f)
-                    Toast.makeText(this@NetworkInfoActivity, "Speed test completed", Toast.LENGTH_SHORT).show()
-                    binding.speedTestButton.text = this@NetworkInfoActivity.getString(R.string.start_test)
-                }
-                break
-            }
-            if (pingTest.isFinished) {
-                pingTestFinished = true
-            }
-            if (downloadTest.isFinished) {
-                downloadTestFinished = true
-
-            }
-            if (uploadTest.isFinished) {
-                uploadTestFinished = true
-            }
-
-            if (!pingTestFinished) {
-                try {
-                    delay(300)
-                } catch (_: InterruptedException) { }
-            } else {
-                try {
-                    delay(100)
-                } catch (_: InterruptedException) { }
-            }
-        }
-
+    private suspend fun resolveBestServer(): Server? {
+        val client = runCatching { getNetworkClient() }
+            .onFailure { Timber.e(it, "Speed test client lookup failed") }
+            .getOrNull() ?: return null
+        return runCatching { findBestServer(client) }
+            .onFailure { Timber.e(it, "Speed test server lookup failed") }
+            .getOrNull()
     }
 
+    private fun finishSpeedTestUi() {
+        binding.gaugeView.setTargetValue(0f)
+        binding.speedTestButton.setText(R.string.start_test)
+    }
+
+    private fun toast(message: String) =
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
+    /**
+     * Runs ping, then download, then upload, polling each measurement while it is
+     * in flight.
+     *
+     * The previous version polled in `while (true)` from a scope that outlived the
+     * Activity and never terminated, because the error paths of `PingTest` and
+     * `DownloadTest` left their `isFinished` flag false forever. The loop is now
+     * bounded by [TEST_TIMEOUT_MS], runs on [lifecycleScope], and exits as soon as
+     * the Activity is destroyed.
+     */
+    private suspend fun runTests(server: Server) {
+        val baseUrl = baseUrlOf(server)
+        val pingHost = server.host.substringBefore(':').ifBlank { null }
+        if (baseUrl == null || pingHost == null) {
+            Timber.w("Skipping speed test for a server with an unusable URL/host")
+            return
+        }
+
+        val ping = PingTest(pingHost, PING_COUNT)
+        val download = DownloadTest(baseUrl)
+        val upload = UploadTest(baseUrl)
+
+        val deadline = System.currentTimeMillis() + TEST_TIMEOUT_MS
+        var phase = Phase.PING
+        ping.start()
+
+        while (currentCoroutineContext().isActive && System.currentTimeMillis() < deadline) {
+            when (phase) {
+                Phase.PING -> {
+                    val rtt = ping.avgRtt.takeIf { it > 0.0 } ?: ping.instantRtt
+                    binding.ping.setRightText("${rtt.format1()} ms")
+                    if (ping.isFinished) {
+                        download.start()
+                        phase = Phase.DOWNLOAD
+                    }
+                }
+
+                Phase.DOWNLOAD -> {
+                    binding.gaugeView.setTargetValue(download.instantDownloadRate.toFloat())
+                    binding.downloadSpeed.setRightText("${download.instantDownloadRate.format2()} Mbps")
+                    if (download.isFinished) {
+                        binding.gaugeView.setTargetValue(0f)
+                        binding.downloadSpeed.setRightText("${download.finalDownloadRate.format2()} Mbps")
+                        upload.start()
+                        phase = Phase.UPLOAD
+                    }
+                }
+
+                Phase.UPLOAD -> {
+                    binding.gaugeView.setTargetValue(upload.instantUploadRate.toFloat())
+                    binding.uploadSpeed.setRightText("${upload.instantUploadRate.format2()} Mbps")
+                    if (upload.isFinished) {
+                        binding.gaugeView.setTargetValue(0f)
+                        binding.uploadSpeed.setRightText("${upload.finalUploadRate.format2()} Mbps")
+                        phase = Phase.DONE
+                    }
+                }
+
+                Phase.DONE -> return
+            }
+
+            delay(POLL_INTERVAL_MS)
+        }
+    }
+
+    /**
+     * Builds the `/speedtest/` base URL for an Ookla server.
+     *
+     * The previous code rewrote the scheme to `https://` while keeping port 8080.
+     * Ookla test servers only speak plain HTTP there, so every request failed and
+     * the test could never complete. Returns null when `url` is malformed.
+     */
+    private fun baseUrlOf(server: Server): String? = runCatching {
+        val parsed = URL(server.serverUrl)
+        val port = if (parsed.port > 0) ":${parsed.port}" else ""
+        "${parsed.protocol}://${parsed.host}$port/speedtest/"
+    }.onFailure { Timber.e(it, "Malformed test server URL: %s", server.serverUrl) }
+        .getOrNull()
+
+    private fun Double.format1(): String =
+        if (isNaN() || isInfinite()) "0.0" else String.format(Locale.US, "%.1f", this)
+
+    private fun Double.format2(): String =
+        if (isNaN() || isInfinite()) "0.00" else String.format(Locale.US, "%.2f", this)
+
+    private enum class Phase { PING, DOWNLOAD, UPLOAD, DONE }
+
+    private companion object {
+        const val PING_COUNT = 3
+        const val POLL_INTERVAL_MS = 300L
+        const val TEST_TIMEOUT_MS = 45_000L
+    }
 }

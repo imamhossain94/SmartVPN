@@ -943,7 +943,10 @@ open class BaseDialog constructor(context: Context, @StyleRes themeResId: Int = 
         override fun onActivityStarted(activity: Activity) {}
 
         override fun onActivityResumed(activity: Activity) {
-            if (activity !== activity) {
+            // Guard against lifecycle callbacks belonging to a *different*
+            // Activity: this used to compare the parameter with itself, so the
+            // check never fired.
+            if (this.activity !== activity) {
                 return
             }
 

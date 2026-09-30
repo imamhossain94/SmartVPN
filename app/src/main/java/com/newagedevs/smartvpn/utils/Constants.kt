@@ -12,39 +12,18 @@ class Constants {
         const val appStoreId = "market://details?id=com.newagedevs.smartvpn"
         const val appStoreBaseURL = "http://play.google.com/store/apps/details?id="
 
-        const val showAdsOnEveryClick: Int = 5
-        const val showAdsOnEveryOpen: Int = 3
-
         // Shared preferences constants
         const val sharedPrefName = "MyPrefs"
-        const val clickCountKey = "clickCount"
-        const val openCountKey = "openCount"
         const val isConnectedKey = "isConnected"
         const val vpnServersKey = "vpn_servers_key"
         const val favoriteVpnServersKey = "favorite_vpn_servers_key"
-
         const val selectedVpnServersKey: String = "selected_vpn_servers_key"
-
 
         // Request Ids
         const val VPN_REQUEST_ID = 1
 
-
-        object ServerStatus {
-            const val CONNECTED = "CONNECTED"
-            const val DISCONNECTED = "DISCONNECTED"
-            const val WAIT = "WAIT"
-            const val AUTH = "AUTH"
-            const val RECONNECTING = "RECONNECTING"
-            const val NO_NETWORK = "NO_NETWORK"
-            const val CONNECTING = "CONNECTING"
-            const val PREPARE = "PREPARE"
-            const val DENIED = "DENIED"
-        }
-
-        val speedTestClientURL = URL("https://www.speedtest.net/speedtest-config.php")
-        val speedTestServerURL = URL("https://www.speedtest.net/speedtest-servers-static.php")
-
+        // Speed test endpoints (Ookla)
+        val speedTestClientURL: URL = URL("https://www.speedtest.net/speedtest-config.php")
+        val speedTestServerURL: URL = URL("https://www.speedtest.net/speedtest-servers-static.php")
     }
-
 }

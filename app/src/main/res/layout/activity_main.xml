@@ -22,7 +22,7 @@
             android:id="@+id/tb_main_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?android:statusBarColor"
+            android:background="?attr/bgColor"
             app:leftIcon="@drawable/ic_hamburger_menu"
             app:rightIcon="@drawable/ic_globe"
             app:leftIconTint="?attr/iconColor"
@@ -249,13 +249,6 @@
 
             </LinearLayout>
         </ScrollView>
-
-        <LinearLayout
-            android:id="@+id/ads_container"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
 
     </LinearLayout>
 </layout>
